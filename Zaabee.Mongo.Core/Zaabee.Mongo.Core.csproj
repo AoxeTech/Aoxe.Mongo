@@ -2,17 +2,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>0.1.2</PackageVersion>
+    <PackageVersion>0.0.3</PackageVersion>
     <Authors>Mutuduxf</Authors>
     <Company>Mutuduxf</Company>
     <PackageTags>Zaabee Zaaby Mongo Repository</PackageTags>
-    <Description>Mongo client wrappers</Description>
+    <Description>Interface/BaseClass/Attribute/Exception for Zaabee.Mongo.</Description>
     <PackageProjectUrl>https://github.com/Mutuduxf/Zaabee.Mongo</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Mutuduxf/Zaabee.Mongo/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
-    <PackageReference Include="Zaabee.Mongo.Core" Version="0.0.3" />
-  </ItemGroup>
 </Project>

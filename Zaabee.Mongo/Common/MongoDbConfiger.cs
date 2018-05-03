@@ -7,7 +7,7 @@ namespace Zaabee.Mongo.Common
     {
         public MongoDbConfiger(List<string> hosts, string database, string userName, string password,
             MongoDbReadPreference? readPreference = null, int maxConnectionPoolSize = 100,
-            int minConnectionPoolSize = 0)
+            int minConnectionPoolSize = 0, GuidType guidType = GuidType.CSharpLegacy)
         {
             Hosts = hosts;
             Database = database;
@@ -16,6 +16,7 @@ namespace Zaabee.Mongo.Common
             ReadPreference = readPreference;
             MaxConnectionPoolSize = maxConnectionPoolSize;
             MinConnectionPoolSize = minConnectionPoolSize;
+            GuidType = guidType;
         }
 
         private List<string> _hosts;
@@ -37,6 +38,8 @@ namespace Zaabee.Mongo.Common
         public int MinConnectionPoolSize { get;}
 
         public MongoDbReadPreference? ReadPreference { get; }
+        
+        public GuidType GuidType { get; }
 
         public string GetConnectionString()
         {

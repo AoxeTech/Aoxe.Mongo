@@ -15,5 +15,6 @@ namespace Zaabee.Mongo.Common
         internal static readonly Type Decimal = typeof(decimal);
         internal static readonly Type DateTime = typeof(DateTime);
         internal static readonly Type Enum = typeof(Enum);
+        internal static readonly Type Guid = typeof(Guid);
     }
 }

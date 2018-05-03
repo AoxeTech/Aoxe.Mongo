@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zaabee.Mongo", "Zaabee.Mongo\Zaabee.Mongo.csproj", "{62A39124-BCAD-4C8A-BCF7-4876D46672E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{60E93DF2-4CE8-45D2-B481-A9FE3A9FBFAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zaabee.Mongo.Core", "Zaabee.Mongo.Core\Zaabee.Mongo.Core.csproj", "{72252071-4275-4B47-BEBC-FB7C2ABC511E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{62A39124-BCAD-4C8A-BCF7-4876D46672E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62A39124-BCAD-4C8A-BCF7-4876D46672E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62A39124-BCAD-4C8A-BCF7-4876D46672E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60E93DF2-4CE8-45D2-B481-A9FE3A9FBFAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60E93DF2-4CE8-45D2-B481-A9FE3A9FBFAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60E93DF2-4CE8-45D2-B481-A9FE3A9FBFAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60E93DF2-4CE8-45D2-B481-A9FE3A9FBFAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72252071-4275-4B47-BEBC-FB7C2ABC511E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72252071-4275-4B47-BEBC-FB7C2ABC511E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72252071-4275-4B47-BEBC-FB7C2ABC511E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72252071-4275-4B47-BEBC-FB7C2ABC511E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
