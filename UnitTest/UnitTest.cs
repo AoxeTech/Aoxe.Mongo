@@ -18,7 +18,7 @@ namespace UnitTest
         }
 
         [Fact]
-        public void Test1()
+        public void Add()
         {
             var model = new TestModel
             {
@@ -27,11 +27,51 @@ namespace UnitTest
                 Name = "Apple"
             };
             _mongoDbService.Add(model);
-            var result = _mongoDbService.GetQueryable<TestModel>().FirstOrDefault(p => p.Id == model.Id);
-            model.Name = "pear";
-            var i1 = _mongoDbService.Update(model);
-            var i2 = _mongoDbService.Delete(model);
-            var i3 = _mongoDbService.Delete<TestModel>(p => p.Id == model.Id);
+        }
+
+        [Fact]
+        public void AddRange()
+        {
+            var datas = new List<TestModel>
+            {
+                new TestModel
+                {
+                    Id = Guid.NewGuid(),
+                    Age = 20,
+                    Name = "Apple"
+                },
+                new TestModel
+                {
+                    Id = Guid.NewGuid(),
+                    Age = 21,
+                    Name = "pear"
+                },
+                new TestModel
+                {
+                    Id = Guid.NewGuid(),
+                    Age = 22,
+                    Name = "banana"
+                }
+            };
+            _mongoDbService.AddRange(datas);
+        }
+
+        [Fact]
+        public void Delete()
+        {
+            var query = _mongoDbService.GetQueryable<TestModel>();
+            var data = query.FirstOrDefault();
+            _mongoDbService.Delete(data);
+            _mongoDbService.Delete<TestModel>(p => p.Name == "banana");
+        }
+
+        [Fact]
+        public void Update()
+        {
+            var query = _mongoDbService.GetQueryable<TestModel>();
+            var data = query.First();
+            data.Name = Guid.NewGuid().ToString();
+            _mongoDbService.Update(data);
         }
     }
 }
