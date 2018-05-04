@@ -4,12 +4,13 @@ using System.Linq;
 using Xunit;
 using Zaabee.Mongo;
 using Zaabee.Mongo.Common;
+using Zaabee.Mongo.Core;
 
 namespace UnitTest
 {
     public class UnitTest
     {
-        private static MongoDbRepository _mongoDbService;
+        private static IMongoDbRepository _mongoDbService;
 
         public UnitTest()
         {
