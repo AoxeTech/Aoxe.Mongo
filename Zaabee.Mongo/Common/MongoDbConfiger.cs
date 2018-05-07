@@ -19,6 +19,10 @@ namespace Zaabee.Mongo.Common
             GuidType = guidType;
         }
 
+        public MongoDbConfiger()
+        {
+        }
+
         private List<string> _hosts;
 
         public List<string> Hosts
@@ -27,19 +31,19 @@ namespace Zaabee.Mongo.Common
             private set => _hosts = value;
         }
 
-        public string Database { get; }
+        public string Database { get; set; }
 
-        public string UserName { get; }
+        public string UserName { get; set; }
 
-        public string Password { get; }
-        
-        public int MaxConnectionPoolSize { get;}
-        
-        public int MinConnectionPoolSize { get;}
+        public string Password { get; set; }
 
-        public MongoDbReadPreference? ReadPreference { get; }
-        
-        public GuidType GuidType { get; }
+        public int MaxConnectionPoolSize { get; set; }
+
+        public int MinConnectionPoolSize { get; set; }
+
+        public MongoDbReadPreference? ReadPreference { get; set; }
+
+        public GuidType GuidType { get; set; }
 
         public string GetConnectionString()
         {
