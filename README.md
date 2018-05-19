@@ -89,4 +89,4 @@ public class UnitTest
 
 ```
 
->Notice:The Zaabee.Mongo will priority select the property named "Id" as the id.And then find $"{type.Name}Id" like UserId or ProductId witch the class named User or Product.If still not found,the property with KeyAttribute witch in System.ComponentModel.DataAnnotations will be the last selection.
+>Notice:The Zaabee.Mongo will priority select the property named "Id" as the Primary Key.And then find $"{type.Name}Id" like UserId or ProductId witch the class named User or Product.If still not found,the property with KeyAttribute witch in System.ComponentModel.DataAnnotations will be the last selection.
