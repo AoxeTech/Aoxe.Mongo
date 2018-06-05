@@ -9,8 +9,8 @@ using System.Reflection;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
+using Zaabee.Mongo.Abstractions;
 using Zaabee.Mongo.Common;
-using Zaabee.Mongo.Core;
 
 namespace Zaabee.Mongo
 {

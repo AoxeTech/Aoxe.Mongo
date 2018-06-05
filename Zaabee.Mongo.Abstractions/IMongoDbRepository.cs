@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Zaabee.Mongo.Core
+namespace Zaabee.Mongo.Abstractions
 {
     public interface IMongoDbRepository
     {

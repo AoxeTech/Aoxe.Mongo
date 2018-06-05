@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using Zaabee.Mongo;
+using Zaabee.Mongo.Abstractions;
 using Zaabee.Mongo.Common;
-using Zaabee.Mongo.Core;
 
 namespace UnitTest
 {

@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zaabee.Mongo", "Zaabee.Mong
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{60E93DF2-4CE8-45D2-B481-A9FE3A9FBFAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zaabee.Mongo.Core", "Zaabee.Mongo.Core\Zaabee.Mongo.Core.csproj", "{72252071-4275-4B47-BEBC-FB7C2ABC511E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zaabee.Mongo.Abstractions", "Zaabee.Mongo.Abstractions\Zaabee.Mongo.Abstractions.csproj", "{5954F304-0B7E-4030-93F0-291F2136B08C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,9 +20,9 @@ Global
 		{60E93DF2-4CE8-45D2-B481-A9FE3A9FBFAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60E93DF2-4CE8-45D2-B481-A9FE3A9FBFAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60E93DF2-4CE8-45D2-B481-A9FE3A9FBFAB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{72252071-4275-4B47-BEBC-FB7C2ABC511E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{72252071-4275-4B47-BEBC-FB7C2ABC511E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{72252071-4275-4B47-BEBC-FB7C2ABC511E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{72252071-4275-4B47-BEBC-FB7C2ABC511E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5954F304-0B7E-4030-93F0-291F2136B08C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5954F304-0B7E-4030-93F0-291F2136B08C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5954F304-0B7E-4030-93F0-291F2136B08C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5954F304-0B7E-4030-93F0-291F2136B08C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

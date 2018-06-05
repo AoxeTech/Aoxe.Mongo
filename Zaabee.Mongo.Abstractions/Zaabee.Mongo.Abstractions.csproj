@@ -6,7 +6,7 @@
     <Authors>Mutuduxf</Authors>
     <Company>Mutuduxf</Company>
     <PackageTags>Zaabee Zaaby Mongo Repository</PackageTags>
-    <Description>Interface/BaseClass/Attribute/Exception for Zaabee.Mongo.</Description>
+    <Description>Abstracte libraries for Zaabee.Mongo.</Description>
     <PackageProjectUrl>https://github.com/Mutuduxf/Zaabee.Mongo</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Mutuduxf/Zaabee.Mongo/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
