@@ -10,11 +10,11 @@ namespace UnitTest
 {
     public class UnitTest
     {
-        private static IMongoDbRepository _mongoDbService;
+        private static IZaabeeMongoClient _client;
 
         public UnitTest()
         {
-            _mongoDbService = new MongoDbRepository(new MongoDbConfiger(new List<string> {"192.168.78.152:27017"},
+            _client = new ZaabeeMongoClient(new MongoDbConfiger(new List<string> {"192.168.78.152:27017"},
                 "TestDB", "TestUser", "123"));
         }
 
@@ -27,7 +27,7 @@ namespace UnitTest
                 Age = 20,
                 Name = "Apple"
             };
-            _mongoDbService.Add(model);
+            _client.Add(model);
         }
 
         [Fact]
@@ -54,25 +54,25 @@ namespace UnitTest
                     Name = "banana"
                 }
             };
-            _mongoDbService.AddRange(datas);
+            _client.AddRange(datas);
         }
 
         [Fact]
         public void Delete()
         {
-            var query = _mongoDbService.GetQueryable<TestModel>();
+            var query = _client.GetQueryable<TestModel>();
             var data = query.FirstOrDefault();
-            _mongoDbService.Delete(data);
-            _mongoDbService.Delete<TestModel>(p => p.Name == "banana");
+            _client.Delete(data);
+            _client.Delete<TestModel>(p => p.Name == "banana");
         }
 
         [Fact]
         public void Update()
         {
-            var query = _mongoDbService.GetQueryable<TestModel>();
+            var query = _client.GetQueryable<TestModel>();
             var data = query.First();
             data.Name = Guid.NewGuid().ToString();
-            _mongoDbService.Update(data);
+            _client.Update(data);
         }
     }
 }

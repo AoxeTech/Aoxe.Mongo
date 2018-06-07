@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Zaabee.Mongo.Abstractions
 {
-    public interface IMongoDbRepository
+    public interface IZaabeeMongoClient
     {
         IQueryable<T> GetQueryable<T>() where T : class, new();
         void Add<T>(T entity) where T : class, new();

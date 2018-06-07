@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>1.2.0</PackageVersion>
+    <PackageVersion>1.2.2</PackageVersion>
     <Authors>Mutuduxf</Authors>
     <Company>Mutuduxf</Company>
     <PackageTags>Zaabee Zaaby Mongo Repository</PackageTags>
@@ -12,8 +12,8 @@
     <PackageReleaseNotes>Complete the QuickStart and Example.</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
-    <PackageReference Include="Zaabee.Mongo.Abstractions" Version="1.0.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.6.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+    <PackageReference Include="Zaabee.Mongo.Abstractions" Version="1.0.3" />
   </ItemGroup>
 </Project>

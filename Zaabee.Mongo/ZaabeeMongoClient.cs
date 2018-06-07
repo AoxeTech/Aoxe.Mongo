@@ -14,7 +14,7 @@ using Zaabee.Mongo.Common;
 
 namespace Zaabee.Mongo
 {
-    public class MongoDbRepository : IMongoDbRepository
+    public class ZaabeeMongoClient : IZaabeeMongoClient
     {
         private MongoCollectionSettings _collectionSettings;
 
@@ -39,7 +39,7 @@ namespace Zaabee.Mongo
                 ReadConcern = ReadConcern.Default
             });
 
-        public MongoDbRepository(MongoDbConfiger configer)
+        public ZaabeeMongoClient(MongoDbConfiger configer)
         {
             BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
             ConventionRegistry.Register("IgnoreExtraElements",
