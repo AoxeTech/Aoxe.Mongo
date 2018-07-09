@@ -2,12 +2,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>1.0.3</PackageVersion>
+    <PackageVersion>1.0.6</PackageVersion>
     <Authors>Mutuduxf</Authors>
     <Company>Mutuduxf</Company>
     <PackageTags>Zaabee Zaaby Mongo Repository</PackageTags>
-    <Description>Abstracte libraries for Zaabee.Mongo.</Description>
+    <Description>Abstract libraries for Zaabee.Mongo.</Description>
     <PackageProjectUrl>https://github.com/Mutuduxf/Zaabee.Mongo</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Mutuduxf/Zaabee.Mongo/master/LICENSE</PackageLicenseUrl>
+    <PackageReleaseNotes>Add async methods.</PackageReleaseNotes>
   </PropertyGroup>
 </Project>

@@ -2,18 +2,18 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>1.2.2</PackageVersion>
+    <PackageVersion>1.2.5</PackageVersion>
     <Authors>Mutuduxf</Authors>
     <Company>Mutuduxf</Company>
     <PackageTags>Zaabee Zaaby Mongo Repository</PackageTags>
     <Description>Mongo repository.</Description>
     <PackageProjectUrl>https://github.com/Mutuduxf/Zaabee.Mongo</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Mutuduxf/Zaabee.Mongo/master/LICENSE</PackageLicenseUrl>
-    <PackageReleaseNotes>Complete the QuickStart and Example.</PackageReleaseNotes>
+    <PackageReleaseNotes>Add async methods.</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.6.1" />
+    <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
-    <PackageReference Include="Zaabee.Mongo.Abstractions" Version="1.0.3" />
+    <PackageReference Include="Zaabee.Mongo.Abstractions" Version="1.0.6" />
   </ItemGroup>
 </Project>
