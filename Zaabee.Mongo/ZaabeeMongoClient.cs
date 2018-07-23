@@ -21,8 +21,6 @@ namespace Zaabee.Mongo
 
         private IMongoDatabase MongoDatabase { get; }
 
-        private IMongoClient MongoClient { get; }
-
         private GuidType GuidType { get; }
 
         private readonly ConcurrentDictionary<Type, string> _tableNames = new ConcurrentDictionary<Type, string>();
@@ -69,8 +67,7 @@ namespace Zaabee.Mongo
                 MinConnectionPoolSize = configer.MinConnectionPoolSize,
                 ConnectionMode = ConnectionMode.Automatic
             };
-            MongoClient = new MongoClient(settings);
-            MongoDatabase = MongoClient.GetDatabase(configer.Database);
+            MongoDatabase = new MongoClient(settings).GetDatabase(configer.Database);
         }
 
         public IQueryable<T> GetQueryable<T>() where T : class, new()
