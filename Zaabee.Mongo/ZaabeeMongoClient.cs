@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using Zaabee.Mongo.Abstractions;
 using Zaabee.Mongo.Common;
 
@@ -71,6 +72,12 @@ namespace Zaabee.Mongo
         }
 
         public IQueryable<T> GetQueryable<T>() where T : class, new()
+        {
+            var tableName = GetTableName(typeof(T));
+            return MongoDatabase.GetCollection<T>(tableName, CollectionSettings).AsQueryable();
+        }
+
+        public IMongoQueryable<T> GetMongoQueryable<T>() where T : class, new()
         {
             var tableName = GetTableName(typeof(T));
             return MongoDatabase.GetCollection<T>(tableName, CollectionSettings).AsQueryable();
