@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using Zaabee.Mongo.Abstractions;
 using Zaabee.Mongo.Common;
 
@@ -77,22 +76,16 @@ namespace Zaabee.Mongo
             return MongoDatabase.GetCollection<T>(tableName, CollectionSettings).AsQueryable();
         }
 
-        public IMongoQueryable<T> GetMongoQueryable<T>() where T : class, new()
-        {
-            var tableName = GetTableName(typeof(T));
-            return MongoDatabase.GetCollection<T>(tableName, CollectionSettings).AsQueryable();
-        }
-
         public void Add<T>(T entity) where T : class, new()
         {
             var tableName = GetTableName(typeof(T));
             MongoDatabase.GetCollection<T>(tableName, CollectionSettings).InsertOne(entity);
         }
 
-        public async void AddAsync<T>(T entity) where T : class, new()
+        public Task AddAsync<T>(T entity) where T : class, new()
         {
             var tableName = GetTableName(typeof(T));
-            await MongoDatabase.GetCollection<T>(tableName, CollectionSettings).InsertOneAsync(entity);
+            return MongoDatabase.GetCollection<T>(tableName, CollectionSettings).InsertOneAsync(entity);
         }
 
         public void AddRange<T>(IEnumerable<T> entities) where T : class, new()
@@ -101,10 +94,10 @@ namespace Zaabee.Mongo
             MongoDatabase.GetCollection<T>(tableName, CollectionSettings).InsertMany(entities);
         }
 
-        public async void AddRangeAsync<T>(IEnumerable<T> entities) where T : class, new()
+        public Task AddRangeAsync<T>(IEnumerable<T> entities) where T : class, new()
         {
             var tableName = GetTableName(typeof(T));
-            await MongoDatabase.GetCollection<T>(tableName, CollectionSettings).InsertManyAsync(entities);
+            return MongoDatabase.GetCollection<T>(tableName, CollectionSettings).InsertManyAsync(entities);
         }
 
         public long Delete<T>(T entity) where T : class, new()
@@ -197,7 +190,7 @@ namespace Zaabee.Mongo
 
             string json;
             if (isDigit)
-                json = "{\"_id\":" + value + "}";
+                json = $"{{\"_id\":{value}}}";
             else if (propertyInfo.PropertyType == Types.Guid)
             {
                 switch (GuidType)
@@ -216,7 +209,7 @@ namespace Zaabee.Mongo
                 }
             }
             else
-                json = "{\"_id\":\"" + value + "\"}";
+                json = $"{{\"_id\":\"{value}\"}}";
 
             return new JsonFilterDefinition<T>(json);
         }
