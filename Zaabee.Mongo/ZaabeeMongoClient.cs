@@ -70,6 +70,14 @@ namespace Zaabee.Mongo
             MongoDatabase = new MongoClient(settings).GetDatabase(configer.Database);
         }
 
+        public ZaabeeMongoClient(string connectionString, string dataBase)
+        {
+            BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
+            ConventionRegistry.Register("IgnoreExtraElements",
+                new ConventionPack {new IgnoreExtraElementsConvention(true)}, type => true);
+            MongoDatabase = new MongoClient(connectionString).GetDatabase(dataBase);
+        }
+
         public IQueryable<T> GetQueryable<T>() where T : class, new()
         {
             var tableName = GetTableName(typeof(T));
