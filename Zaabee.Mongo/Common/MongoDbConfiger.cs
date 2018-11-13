@@ -5,12 +5,13 @@ namespace Zaabee.Mongo.Common
 {
     public class MongoDbConfiger
     {
-        public MongoDbConfiger(List<string> hosts, string database, string userName, string password,
+        public MongoDbConfiger(List<string> hosts, string database,string authSource, string userName, string password,
             MongoDbReadPreference? readPreference = null, int maxConnectionPoolSize = 100,
             int minConnectionPoolSize = 0, GuidType guidType = GuidType.CSharpLegacy)
         {
             Hosts = hosts;
             Database = database;
+            AuthSource = authSource;
             UserName = userName;
             Password = password;
             ReadPreference = readPreference;
@@ -32,6 +33,14 @@ namespace Zaabee.Mongo.Common
         }
 
         public string Database { get; set; }
+
+        private string _authSource;
+
+        public string AuthSource
+        {
+            get => string.IsNullOrWhiteSpace(_authSource) ? Database : _authSource;
+            set => _authSource = value;
+        }
 
         public string UserName { get; set; }
 

@@ -14,8 +14,9 @@ namespace UnitTest
 
         public UnitTest()
         {
-            _client = new ZaabeeMongoClient(new MongoDbConfiger(new List<string> {"192.168.78.152:27017"},
-                "TestDB", "TestUser", "123"));
+//            _client = new ZaabeeMongoClient(new MongoDbConfiger(new List<string> {"192.168.78.152:27017"},
+//                "TestDB", "", "TestUser", "123"));
+            _client = new ZaabeeMongoClient("mongodb://TestUser:123@192.168.78.152:27017/TestDB","TestDB");
         }
 
         [Fact]
