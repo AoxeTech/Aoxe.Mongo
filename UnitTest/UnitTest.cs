@@ -25,8 +25,10 @@ namespace UnitTest
             var model = new TestModel
             {
                 Id = Guid.NewGuid(),
-                Age = 20,
-                Name = "Apple"
+                Age = 77,
+                Name = "Apple",
+                CreateTime = DateTime.Now,
+                CreateUtcTime = DateTime.UtcNow
             };
             _client.Add(model);
         }
@@ -38,7 +40,9 @@ namespace UnitTest
             {
                 Id = Guid.NewGuid(),
                 Age = 20,
-                Name = "Apple"
+                Name = "Apple",
+                CreateTime = DateTime.Now,
+                CreateUtcTime = DateTime.UtcNow
             };
             await _client.AddAsync(model);
         }
@@ -52,19 +56,25 @@ namespace UnitTest
                 {
                     Id = Guid.NewGuid(),
                     Age = 20,
-                    Name = "Apple"
+                    Name = "Apple",
+                    CreateTime = DateTime.Now,
+                    CreateUtcTime = DateTime.UtcNow
                 },
                 new TestModel
                 {
                     Id = Guid.NewGuid(),
                     Age = 21,
-                    Name = "pear"
+                    Name = "pear",
+                    CreateTime = DateTime.Now,
+                    CreateUtcTime = DateTime.UtcNow
                 },
                 new TestModel
                 {
                     Id = Guid.NewGuid(),
                     Age = 22,
-                    Name = "banana"
+                    Name = "banana",
+                    CreateTime = DateTime.Now,
+                    CreateUtcTime = DateTime.UtcNow
                 }
             };
             _client.AddRange(datas);
@@ -79,19 +89,25 @@ namespace UnitTest
                 {
                     Id = Guid.NewGuid(),
                     Age = 20,
-                    Name = "Apple"
+                    Name = "Apple",
+                    CreateTime = DateTime.Now,
+                    CreateUtcTime = DateTime.UtcNow
                 },
                 new TestModel
                 {
                     Id = Guid.NewGuid(),
                     Age = 21,
-                    Name = "pear"
+                    Name = "pear",
+                    CreateTime = DateTime.Now,
+                    CreateUtcTime = DateTime.UtcNow
                 },
                 new TestModel
                 {
                     Id = Guid.NewGuid(),
                     Age = 22,
-                    Name = "banana"
+                    Name = "banana",
+                    CreateTime = DateTime.Now,
+                    CreateUtcTime = DateTime.UtcNow
                 }
             };
             await _client.AddRangeAsync(datas);
