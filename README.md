@@ -18,130 +18,50 @@ public class TestModel
     public int Age { get; set; }
 }
 
-
 public class UnitTest
 {
-    private static IZaabeeMongoClient _client;
+    private readonly IZaabeeMongoClient _client;
+    private readonly TestModel _model;
+    private readonly List<TestModel> _models;
 
     public UnitTest()
     {
-//            _client = new ZaabeeMongoClient(new MongoDbConfiger(new List<string> {"192.168.78.152:27017"},
-//                "TestDB", "", "TestUser", "123"));
         _client = new ZaabeeMongoClient("mongodb://TestUser:123@192.168.78.152:27017/TestDB","TestDB");
-    }
-
-    [Fact]
-    public void Add()
-    {
-        var model = new TestModel
+        _model = new TestModel
         {
             Id = Guid.NewGuid(),
             Age = 20,
             Name = "Apple"
         };
-        _client.Add(model);
-    }
-
-    [Fact]
-    public async void AddAsync()
-    {
-        var model = new TestModel
+        _models = Enumerable.Range(0, quantity).Select(p=>new TestModel
         {
             Id = Guid.NewGuid(),
             Age = 20,
-            Name = "Apple"
-        };
-        await _client.AddAsync(model);
+            Name = "Pear"
+        }).ToList();
     }
 
     [Fact]
-    public void AddRange()
+    public void Test()
     {
-        var datas = new List<TestModel>
-        {
-            new TestModel
-            {
-                Id = Guid.NewGuid(),
-                Age = 20,
-                Name = "Apple"
-            },
-            new TestModel
-            {
-                Id = Guid.NewGuid(),
-                Age = 21,
-                Name = "pear"
-            },
-            new TestModel
-            {
-                Id = Guid.NewGuid(),
-                Age = 22,
-                Name = "banana"
-            }
-        };
-        _client.AddRange(datas);
-    }
+        var names = _models.Select(model => model.Name).ToList();
 
-    [Fact]
-    public async void AddRangeAsync()
-    {
-        var datas = new List<TestModel>
-        {
-            new TestModel
-            {
-                Id = Guid.NewGuid(),
-                Age = 20,
-                Name = "Apple"
-            },
-            new TestModel
-            {
-                Id = Guid.NewGuid(),
-                Age = 21,
-                Name = "pear"
-            },
-            new TestModel
-            {
-                Id = Guid.NewGuid(),
-                Age = 22,
-                Name = "banana"
-            }
-        };
-        await _client.AddRangeAsync(datas);
-    }
+        _client.Add(_model);
+        _client.AddRange(_models);
 
-    [Fact]
-    public void Delete()
-    {
-        var query = _client.GetQueryable<TestModel>();
-        var data = query.FirstOrDefault();
-        _client.Delete(data);
-        _client.Delete<TestModel>(p => p.Name == "banana");
-    }
+        var results = _client.GetQueryable<TestModel>().Where(model => model.Age == _model.Age).ToList();
 
-    [Fact]
-    public async void DeleteAsync()
-    {
-        var query = _client.GetQueryable<TestModel>();
-        var data = query.FirstOrDefault();
-        await _client.DeleteAsync(data);
-        await _client.DeleteAsync<TestModel>(p => p.Name == "banana");
-    }
+        _model.Name = Guid.NewId().ToString();
+        _client.Update(_model);
+        _client.Update(() => new TestModel
+                {
+                    Age = 22,
+                    Name = "banana"
+                },
+                p => strs.Contains(p.String));
 
-    [Fact]
-    public void Update()
-    {
-        var query = _client.GetQueryable<TestModel>();
-        var data = query.First();
-        data.Name = Guid.NewGuid().ToString();
-        _client.Update(data);
-    }
-
-    [Fact]
-    public async void UpdateAsync()
-    {
-        var query = _client.GetQueryable<TestModel>();
-        var data = query.First();
-        data.Name = Guid.NewGuid().ToString();
-        await _client.UpdateAsync(data);
+        _client.Delete(_model);
+        _client.Delete<TestModel>(model => names.Contains(model.Name));
     }
 }
 ```

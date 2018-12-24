@@ -11,7 +11,7 @@ namespace UnitTest
 {
     public class UnitTest
     {
-        private static IZaabeeMongoClient _client;
+        private readonly IZaabeeMongoClient _client;
 
         public UnitTest()
         {
