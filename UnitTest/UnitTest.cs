@@ -84,8 +84,8 @@ namespace UnitTest
         {
             var models = GetModels(5);
             _client.AddRange(models);
-            var strs = models.Select(p => p.String);
-            Assert.Equal(5L, _client.Delete<TestModel>(p => strs.Contains(p.String)));
+            var strings = models.Select(p => p.String);
+            Assert.Equal(5L, _client.Delete<TestModel>(p => strings.Contains(p.String)));
         }
 
         [Fact]
@@ -93,8 +93,8 @@ namespace UnitTest
         {
             var models = GetModels(5);
             await _client.AddRangeAsync(models);
-            var strs = models.Select(p => p.String);
-            Assert.Equal(5L, await _client.DeleteAsync<TestModel>(p => strs.Contains(p.String)));
+            var strings = models.Select(p => p.String);
+            Assert.Equal(5L, await _client.DeleteAsync<TestModel>(p => strings.Contains(p.String)));
         }
 
         [Fact]
@@ -128,7 +128,7 @@ namespace UnitTest
         {
             var models = GetModels(5);
             _client.AddRange(models);
-            var strs = models.Select(p => p.String);
+            var strings = models.Select(p => p.String);
             var ids = models.Select(p => p.Id);
             var now = DateTime.Now;
             var utcNow = DateTime.UtcNow;
@@ -145,7 +145,7 @@ namespace UnitTest
                     String = name,
                     Kids = kids
                 },
-                p => strs.Contains(p.String));
+                p => strings.Contains(p.String));
             models.ForEach(model =>
             {
                 model.Now = now;
@@ -165,7 +165,7 @@ namespace UnitTest
         {
             var models = GetModels(5);
             _client.AddRange(models);
-            var strs = models.Select(p => p.String);
+            var strings = models.Select(p => p.String);
             var ids = models.Select(p => p.Id);
             var now = DateTime.Now;
             var utcNow = DateTime.UtcNow;
@@ -182,7 +182,7 @@ namespace UnitTest
                     String = name,
                     Kids = kids
                 },
-                p => strs.Contains(p.String));
+                p => strings.Contains(p.String));
             models.ForEach(model =>
             {
                 model.Now = now;
