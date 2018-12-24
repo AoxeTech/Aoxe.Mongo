@@ -61,7 +61,7 @@ namespace Zaabee.Mongo
                 else if (node.Type == Types.Float)
                     value = -(float) value;
                 else
-                    throw new Exception(_fieldName + "不支持该类型操作");
+                    throw new Exception($"Not support type {node.Type} of field named \"{_fieldName}\"");
             }
 
             var updateDefinition = Builders<T>.Update.Inc(_fieldName, value);
