@@ -17,8 +17,6 @@ namespace Zaabee.Mongo
 {
     public class ZaabeeMongoClient : IZaabeeMongoClient
     {
-        private MongoCollectionSettings _collectionSettings;
-
         private IMongoDatabase MongoDatabase { get; }
 
         private GuidType GuidType { get; }
@@ -28,15 +26,11 @@ namespace Zaabee.Mongo
         private readonly ConcurrentDictionary<Type, PropertyInfo> _idProperties =
             new ConcurrentDictionary<Type, PropertyInfo>();
 
-        private MongoCollectionSettings CollectionSettings
-            => _collectionSettings ?? (_collectionSettings = new MongoCollectionSettings
-            {
-                AssignIdOnInsert = true,
-                GuidRepresentation = GuidRepresentation.CSharpLegacy,
-                ReadPreference = ReadPreference.Primary,
-                WriteConcern = WriteConcern.WMajority,
-                ReadConcern = ReadConcern.Default
-            });
+        private readonly MongoCollectionSettings _collectionSettings = new MongoCollectionSettings
+        {
+            AssignIdOnInsert = true,
+            GuidRepresentation = GuidRepresentation.CSharpLegacy,
+        };
 
         public ZaabeeMongoClient(MongoDbConfiger configer)
         {
@@ -81,40 +75,40 @@ namespace Zaabee.Mongo
         public IQueryable<T> GetQueryable<T>() where T : class, new()
         {
             var tableName = GetTableName(typeof(T));
-            return MongoDatabase.GetCollection<T>(tableName, CollectionSettings).AsQueryable();
+            return MongoDatabase.GetCollection<T>(tableName, _collectionSettings).AsQueryable();
         }
 
         public void Add<T>(T entity) where T : class, new()
         {
             var tableName = GetTableName(typeof(T));
-            MongoDatabase.GetCollection<T>(tableName, CollectionSettings).InsertOne(entity);
+            MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertOne(entity);
         }
 
         public Task AddAsync<T>(T entity) where T : class, new()
         {
             var tableName = GetTableName(typeof(T));
-            return MongoDatabase.GetCollection<T>(tableName, CollectionSettings).InsertOneAsync(entity);
+            return MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertOneAsync(entity);
         }
 
         public void AddRange<T>(IEnumerable<T> entities) where T : class, new()
         {
             var tableName = GetTableName(typeof(T));
-            MongoDatabase.GetCollection<T>(tableName, CollectionSettings).InsertMany(entities);
+            MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertMany(entities);
         }
 
         public Task AddRangeAsync<T>(IEnumerable<T> entities) where T : class, new()
         {
             var tableName = GetTableName(typeof(T));
-            return MongoDatabase.GetCollection<T>(tableName, CollectionSettings).InsertManyAsync(entities);
+            return MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertManyAsync(entities);
         }
 
         public long Delete<T>(T entity) where T : class, new()
         {
-            if (null == entity)
-                return 0;
+            if (entity == null)
+                return 0L;
 
             var tableName = GetTableName(typeof(T));
-            var collection = MongoDatabase.GetCollection<T>(tableName, CollectionSettings);
+            var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
 
             var filter = GetJsonFilterDefinition(entity);
 
@@ -125,11 +119,11 @@ namespace Zaabee.Mongo
 
         public async Task<long> DeleteAsync<T>(T entity) where T : class, new()
         {
-            if (null == entity)
-                return 0;
+            if (entity == null)
+                return 0L;
 
             var tableName = GetTableName(typeof(T));
-            var collection = MongoDatabase.GetCollection<T>(tableName, CollectionSettings);
+            var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
 
             var filter = GetJsonFilterDefinition(entity);
 
@@ -141,25 +135,25 @@ namespace Zaabee.Mongo
         public long Delete<T>(Expression<Func<T, bool>> where) where T : class, new()
         {
             var tableName = GetTableName(typeof(T));
-            var collection = MongoDatabase.GetCollection<T>(tableName, CollectionSettings);
+            var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
             return collection.DeleteMany(where).DeletedCount;
         }
 
         public async Task<long> DeleteAsync<T>(Expression<Func<T, bool>> where) where T : class, new()
         {
             var tableName = GetTableName(typeof(T));
-            var collection = MongoDatabase.GetCollection<T>(tableName, CollectionSettings);
+            var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
             var result = await collection.DeleteManyAsync(where);
             return result.DeletedCount;
         }
 
         public long Update<T>(T entity) where T : class, new()
         {
-            if (null == entity)
-                return 0;
+            if (entity == null)
+                return 0L;
 
             var tableName = GetTableName(typeof(T));
-            var collection = MongoDatabase.GetCollection<T>(tableName, CollectionSettings);
+            var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
 
             var filter = GetJsonFilterDefinition(entity);
 
@@ -171,17 +165,42 @@ namespace Zaabee.Mongo
 
         public async Task<long> UpdateAsync<T>(T entity) where T : class, new()
         {
-            if (null == entity)
-                return await Task.FromResult(0);
+            if (entity == null)
+                return 0L;
 
             var tableName = GetTableName(typeof(T));
-            var collection = MongoDatabase.GetCollection<T>(tableName, CollectionSettings);
+            var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
 
             var filter = GetJsonFilterDefinition(entity);
 
             var result = await collection.UpdateOneAsync(filter,
                 new BsonDocumentUpdateDefinition<T>(new BsonDocument {{"$set", entity.ToBsonDocument()}}));
 
+            return result.ModifiedCount;
+        }
+
+        public long Update<T>(Expression<Func<T>> update, Expression<Func<T, bool>> @where) where T : class, new()
+        {
+            if (@where == null) return 0L;
+
+            var tableName = GetTableName(typeof(T));
+            var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
+            var updateDefinitionList = new UpdateExpressionVisitor<T>().GetUpdateDefinition(update);
+            var updateDefinition = new UpdateDefinitionBuilder<T>().Combine(updateDefinitionList);
+            var result = collection.UpdateMany(@where, updateDefinition);
+            return result.ModifiedCount;
+        }
+
+        public async Task<long> UpdateAsync<T>(Expression<Func<T>> update, Expression<Func<T, bool>> @where)
+            where T : class, new()
+        {
+            if (@where == null) return 0L;
+
+            var tableName = GetTableName(typeof(T));
+            var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
+            var updateDefinitionList = new UpdateExpressionVisitor<T>().GetUpdateDefinition(update);
+            var updateDefinition = new UpdateDefinitionBuilder<T>().Combine(updateDefinitionList);
+            var result = await collection.UpdateManyAsync(@where, updateDefinition);
             return result.ModifiedCount;
         }
 

@@ -2,8 +2,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>1.0.7</PackageVersion>
-    <Version>1.0.7</Version>
+    <PackageVersion>1.2.0</PackageVersion>
+    <Version>1.2.0</Version>
     <Authors>Mutuduxf</Authors>
     <Company>Mutuduxf</Company>
     <PackageTags>Zaabee Zaaby Mongo Repository</PackageTags>
