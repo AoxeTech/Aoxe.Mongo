@@ -72,37 +72,37 @@ namespace Zaabee.Mongo
             MongoDatabase = new MongoClient(connectionString).GetDatabase(dataBase);
         }
 
-        public IQueryable<T> GetQueryable<T>() where T : class, new()
+        public IQueryable<T> GetQueryable<T>() where T : class
         {
             var tableName = GetTableName(typeof(T));
             return MongoDatabase.GetCollection<T>(tableName, _collectionSettings).AsQueryable();
         }
 
-        public void Add<T>(T entity) where T : class, new()
+        public void Add<T>(T entity) where T : class
         {
             var tableName = GetTableName(typeof(T));
             MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertOne(entity);
         }
 
-        public Task AddAsync<T>(T entity) where T : class, new()
+        public Task AddAsync<T>(T entity) where T : class
         {
             var tableName = GetTableName(typeof(T));
             return MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertOneAsync(entity);
         }
 
-        public void AddRange<T>(IEnumerable<T> entities) where T : class, new()
+        public void AddRange<T>(IEnumerable<T> entities) where T : class
         {
             var tableName = GetTableName(typeof(T));
             MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertMany(entities);
         }
 
-        public Task AddRangeAsync<T>(IEnumerable<T> entities) where T : class, new()
+        public Task AddRangeAsync<T>(IEnumerable<T> entities) where T : class
         {
             var tableName = GetTableName(typeof(T));
             return MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertManyAsync(entities);
         }
 
-        public long Delete<T>(T entity) where T : class, new()
+        public long Delete<T>(T entity) where T : class
         {
             if (entity == null)
                 return 0L;
@@ -117,7 +117,7 @@ namespace Zaabee.Mongo
             return result.DeletedCount;
         }
 
-        public async Task<long> DeleteAsync<T>(T entity) where T : class, new()
+        public async Task<long> DeleteAsync<T>(T entity) where T : class
         {
             if (entity == null)
                 return 0L;
@@ -132,14 +132,14 @@ namespace Zaabee.Mongo
             return result.DeletedCount;
         }
 
-        public long Delete<T>(Expression<Func<T, bool>> where) where T : class, new()
+        public long Delete<T>(Expression<Func<T, bool>> where) where T : class
         {
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
             return collection.DeleteMany(where).DeletedCount;
         }
 
-        public async Task<long> DeleteAsync<T>(Expression<Func<T, bool>> where) where T : class, new()
+        public async Task<long> DeleteAsync<T>(Expression<Func<T, bool>> where) where T : class
         {
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
@@ -147,7 +147,7 @@ namespace Zaabee.Mongo
             return result.DeletedCount;
         }
 
-        public long Update<T>(T entity) where T : class, new()
+        public long Update<T>(T entity) where T : class
         {
             if (entity == null)
                 return 0L;
@@ -163,7 +163,7 @@ namespace Zaabee.Mongo
             return result.ModifiedCount;
         }
 
-        public async Task<long> UpdateAsync<T>(T entity) where T : class, new()
+        public async Task<long> UpdateAsync<T>(T entity) where T : class
         {
             if (entity == null)
                 return 0L;
@@ -179,7 +179,7 @@ namespace Zaabee.Mongo
             return result.ModifiedCount;
         }
 
-        public long Update<T>(Expression<Func<T>> update, Expression<Func<T, bool>> @where) where T : class, new()
+        public long Update<T>(Expression<Func<T>> update, Expression<Func<T, bool>> @where) where T : class
         {
             if (@where == null) return 0L;
 
@@ -192,7 +192,7 @@ namespace Zaabee.Mongo
         }
 
         public async Task<long> UpdateAsync<T>(Expression<Func<T>> update, Expression<Func<T, bool>> @where)
-            where T : class, new()
+            where T : class
         {
             if (@where == null) return 0L;
 
