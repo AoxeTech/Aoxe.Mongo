@@ -14,13 +14,13 @@ namespace Zaabee.Mongo
         private readonly List<UpdateDefinition<T>> _updateDefinitionList = new List<UpdateDefinition<T>>();
 
         private string _fieldName;
-        
+
         public List<UpdateDefinition<T>> GetUpdateDefinition(Expression<Func<T>> expression)
         {
             Visit(expression);
             return _updateDefinitionList;
         }
-        
+
         protected override Expression VisitMemberInit(MemberInitExpression node)
         {
             foreach (var item in node.Bindings)
@@ -36,30 +36,30 @@ namespace Zaabee.Mongo
                     _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, value));
                 }
                 else
-                {
                     Visit(memberAssignment.Expression);
-                }
             }
 
             return node;
         }
-        
+
         protected override Expression VisitBinary(BinaryExpression node)
         {
             var value = ((ConstantExpression) node.Right).Value;
 
             if (node.NodeType == ExpressionType.Decrement)
             {
-                if (node.Type == Types.Int32)
+                if (node.Type == Types.Int16)
+                    value = -(short) value;
+                else if (node.Type == Types.Int32)
                     value = -(int) value;
                 else if (node.Type == Types.Int64)
                     value = -(long) value;
+                else if (node.Type == Types.Float)
+                    value = -(float) value;
                 else if (node.Type == Types.Double)
                     value = -(double) value;
                 else if (node.Type == Types.Decimal)
                     value = -(decimal) value;
-                else if (node.Type == Types.Float)
-                    value = -(float) value;
                 else
                     throw new Exception($"Not support type {node.Type} of field named \"{_fieldName}\"");
             }
@@ -70,14 +70,14 @@ namespace Zaabee.Mongo
 
             return node;
         }
-        
+
         protected override Expression VisitNewArray(NewArrayExpression node)
         {
             SetList(node);
 
             return node;
         }
-        
+
         protected override Expression VisitListInit(ListInitExpression node)
         {
             SetList(node);
@@ -115,28 +115,27 @@ namespace Zaabee.Mongo
                     case "Int32":
                         _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, (List<int>) value));
                         break;
+                    case "Int64":
+                        _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, (List<long>) value));
+                        break;
                     default:
                         _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, (IList) value));
                         break;
                 }
             }
         }
-        
+
         protected override Expression VisitConstant(ConstantExpression node)
         {
-            var value = node.Type.IsEnum ? (int) node.Value : node.Value;
-
-            _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, value));
+            _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, node.Value));
 
             return node;
         }
-        
+
         protected override Expression VisitMember(MemberExpression node)
         {
             if (node.Type.GetInterfaces().Any(a => a == typeof(IList)))
-            {
                 SetList(node);
-            }
             else
             {
                 var lambda = Expression.Lambda<Func<object>>(Expression.Convert(node, Types.Object));

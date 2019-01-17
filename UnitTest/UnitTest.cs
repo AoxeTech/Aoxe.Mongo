@@ -143,7 +143,8 @@ namespace UnitTest
                     Now = now,
                     UtcNow = utcNow,
                     String = name,
-                    Kids = kids
+                    Kids = kids,
+                    TestEnum = TestEnum.Banana
                 },
                 p => strings.Contains(p.String));
             models.ForEach(model =>
@@ -152,6 +153,7 @@ namespace UnitTest
                 model.UtcNow = utcNow;
                 model.String = name;
                 model.Kids = kids;
+                model.TestEnum = TestEnum.Banana;
             });
 
             var results = _client.GetQueryable<TestModel>().Where(p => ids.Contains(p.Id)).ToList();

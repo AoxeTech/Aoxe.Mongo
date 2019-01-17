@@ -25,7 +25,7 @@ namespace UnitTest
         public List<TestModel> Kids { get; set; }
     }
 
-    public enum TestEnum
+    public enum TestEnum : byte
     {
         Apple,
         Banana,
