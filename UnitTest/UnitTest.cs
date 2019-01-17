@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson;
 using Xunit;
+using Xunit.Sdk;
 using Zaabee.Mongo;
 using Zaabee.Mongo.Abstractions;
 using Zaabee.Mongo.Common;
@@ -104,7 +105,7 @@ namespace UnitTest
             _client.Add(model);
             model.Int = 199;
             model.String = Guid.NewGuid().ToString();
-            model.UtcNow = DateTime.UtcNow;
+            model.DateTimeUtc = DateTime.UtcNow;
             _client.Update(model);
             var result = _client.GetQueryable<TestModel>().FirstOrDefault(p => p.Id == model.Id);
             Assert.Equal(model.ToJson(), result.ToJson());
@@ -117,7 +118,7 @@ namespace UnitTest
             await _client.AddAsync(model);
             model.Int = 199;
             model.String = Guid.NewGuid().ToString();
-            model.UtcNow = DateTime.UtcNow;
+            model.DateTimeUtc = DateTime.UtcNow;
             await _client.UpdateAsync(model);
             var result = _client.GetQueryable<TestModel>().FirstOrDefault(p => p.Id == model.Id);
             Assert.Equal(model.ToJson(), result.ToJson());
@@ -135,25 +136,25 @@ namespace UnitTest
             var name = Guid.NewGuid().ToString();
             var kids = new List<TestModel>
             {
-                new TestModel {Id = Guid.NewGuid(), Now = DateTime.Now, UtcNow = DateTime.UtcNow}
+                new TestModel {Id = Guid.NewGuid(), DateTime = DateTime.Now, DateTimeUtc = DateTime.UtcNow}
             };
             var modifyQuantity = _client.Update(
                 () => new TestModel
                 {
-                    Now = now,
-                    UtcNow = utcNow,
+                    DateTime = now,
+                    DateTimeUtc = utcNow,
                     String = name,
                     Kids = kids,
-                    TestEnum = TestEnum.Banana
+                    EnumInt = EnumInt.Banana
                 },
                 p => strings.Contains(p.String));
             models.ForEach(model =>
             {
-                model.Now = now;
-                model.UtcNow = utcNow;
+                model.DateTime = now;
+                model.DateTimeUtc = utcNow;
                 model.String = name;
                 model.Kids = kids;
-                model.TestEnum = TestEnum.Banana;
+                model.EnumInt = EnumInt.Banana;
             });
 
             var results = _client.GetQueryable<TestModel>().Where(p => ids.Contains(p.Id)).ToList();
@@ -174,21 +175,21 @@ namespace UnitTest
             var name = Guid.NewGuid().ToString();
             var kids = new List<TestModel>
             {
-                new TestModel {Id = Guid.NewGuid(), Now = DateTime.Now, UtcNow = DateTime.UtcNow}
+                new TestModel {Id = Guid.NewGuid(), DateTime = DateTime.Now, DateTimeUtc = DateTime.UtcNow}
             };
             var modifyQuantity = await _client.UpdateAsync(
                 () => new TestModel
                 {
-                    Now = now,
-                    UtcNow = utcNow,
+                    DateTime = now,
+                    DateTimeUtc = utcNow,
                     String = name,
                     Kids = kids
                 },
                 p => strings.Contains(p.String));
             models.ForEach(model =>
             {
-                model.Now = now;
-                model.UtcNow = utcNow;
+                model.DateTime = now;
+                model.DateTimeUtc = utcNow;
                 model.String = name;
                 model.Kids = kids;
             });
@@ -199,44 +200,293 @@ namespace UnitTest
             Assert.Equal(models.OrderBy(p => p.Id).ToList().ToJson(), results.OrderBy(p => p.Id).ToList().ToJson());
         }
 
+        private List<TestModel> GetModels(int quantity)
+        {
+            return Enumerable.Range(0, quantity).Select(GetModel).ToList();
+        }
+
         private TestModel GetModel(int seed = 0)
         {
             return new TestModel
             {
                 Id = Guid.NewGuid(),
                 Guid = Guid.NewGuid(),
+                GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                Guids = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
                 Short = -1,
+                ShortArray = new short[] {-1, 0, 1},
+                Shorts = new List<short> {-1, 0, 1},
                 Int = -2,
+                IntArray = new[] {-1, 0, 1},
+                Ints = new List<int> {-1, 0, 1},
                 Long = -3,
-                Ushort = 1,
-                Uint = 2,
-                Ulong = 3,
+                LongArray = new long[] {-1, 0, 1},
+                Longs = new List<long> {-1, 0, 1},
+                UShort = 1,
+                UShortArray = new ushort[] {0, 1, 2},
+                UShorts = new List<ushort> {0, 1, 2},
+                UInt = 2,
+                UIntArray = new uint[] {0, 1, 2},
+                UInts = new List<uint> {0, 1, 2},
+                ULong = 3,
+                ULongArray = new ulong[] {0, 1, 2},
+                ULongs = new List<ulong> {0, 1, 2},
                 Float = 0.1F,
+                FloatArray = new float[] {-1, 0, 1},
+                Floats = new List<float> {-1, 0, 1},
                 Double = 0.2,
+                DoubleArray = new double[] {-1, 0, 1},
+                Doubles = new List<double> {-1, 0, 1},
                 Decimal = 0.3M,
-                Now = DateTime.Now,
-                UtcNow = DateTime.UtcNow,
-                TestEnum = (TestEnum) (seed % 3),
+                DecimalArray = new decimal[] {-1, 0, 1},
+                Decimals = new List<decimal> {-1, 0, 1},
+                DateTime = DateTime.Now,
+                DateTimeArray = new[] {DateTime.Now, DateTime.Now, DateTime.Now},
+                DateTimes = new List<DateTime> {DateTime.Now, DateTime.Now, DateTime.Now},
+                DateTimeUtc = DateTime.UtcNow,
+                DateTimeUtcArray = new[] {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
+                DateTimeUtcs = new List<DateTime> {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
                 String = Guid.NewGuid().ToString(),
+                StringArray = new[] {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
+                Strings = new List<string>
+                    {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
                 Object = null,
+                ObjectArray = new object[] {null, null, null},
+                Objects = new List<object> {null, null, null},
+                EnumByte = (EnumByte) (seed % 3),
+                EnumSByte = (EnumSByte) (seed % 3),
+                EnumShort = (EnumShort) (seed % 3),
+                EnumUShort = (EnumUShort) (seed % 3),
+                EnumInt = (EnumInt) (seed % 3),
+                EnumUInt = (EnumUInt) (seed % 3),
+                EnumLong = (EnumLong) (seed % 3),
+                EnumULong = (EnumULong) (seed % 3),
                 Kid = new TestModel
                 {
                     Id = Guid.NewGuid(),
                     Guid = Guid.NewGuid(),
+                    GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                    Guids = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
                     Short = -1,
+                    ShortArray = new short[] {-1, 0, 1},
+                    Shorts = new List<short> {-1, 0, 1},
                     Int = -2,
+                    IntArray = new[] {-1, 0, 1},
+                    Ints = new List<int> {-1, 0, 1},
                     Long = -3,
-                    Ushort = 1,
-                    Uint = 2,
-                    Ulong = 3,
+                    LongArray = new long[] {-1, 0, 1},
+                    Longs = new List<long> {-1, 0, 1},
+                    UShort = 1,
+                    UShortArray = new ushort[] {0, 1, 2},
+                    UShorts = new List<ushort> {0, 1, 2},
+                    UInt = 2,
+                    UIntArray = new uint[] {0, 1, 2},
+                    UInts = new List<uint> {0, 1, 2},
+                    ULong = 3,
+                    ULongArray = new ulong[] {0, 1, 2},
+                    ULongs = new List<ulong> {0, 1, 2},
                     Float = 0.1F,
+                    FloatArray = new float[] {-1, 0, 1},
+                    Floats = new List<float> {-1, 0, 1},
                     Double = 0.2,
+                    DoubleArray = new double[] {-1, 0, 1},
+                    Doubles = new List<double> {-1, 0, 1},
                     Decimal = 0.3M,
-                    Now = DateTime.Now,
-                    UtcNow = DateTime.UtcNow,
-                    TestEnum = (TestEnum) (seed % 3),
-                    String = string.Empty,
-                    Object = null
+                    DecimalArray = new decimal[] {-1, 0, 1},
+                    Decimals = new List<decimal> {-1, 0, 1},
+                    DateTime = DateTime.Now,
+                    DateTimeArray = new[] {DateTime.Now, DateTime.Now, DateTime.Now},
+                    DateTimes = new List<DateTime> {DateTime.Now, DateTime.Now, DateTime.Now},
+                    DateTimeUtc = DateTime.UtcNow,
+                    DateTimeUtcArray = new[] {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
+                    DateTimeUtcs = new List<DateTime> {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
+                    String = Guid.NewGuid().ToString(),
+                    StringArray = new[]
+                        {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
+                    Strings = new List<string>
+                        {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
+                    Object = null,
+                    ObjectArray = new object[] {null, null, null},
+                    Objects = new List<object> {null, null, null},
+                    EnumByte = (EnumByte) (seed % 3),
+                    EnumSByte = (EnumSByte) (seed % 3),
+                    EnumShort = (EnumShort) (seed % 3),
+                    EnumUShort = (EnumUShort) (seed % 3),
+                    EnumInt = (EnumInt) (seed % 3),
+                    EnumUInt = (EnumUInt) (seed % 3),
+                    EnumLong = (EnumLong) (seed % 3),
+                    EnumULong = (EnumULong) (seed % 3)
+                },
+                KidArray = new[]
+                {
+                    new TestModel
+                    {
+                        Id = Guid.NewGuid(),
+                        Guid = Guid.NewGuid(),
+                        GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                        Guids = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                        Short = -1,
+                        ShortArray = new short[] {-1, 0, 1},
+                        Shorts = new List<short> {-1, 0, 1},
+                        Int = -2,
+                        IntArray = new[] {-1, 0, 1},
+                        Ints = new List<int> {-1, 0, 1},
+                        Long = -3,
+                        LongArray = new long[] {-1, 0, 1},
+                        Longs = new List<long> {-1, 0, 1},
+                        UShort = 1,
+                        UShortArray = new ushort[] {0, 1, 2},
+                        UShorts = new List<ushort> {0, 1, 2},
+                        UInt = 2,
+                        UIntArray = new uint[] {0, 1, 2},
+                        UInts = new List<uint> {0, 1, 2},
+                        ULong = 3,
+                        ULongArray = new ulong[] {0, 1, 2},
+                        ULongs = new List<ulong> {0, 1, 2},
+                        Float = 0.1F,
+                        FloatArray = new float[] {-1, 0, 1},
+                        Floats = new List<float> {-1, 0, 1},
+                        Double = 0.2,
+                        DoubleArray = new double[] {-1, 0, 1},
+                        Doubles = new List<double> {-1, 0, 1},
+                        Decimal = 0.3M,
+                        DecimalArray = new decimal[] {-1, 0, 1},
+                        Decimals = new List<decimal> {-1, 0, 1},
+                        DateTime = DateTime.Now,
+                        DateTimeArray = new[] {DateTime.Now, DateTime.Now, DateTime.Now},
+                        DateTimes = new List<DateTime> {DateTime.Now, DateTime.Now, DateTime.Now},
+                        DateTimeUtc = DateTime.UtcNow,
+                        DateTimeUtcArray = new[] {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
+                        DateTimeUtcs = new List<DateTime> {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
+                        String = Guid.NewGuid().ToString(),
+                        StringArray = new[]
+                            {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
+                        Strings = new List<string>
+                            {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
+                        Object = null,
+                        ObjectArray = new object[] {null, null, null},
+                        Objects = new List<object> {null, null, null},
+                        EnumByte = (EnumByte) (seed % 3),
+                        EnumSByte = (EnumSByte) (seed % 3),
+                        EnumShort = (EnumShort) (seed % 3),
+                        EnumUShort = (EnumUShort) (seed % 3),
+                        EnumInt = (EnumInt) (seed % 3),
+                        EnumUInt = (EnumUInt) (seed % 3),
+                        EnumLong = (EnumLong) (seed % 3),
+                        EnumULong = (EnumULong) (seed % 3)
+                    },
+                    new TestModel
+                    {
+                        Id = Guid.NewGuid(),
+                        Guid = Guid.NewGuid(),
+                        GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                        Guids = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                        Short = -1,
+                        ShortArray = new short[] {-1, 0, 1},
+                        Shorts = new List<short> {-1, 0, 1},
+                        Int = -2,
+                        IntArray = new[] {-1, 0, 1},
+                        Ints = new List<int> {-1, 0, 1},
+                        Long = -3,
+                        LongArray = new long[] {-1, 0, 1},
+                        Longs = new List<long> {-1, 0, 1},
+                        UShort = 1,
+                        UShortArray = new ushort[] {0, 1, 2},
+                        UShorts = new List<ushort> {0, 1, 2},
+                        UInt = 2,
+                        UIntArray = new uint[] {0, 1, 2},
+                        UInts = new List<uint> {0, 1, 2},
+                        ULong = 3,
+                        ULongArray = new ulong[] {0, 1, 2},
+                        ULongs = new List<ulong> {0, 1, 2},
+                        Float = 0.1F,
+                        FloatArray = new float[] {-1, 0, 1},
+                        Floats = new List<float> {-1, 0, 1},
+                        Double = 0.2,
+                        DoubleArray = new double[] {-1, 0, 1},
+                        Doubles = new List<double> {-1, 0, 1},
+                        Decimal = 0.3M,
+                        DecimalArray = new decimal[] {-1, 0, 1},
+                        Decimals = new List<decimal> {-1, 0, 1},
+                        DateTime = DateTime.Now,
+                        DateTimeArray = new[] {DateTime.Now, DateTime.Now, DateTime.Now},
+                        DateTimes = new List<DateTime> {DateTime.Now, DateTime.Now, DateTime.Now},
+                        DateTimeUtc = DateTime.UtcNow,
+                        DateTimeUtcArray = new[] {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
+                        DateTimeUtcs = new List<DateTime> {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
+                        String = Guid.NewGuid().ToString(),
+                        StringArray = new[]
+                            {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
+                        Strings = new List<string>
+                            {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
+                        Object = null,
+                        ObjectArray = new object[] {null, null, null},
+                        Objects = new List<object> {null, null, null},
+                        EnumByte = (EnumByte) (seed % 3),
+                        EnumSByte = (EnumSByte) (seed % 3),
+                        EnumShort = (EnumShort) (seed % 3),
+                        EnumUShort = (EnumUShort) (seed % 3),
+                        EnumInt = (EnumInt) (seed % 3),
+                        EnumUInt = (EnumUInt) (seed % 3),
+                        EnumLong = (EnumLong) (seed % 3),
+                        EnumULong = (EnumULong) (seed % 3)
+                    },
+                    new TestModel
+                    {
+                        Id = Guid.NewGuid(),
+                        Guid = Guid.NewGuid(),
+                        GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                        Guids = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                        Short = -1,
+                        ShortArray = new short[] {-1, 0, 1},
+                        Shorts = new List<short> {-1, 0, 1},
+                        Int = -2,
+                        IntArray = new[] {-1, 0, 1},
+                        Ints = new List<int> {-1, 0, 1},
+                        Long = -3,
+                        LongArray = new long[] {-1, 0, 1},
+                        Longs = new List<long> {-1, 0, 1},
+                        UShort = 1,
+                        UShortArray = new ushort[] {0, 1, 2},
+                        UShorts = new List<ushort> {0, 1, 2},
+                        UInt = 2,
+                        UIntArray = new uint[] {0, 1, 2},
+                        UInts = new List<uint> {0, 1, 2},
+                        ULong = 3,
+                        ULongArray = new ulong[] {0, 1, 2},
+                        ULongs = new List<ulong> {0, 1, 2},
+                        Float = 0.1F,
+                        FloatArray = new float[] {-1, 0, 1},
+                        Floats = new List<float> {-1, 0, 1},
+                        Double = 0.2,
+                        DoubleArray = new double[] {-1, 0, 1},
+                        Doubles = new List<double> {-1, 0, 1},
+                        Decimal = 0.3M,
+                        DecimalArray = new decimal[] {-1, 0, 1},
+                        Decimals = new List<decimal> {-1, 0, 1},
+                        DateTime = DateTime.Now,
+                        DateTimeArray = new[] {DateTime.Now, DateTime.Now, DateTime.Now},
+                        DateTimes = new List<DateTime> {DateTime.Now, DateTime.Now, DateTime.Now},
+                        DateTimeUtc = DateTime.UtcNow,
+                        DateTimeUtcArray = new[] {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
+                        DateTimeUtcs = new List<DateTime> {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
+                        String = Guid.NewGuid().ToString(),
+                        StringArray = new[]
+                            {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
+                        Strings = new List<string>
+                            {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
+                        Object = null,
+                        ObjectArray = new object[] {null, null, null},
+                        Objects = new List<object> {null, null, null},
+                        EnumByte = (EnumByte) (seed % 3),
+                        EnumSByte = (EnumSByte) (seed % 3),
+                        EnumShort = (EnumShort) (seed % 3),
+                        EnumUShort = (EnumUShort) (seed % 3),
+                        EnumInt = (EnumInt) (seed % 3),
+                        EnumUInt = (EnumUInt) (seed % 3),
+                        EnumLong = (EnumLong) (seed % 3),
+                        EnumULong = (EnumULong) (seed % 3)
+                    }
                 },
                 Kids = new List<TestModel>
                 {
@@ -244,66 +494,172 @@ namespace UnitTest
                     {
                         Id = Guid.NewGuid(),
                         Guid = Guid.NewGuid(),
+                        GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                        Guids = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
                         Short = -1,
+                        ShortArray = new short[] {-1, 0, 1},
+                        Shorts = new List<short> {-1, 0, 1},
                         Int = -2,
+                        IntArray = new[] {-1, 0, 1},
+                        Ints = new List<int> {-1, 0, 1},
                         Long = -3,
-                        Ushort = 1,
-                        Uint = 2,
-                        Ulong = 3,
+                        LongArray = new long[] {-1, 0, 1},
+                        Longs = new List<long> {-1, 0, 1},
+                        UShort = 1,
+                        UShortArray = new ushort[] {0, 1, 2},
+                        UShorts = new List<ushort> {0, 1, 2},
+                        UInt = 2,
+                        UIntArray = new uint[] {0, 1, 2},
+                        UInts = new List<uint> {0, 1, 2},
+                        ULong = 3,
+                        ULongArray = new ulong[] {0, 1, 2},
+                        ULongs = new List<ulong> {0, 1, 2},
                         Float = 0.1F,
+                        FloatArray = new float[] {-1, 0, 1},
+                        Floats = new List<float> {-1, 0, 1},
                         Double = 0.2,
+                        DoubleArray = new double[] {-1, 0, 1},
+                        Doubles = new List<double> {-1, 0, 1},
                         Decimal = 0.3M,
-                        Now = DateTime.Now,
-                        UtcNow = DateTime.UtcNow,
-                        TestEnum = (TestEnum) (seed % 3),
-                        String = string.Empty,
-                        Object = null
+                        DecimalArray = new decimal[] {-1, 0, 1},
+                        Decimals = new List<decimal> {-1, 0, 1},
+                        DateTime = DateTime.Now,
+                        DateTimeArray = new[] {DateTime.Now, DateTime.Now, DateTime.Now},
+                        DateTimes = new List<DateTime> {DateTime.Now, DateTime.Now, DateTime.Now},
+                        DateTimeUtc = DateTime.UtcNow,
+                        DateTimeUtcArray = new[] {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
+                        DateTimeUtcs = new List<DateTime> {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
+                        String = Guid.NewGuid().ToString(),
+                        StringArray = new[]
+                            {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
+                        Strings = new List<string>
+                            {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
+                        Object = null,
+                        ObjectArray = new object[] {null, null, null},
+                        Objects = new List<object> {null, null, null},
+                        EnumByte = (EnumByte) (seed % 3),
+                        EnumSByte = (EnumSByte) (seed % 3),
+                        EnumShort = (EnumShort) (seed % 3),
+                        EnumUShort = (EnumUShort) (seed % 3),
+                        EnumInt = (EnumInt) (seed % 3),
+                        EnumUInt = (EnumUInt) (seed % 3),
+                        EnumLong = (EnumLong) (seed % 3),
+                        EnumULong = (EnumULong) (seed % 3)
                     },
                     new TestModel
                     {
                         Id = Guid.NewGuid(),
                         Guid = Guid.NewGuid(),
+                        GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                        Guids = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
                         Short = -1,
+                        ShortArray = new short[] {-1, 0, 1},
+                        Shorts = new List<short> {-1, 0, 1},
                         Int = -2,
+                        IntArray = new[] {-1, 0, 1},
+                        Ints = new List<int> {-1, 0, 1},
                         Long = -3,
-                        Ushort = 1,
-                        Uint = 2,
-                        Ulong = 3,
+                        LongArray = new long[] {-1, 0, 1},
+                        Longs = new List<long> {-1, 0, 1},
+                        UShort = 1,
+                        UShortArray = new ushort[] {0, 1, 2},
+                        UShorts = new List<ushort> {0, 1, 2},
+                        UInt = 2,
+                        UIntArray = new uint[] {0, 1, 2},
+                        UInts = new List<uint> {0, 1, 2},
+                        ULong = 3,
+                        ULongArray = new ulong[] {0, 1, 2},
+                        ULongs = new List<ulong> {0, 1, 2},
                         Float = 0.1F,
+                        FloatArray = new float[] {-1, 0, 1},
+                        Floats = new List<float> {-1, 0, 1},
                         Double = 0.2,
+                        DoubleArray = new double[] {-1, 0, 1},
+                        Doubles = new List<double> {-1, 0, 1},
                         Decimal = 0.3M,
-                        Now = DateTime.Now,
-                        UtcNow = DateTime.UtcNow,
-                        TestEnum = (TestEnum) (seed % 3),
-                        String = string.Empty,
-                        Object = null
+                        DecimalArray = new decimal[] {-1, 0, 1},
+                        Decimals = new List<decimal> {-1, 0, 1},
+                        DateTime = DateTime.Now,
+                        DateTimeArray = new[] {DateTime.Now, DateTime.Now, DateTime.Now},
+                        DateTimes = new List<DateTime> {DateTime.Now, DateTime.Now, DateTime.Now},
+                        DateTimeUtc = DateTime.UtcNow,
+                        DateTimeUtcArray = new[] {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
+                        DateTimeUtcs = new List<DateTime> {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
+                        String = Guid.NewGuid().ToString(),
+                        StringArray = new[]
+                            {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
+                        Strings = new List<string>
+                            {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
+                        Object = null,
+                        ObjectArray = new object[] {null, null, null},
+                        Objects = new List<object> {null, null, null},
+                        EnumByte = (EnumByte) (seed % 3),
+                        EnumSByte = (EnumSByte) (seed % 3),
+                        EnumShort = (EnumShort) (seed % 3),
+                        EnumUShort = (EnumUShort) (seed % 3),
+                        EnumInt = (EnumInt) (seed % 3),
+                        EnumUInt = (EnumUInt) (seed % 3),
+                        EnumLong = (EnumLong) (seed % 3),
+                        EnumULong = (EnumULong) (seed % 3)
                     },
                     new TestModel
                     {
                         Id = Guid.NewGuid(),
                         Guid = Guid.NewGuid(),
+                        GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                        Guids = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
                         Short = -1,
+                        ShortArray = new short[] {-1, 0, 1},
+                        Shorts = new List<short> {-1, 0, 1},
                         Int = -2,
+                        IntArray = new[] {-1, 0, 1},
+                        Ints = new List<int> {-1, 0, 1},
                         Long = -3,
-                        Ushort = 1,
-                        Uint = 2,
-                        Ulong = 3,
+                        LongArray = new long[] {-1, 0, 1},
+                        Longs = new List<long> {-1, 0, 1},
+                        UShort = 1,
+                        UShortArray = new ushort[] {0, 1, 2},
+                        UShorts = new List<ushort> {0, 1, 2},
+                        UInt = 2,
+                        UIntArray = new uint[] {0, 1, 2},
+                        UInts = new List<uint> {0, 1, 2},
+                        ULong = 3,
+                        ULongArray = new ulong[] {0, 1, 2},
+                        ULongs = new List<ulong> {0, 1, 2},
                         Float = 0.1F,
+                        FloatArray = new float[] {-1, 0, 1},
+                        Floats = new List<float> {-1, 0, 1},
                         Double = 0.2,
+                        DoubleArray = new double[] {-1, 0, 1},
+                        Doubles = new List<double> {-1, 0, 1},
                         Decimal = 0.3M,
-                        Now = DateTime.Now,
-                        UtcNow = DateTime.UtcNow,
-                        TestEnum = (TestEnum) (seed % 3),
-                        String = string.Empty,
-                        Object = null
-                    },
+                        DecimalArray = new decimal[] {-1, 0, 1},
+                        Decimals = new List<decimal> {-1, 0, 1},
+                        DateTime = DateTime.Now,
+                        DateTimeArray = new[] {DateTime.Now, DateTime.Now, DateTime.Now},
+                        DateTimes = new List<DateTime> {DateTime.Now, DateTime.Now, DateTime.Now},
+                        DateTimeUtc = DateTime.UtcNow,
+                        DateTimeUtcArray = new[] {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
+                        DateTimeUtcs = new List<DateTime> {DateTime.UtcNow, DateTime.UtcNow, DateTime.UtcNow},
+                        String = Guid.NewGuid().ToString(),
+                        StringArray = new[]
+                            {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
+                        Strings = new List<string>
+                            {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()},
+                        Object = null,
+                        ObjectArray = new object[] {null, null, null},
+                        Objects = new List<object> {null, null, null},
+                        EnumByte = (EnumByte) (seed % 3),
+                        EnumSByte = (EnumSByte) (seed % 3),
+                        EnumShort = (EnumShort) (seed % 3),
+                        EnumUShort = (EnumUShort) (seed % 3),
+                        EnumInt = (EnumInt) (seed % 3),
+                        EnumUInt = (EnumUInt) (seed % 3),
+                        EnumLong = (EnumLong) (seed % 3),
+                        EnumULong = (EnumULong) (seed % 3)
+                    }
                 }
             };
-        }
-
-        private List<TestModel> GetModels(int quantity)
-        {
-            return Enumerable.Range(0, quantity).Select(GetModel).ToList();
         }
     }
 }
