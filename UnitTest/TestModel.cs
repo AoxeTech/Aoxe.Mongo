@@ -52,13 +52,37 @@ namespace UnitTest
         public TestModel[] KidArray { get; set; }
         public List<TestModel> Kids { get; set; }
         public EnumByte EnumByte { get; set; }
+
+        public EnumByte[] EnumByteArray { get; set; }
+        public List<EnumByte> EnumBytes { get; set; }
         public EnumSByte EnumSByte { get; set; }
+
+        public EnumSByte[] EnumSByteArray { get; set; }
+        public List<EnumSByte> EnumSBytes { get; set; }
         public EnumShort EnumShort { get; set; }
+
+        public EnumShort[] EnumShortArray { get; set; }
+        public List<EnumShort> EnumShorts { get; set; }
         public EnumUShort EnumUShort { get; set; }
+
+        public EnumUShort[] EnumUShortArray { get; set; }
+        public List<EnumUShort> EnumUShorts { get; set; }
         public EnumInt EnumInt { get; set; }
+
+        public EnumInt[] EnumIntArray { get; set; }
+        public List<EnumInt> EnumInts { get; set; }
         public EnumUInt EnumUInt { get; set; }
+
+        public EnumUInt[] EnumUIntArray { get; set; }
+        public List<EnumUInt> EnumUInts { get; set; }
         public EnumLong EnumLong { get; set; }
+
+        public EnumLong[] EnumLongArray { get; set; }
+        public List<EnumLong> EnumLongs { get; set; }
         public EnumULong EnumULong { get; set; }
+
+        public EnumULong[] EnumULongArray { get; set; }
+        public List<EnumULong> EnumULongs { get; set; }
     }
 
     public enum EnumByte : byte

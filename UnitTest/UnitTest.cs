@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson;
 using Xunit;
-using Xunit.Sdk;
 using Zaabee.Mongo;
 using Zaabee.Mongo.Abstractions;
 using Zaabee.Mongo.Common;
@@ -254,6 +253,8 @@ namespace UnitTest
                 ObjectArray = new object[] {null, null, null},
                 Objects = new List<object> {null, null, null},
                 EnumByte = (EnumByte) (seed % 3),
+                EnumByteArray = new[]{(EnumByte) (seed % 3),(EnumByte) (seed % 3),(EnumByte) (seed % 3)},
+                EnumBytes = new List<EnumByte>{(EnumByte) (seed % 3),(EnumByte) (seed % 3),(EnumByte) (seed % 3)},
                 EnumSByte = (EnumSByte) (seed % 3),
                 EnumShort = (EnumShort) (seed % 3),
                 EnumUShort = (EnumUShort) (seed % 3),

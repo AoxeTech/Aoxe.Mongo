@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using Zaabee.Mongo.Abstractions;
@@ -248,9 +248,10 @@ namespace Zaabee.Mongo
                 var propertyInfo = type
                     .GetProperties()
                     .FirstOrDefault(property =>
-                        Attribute.GetCustomAttributes(property).OfType<KeyAttribute>().Any());
+                        Attribute.GetCustomAttributes(property).OfType<BsonIdAttribute>().Any());
                 propertyInfo = propertyInfo ?? type.GetProperty("Id");
-                propertyInfo = propertyInfo ?? type.GetProperty($"{type.Name}Id");
+                propertyInfo = propertyInfo ?? type.GetProperty("id");
+                propertyInfo = propertyInfo ?? type.GetProperty("_id");
                 if (propertyInfo == null)
                     throw new NullReferenceException("The primary key can not be found.");
 
