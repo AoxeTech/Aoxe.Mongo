@@ -11,15 +11,12 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using Zaabee.Mongo.Abstractions;
-using Zaabee.Mongo.Common;
 
 namespace Zaabee.Mongo
 {
     public class ZaabeeMongoClient : IZaabeeMongoClient
     {
         private IMongoDatabase MongoDatabase { get; }
-
-        private GuidType GuidType { get; }
 
         private readonly ConcurrentDictionary<Type, string> _tableNames = new ConcurrentDictionary<Type, string>();
 
@@ -31,38 +28,6 @@ namespace Zaabee.Mongo
             AssignIdOnInsert = true,
             GuidRepresentation = GuidRepresentation.CSharpLegacy,
         };
-
-        public ZaabeeMongoClient(MongoDbConfiger configer)
-        {
-            BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
-            ConventionRegistry.Register("IgnoreExtraElements",
-                new ConventionPack {new IgnoreExtraElementsConvention(true)}, type => true);
-
-            GuidType = configer.GuidType;
-
-            var settings = new MongoClientSettings
-            {
-                Servers = configer.Hosts.Select(p =>
-                {
-                    var strs = p.Split(':');
-                    var ip = strs[0];
-                    var port = string.IsNullOrWhiteSpace(strs[1]) ? 27017 : Convert.ToInt32(strs[1]);
-                    return new MongoServerAddress(ip, port);
-                }),
-                ReadPreference = configer.ReadPreference != null
-                    ? new ReadPreference(ConvertReadPreference(configer.ReadPreference.Value))
-                    : new ReadPreference(ReadPreferenceMode.Primary),
-                Credential =
-                    MongoCredential.CreateCredential(configer.Database, configer.UserName, configer.Password),
-                ConnectTimeout = TimeSpan.FromSeconds(300),
-                SocketTimeout = TimeSpan.FromSeconds(300),
-                MaxConnectionLifeTime = TimeSpan.FromSeconds(300),
-                MaxConnectionPoolSize = configer.MaxConnectionPoolSize,
-                MinConnectionPoolSize = configer.MinConnectionPoolSize,
-                ConnectionMode = ConnectionMode.Automatic
-            };
-            MongoDatabase = new MongoClient(settings).GetDatabase(configer.Database);
-        }
 
         public ZaabeeMongoClient(string connectionString, string dataBase)
         {
@@ -215,16 +180,22 @@ namespace Zaabee.Mongo
                 json = $"{{\"_id\":{value}}}";
             else if (propertyInfo.PropertyType == typeof(Guid))
             {
-                switch (GuidType)
+                switch (MongoDatabase.Settings.GuidRepresentation)
                 {
-                    case GuidType.Unspecified:
+                    case GuidRepresentation.Unspecified:
                         json = "{\"_id\":" + $"UUID(\"{value}\")" + "}";
                         break;
-                    case GuidType.Standard:
+                    case GuidRepresentation.Standard:
                         json = "{\"_id\":" + $"UUID(\"{value}\")" + "}";
                         break;
-                    case GuidType.CSharpLegacy:
+                    case GuidRepresentation.CSharpLegacy:
                         json = "{\"_id\":" + $"CSUUID(\"{value}\")" + "}";
+                        break;
+                    case GuidRepresentation.JavaLegacy:
+                        json = "{\"_id\":" + $"UUID(\"{value}\")" + "}";
+                        break;
+                    case GuidRepresentation.PythonLegacy:
+                        json = "{\"_id\":" + $"UUID(\"{value}\")" + "}";
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -308,25 +279,6 @@ namespace Zaabee.Mongo
                 var tableName = tableAttr == null ? type.Name : tableAttr.Name;
                 return tableName;
             });
-        }
-
-        private ReadPreferenceMode ConvertReadPreference(MongoDbReadPreference readPreference)
-        {
-            switch (readPreference)
-            {
-                case MongoDbReadPreference.Primary:
-                    return ReadPreferenceMode.Primary;
-                case MongoDbReadPreference.PrimaryPreferred:
-                    return ReadPreferenceMode.PrimaryPreferred;
-                case MongoDbReadPreference.Secondary:
-                    return ReadPreferenceMode.Secondary;
-                case MongoDbReadPreference.SecondaryPreferred:
-                    return ReadPreferenceMode.SecondaryPreferred;
-                case MongoDbReadPreference.Nearest:
-                    return ReadPreferenceMode.Nearest;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(readPreference), readPreference, null);
-            }
         }
     }
 }

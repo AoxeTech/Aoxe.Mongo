@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using MongoDB.Driver;
-using Zaabee.Mongo.Common;
 using ExpressionVisitor = MongoDB.Bson.Serialization.ExpressionVisitor;
 
 namespace Zaabee.Mongo
@@ -31,7 +30,7 @@ namespace Zaabee.Mongo
                 if (memberAssignment.Expression.NodeType == ExpressionType.MemberInit)
                 {
                     var lambda =
-                        Expression.Lambda<Func<object>>(Expression.Convert(memberAssignment.Expression, Types.Object));
+                        Expression.Lambda<Func<object>>(Expression.Convert(memberAssignment.Expression, typeof(object)));
                     var value = lambda.Compile().Invoke();
                     _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, value));
                 }
@@ -48,20 +47,30 @@ namespace Zaabee.Mongo
 
             if (node.NodeType == ExpressionType.Decrement)
             {
-                if (node.Type == Types.Int16)
-                    value = -(short) value;
-                else if (node.Type == Types.Int32)
-                    value = -(int) value;
-                else if (node.Type == Types.Int64)
-                    value = -(long) value;
-                else if (node.Type == Types.Float)
-                    value = -(float) value;
-                else if (node.Type == Types.Double)
-                    value = -(double) value;
-                else if (node.Type == Types.Decimal)
-                    value = -(decimal) value;
-                else
-                    throw new Exception($"Not support type {node.Type} of field named \"{_fieldName}\"");
+                var nodeTypeCode = Type.GetTypeCode(node.Type);
+                switch (nodeTypeCode)
+                {
+                    case TypeCode.Int16:
+                        value = -(short) value;
+                        break;
+                    case TypeCode.Int32:
+                        value = -(int) value;
+                        break;
+                    case TypeCode.Int64:
+                        value = -(long) value;
+                        break;
+                    case TypeCode.Single:
+                        value = -(float) value;
+                        break;
+                    case TypeCode.Double:
+                        value = -(double) value;
+                        break;
+                    case TypeCode.Decimal:
+                        value = -(decimal) value;
+                        break;
+                    default:
+                        throw new Exception($"Not support type {node.Type} of field named \"{_fieldName}\"");
+                }
             }
 
             var updateDefinition = Builders<T>.Update.Inc(_fieldName, value);
@@ -138,7 +147,7 @@ namespace Zaabee.Mongo
                 SetList(node);
             else
             {
-                var lambda = Expression.Lambda<Func<object>>(Expression.Convert(node, Types.Object));
+                var lambda = Expression.Lambda<Func<object>>(Expression.Convert(node, typeof(object)));
                 var value = lambda.Compile().Invoke();
 
                 if (node.Type.IsEnum)

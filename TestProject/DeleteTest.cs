@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
 using Zaabee.Mongo;
 using Zaabee.Mongo.Abstractions;
-using Zaabee.Mongo.Common;
 
 namespace TestProject
 {
@@ -15,8 +13,8 @@ namespace TestProject
 
         public DeleteTest()
         {
-            _client = new ZaabeeMongoClient(new MongoDbConfiger(new List<string> {"192.168.78.152:27017"},
-                "TestDB", "", "TestUser", "123"));
+            _client = new ZaabeeMongoClient(
+                "mongodb://TestUser:123@192.168.78.152:27017/TestDB/?readPreference=primary", "TestDB");
         }
 
         [Fact]
