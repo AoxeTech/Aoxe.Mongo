@@ -179,6 +179,7 @@ namespace Zaabee.Mongo
 
         public long Update<T>(Expression<Func<T>> update, Expression<Func<T, bool>> where) where T : class
         {
+            if (update == null) throw new ArgumentNullException(nameof(update));
             if (where == null) throw new ArgumentNullException(nameof(where));
 
             var tableName = GetTableName(typeof(T));
@@ -192,6 +193,7 @@ namespace Zaabee.Mongo
         public async Task<long> UpdateAsync<T>(Expression<Func<T>> update, Expression<Func<T, bool>> where)
             where T : class
         {
+            if (update == null) throw new ArgumentNullException(nameof(update));
             if (where == null) throw new ArgumentNullException(nameof(where));
 
             var tableName = GetTableName(typeof(T));

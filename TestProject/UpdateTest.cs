@@ -101,8 +101,10 @@ namespace TestProject
         [Fact]
         public void UpdateManyNull()
         {
+            Assert.Throws<ArgumentNullException>("update",
+                () => _client.Update<TestModel>(null, p => p.DateTime == DateTime.Now));
             Assert.Throws<ArgumentNullException>("where",
-                () => _client.Update(null, (Expression<Func<TestModel, bool>>) null));
+                () => _client.Update(() => new TestModel {DateTime = DateTime.Now}, null));
         }
 
         [Fact]
@@ -145,8 +147,10 @@ namespace TestProject
         [Fact]
         public async void UpdateManyNullAsync()
         {
+            await Assert.ThrowsAsync<ArgumentNullException>("update",
+                async () => await _client.UpdateAsync<TestModel>(null, p => p.DateTime == DateTime.Now));
             await Assert.ThrowsAsync<ArgumentNullException>("where",
-                async () => await _client.UpdateAsync(null, (Expression<Func<TestModel, bool>>) null));
+                async () => await _client.UpdateAsync(() => new TestModel {DateTime = DateTime.Now}, null));
         }
     }
 }
