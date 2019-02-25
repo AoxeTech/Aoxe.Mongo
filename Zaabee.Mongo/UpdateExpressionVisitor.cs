@@ -93,6 +93,31 @@ namespace Zaabee.Mongo
             return node;
         }
 
+        protected override Expression VisitConstant(ConstantExpression node)
+        {
+            _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, node.Value));
+
+            return node;
+        }
+
+        protected override Expression VisitMember(MemberExpression node)
+        {
+            if (node.Type.GetInterfaces().Any(a => a == typeof(IList)))
+                SetList(node);
+            else
+            {
+                var lambda = Expression.Lambda<Func<object>>(Expression.Convert(node, typeof(object)));
+                var value = lambda.Compile().Invoke();
+
+                if (node.Type.IsEnum)
+                    value = (int) value;
+
+                _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, value));
+            }
+
+            return node;
+        }
+
         private void SetList(Expression node)
         {
             var lambda = Expression.Lambda(node);
@@ -131,31 +156,6 @@ namespace Zaabee.Mongo
                         break;
                 }
             }
-        }
-
-        protected override Expression VisitConstant(ConstantExpression node)
-        {
-            _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, node.Value));
-
-            return node;
-        }
-
-        protected override Expression VisitMember(MemberExpression node)
-        {
-            if (node.Type.GetInterfaces().Any(a => a == typeof(IList)))
-                SetList(node);
-            else
-            {
-                var lambda = Expression.Lambda<Func<object>>(Expression.Convert(node, typeof(object)));
-                var value = lambda.Compile().Invoke();
-
-                if (node.Type.IsEnum)
-                    value = (int) value;
-
-                _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, value));
-            }
-
-            return node;
         }
     }
 }
