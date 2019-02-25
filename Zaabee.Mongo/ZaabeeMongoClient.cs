@@ -74,7 +74,7 @@ namespace Zaabee.Mongo
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
 
-            var filter = GetJsonFilterDefinition(entity);
+            var filter = GetJsonFilterDefinition(entity, _collectionSettings.GuidRepresentation);
 
             var result = collection.DeleteOne(filter);
 
@@ -88,7 +88,7 @@ namespace Zaabee.Mongo
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
 
-            var filter = GetJsonFilterDefinition(entity);
+            var filter = GetJsonFilterDefinition(entity, _collectionSettings.GuidRepresentation);
 
             var result = await collection.DeleteOneAsync(filter);
 
@@ -119,7 +119,7 @@ namespace Zaabee.Mongo
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
 
-            var filter = GetJsonFilterDefinition(entity);
+            var filter = GetJsonFilterDefinition(entity, _collectionSettings.GuidRepresentation);
 
             var result = collection.UpdateOne(filter,
                 new BsonDocumentUpdateDefinition<T>(new BsonDocument {{"$set", entity.ToBsonDocument()}}));
@@ -134,7 +134,7 @@ namespace Zaabee.Mongo
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
 
-            var filter = GetJsonFilterDefinition(entity);
+            var filter = GetJsonFilterDefinition(entity, _collectionSettings.GuidRepresentation);
 
             var result = await collection.UpdateOneAsync(filter,
                 new BsonDocumentUpdateDefinition<T>(new BsonDocument {{"$set", entity.ToBsonDocument()}}));
@@ -169,7 +169,7 @@ namespace Zaabee.Mongo
             return result.ModifiedCount;
         }
 
-        private JsonFilterDefinition<T> GetJsonFilterDefinition<T>(T entity)
+        private JsonFilterDefinition<T> GetJsonFilterDefinition<T>(T entity, GuidRepresentation guidRepresentation)
         {
             var propertyInfo = GetIdProperty(typeof(T));
 
@@ -180,7 +180,7 @@ namespace Zaabee.Mongo
                 json = $"{{\"_id\":{value}}}";
             else if (propertyInfo.PropertyType == typeof(Guid))
             {
-                switch (_collectionSettings.GuidRepresentation)
+                switch (guidRepresentation)
                 {
                     case GuidRepresentation.Unspecified:
                         json = "{\"_id\":" + $"UUID(\"{value}\")" + "}";

@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using MongoDB.Driver;
-using ExpressionVisitor = MongoDB.Bson.Serialization.ExpressionVisitor;
 
 namespace Zaabee.Mongo
 {
-    internal class UpdateExpressionVisitor<T> : ExpressionVisitor
+    internal class UpdateExpressionVisitor<T> : MongoDB.Bson.Serialization.ExpressionVisitor
     {
         private readonly List<UpdateDefinition<T>> _updateDefinitionList = new List<UpdateDefinition<T>>();
 
