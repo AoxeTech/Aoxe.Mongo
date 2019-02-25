@@ -104,8 +104,7 @@ namespace Zaabee.Mongo
 
         public long Delete<T>(T entity) where T : class
         {
-            if (entity == null)
-                return 0L;
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
 
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
@@ -119,8 +118,7 @@ namespace Zaabee.Mongo
 
         public async Task<long> DeleteAsync<T>(T entity) where T : class
         {
-            if (entity == null)
-                return 0L;
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
 
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
@@ -134,6 +132,7 @@ namespace Zaabee.Mongo
 
         public long Delete<T>(Expression<Func<T, bool>> where) where T : class
         {
+            if (where == null) throw new ArgumentNullException(nameof(where));
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
             return collection.DeleteMany(where).DeletedCount;
@@ -141,6 +140,7 @@ namespace Zaabee.Mongo
 
         public async Task<long> DeleteAsync<T>(Expression<Func<T, bool>> where) where T : class
         {
+            if (where == null) throw new ArgumentNullException(nameof(where));
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
             var result = await collection.DeleteManyAsync(where);
@@ -149,8 +149,7 @@ namespace Zaabee.Mongo
 
         public long Update<T>(T entity) where T : class
         {
-            if (entity == null)
-                return 0L;
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
 
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
@@ -165,8 +164,7 @@ namespace Zaabee.Mongo
 
         public async Task<long> UpdateAsync<T>(T entity) where T : class
         {
-            if (entity == null)
-                return 0L;
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
 
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
@@ -179,28 +177,28 @@ namespace Zaabee.Mongo
             return result.ModifiedCount;
         }
 
-        public long Update<T>(Expression<Func<T>> update, Expression<Func<T, bool>> @where) where T : class
+        public long Update<T>(Expression<Func<T>> update, Expression<Func<T, bool>> where) where T : class
         {
-            if (@where == null) return 0L;
+            if (where == null) throw new ArgumentNullException(nameof(where));
 
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
             var updateDefinitionList = new UpdateExpressionVisitor<T>().GetUpdateDefinition(update);
             var updateDefinition = new UpdateDefinitionBuilder<T>().Combine(updateDefinitionList);
-            var result = collection.UpdateMany(@where, updateDefinition);
+            var result = collection.UpdateMany(where, updateDefinition);
             return result.ModifiedCount;
         }
 
-        public async Task<long> UpdateAsync<T>(Expression<Func<T>> update, Expression<Func<T, bool>> @where)
+        public async Task<long> UpdateAsync<T>(Expression<Func<T>> update, Expression<Func<T, bool>> where)
             where T : class
         {
-            if (@where == null) return 0L;
+            if (where == null) throw new ArgumentNullException(nameof(where));
 
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
             var updateDefinitionList = new UpdateExpressionVisitor<T>().GetUpdateDefinition(update);
             var updateDefinition = new UpdateDefinitionBuilder<T>().Combine(updateDefinitionList);
-            var result = await collection.UpdateManyAsync(@where, updateDefinition);
+            var result = await collection.UpdateManyAsync(where, updateDefinition);
             return result.ModifiedCount;
         }
 
@@ -208,17 +206,12 @@ namespace Zaabee.Mongo
         {
             var propertyInfo = GetIdProperty(typeof(T));
 
-            var isDigit = propertyInfo.PropertyType == Types.Int16 || propertyInfo.PropertyType == Types.Int32 ||
-                          propertyInfo.PropertyType == Types.Int64 ||
-                          propertyInfo.PropertyType == Types.UInt16 || propertyInfo.PropertyType == Types.UInt32 ||
-                          propertyInfo.PropertyType == Types.UInt64;
-
             var value = propertyInfo.GetValue(entity, null);
 
             string json;
-            if (isDigit)
+            if (IsNumericType(propertyInfo.PropertyType))
                 json = $"{{\"_id\":{value}}}";
-            else if (propertyInfo.PropertyType == Types.Guid)
+            else if (propertyInfo.PropertyType == typeof(Guid))
             {
                 switch (GuidType)
                 {
@@ -239,6 +232,51 @@ namespace Zaabee.Mongo
                 json = $"{{\"_id\":\"{value}\"}}";
 
             return new JsonFilterDefinition<T>(json);
+        }
+
+        private bool IsNumericType(Type type)
+        {
+            switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.Byte:
+                    return true;
+                case TypeCode.SByte:
+                    return true;
+                case TypeCode.UInt16:
+                    return true;
+                case TypeCode.UInt32:
+                    return true;
+                case TypeCode.UInt64:
+                    return true;
+                case TypeCode.Int16:
+                    return true;
+                case TypeCode.Int32:
+                    return true;
+                case TypeCode.Int64:
+                    return true;
+                case TypeCode.Decimal:
+                    return true;
+                case TypeCode.Double:
+                    return true;
+                case TypeCode.Single:
+                    return true;
+                case TypeCode.Boolean:
+                    return false;
+                case TypeCode.Char:
+                    return false;
+                case TypeCode.DateTime:
+                    return false;
+                case TypeCode.DBNull:
+                    return false;
+                case TypeCode.Empty:
+                    return false;
+                case TypeCode.Object:
+                    return false;
+                case TypeCode.String:
+                    return false;
+                default:
+                    return false;
+            }
         }
 
         private PropertyInfo GetIdProperty(Type type)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace UnitTest
+namespace TestProject
 {
     public class TestModel
     {
