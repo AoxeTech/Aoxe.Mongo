@@ -33,7 +33,7 @@ Add
 mongoClient.Add(model);
 mongoClient.AddRange(models);
 ```
-
+ 
 Delete
 
 ```CSharp
