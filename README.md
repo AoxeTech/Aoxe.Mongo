@@ -5,7 +5,7 @@ Mongo repository.
 ## QuickStart
 
 ### NuGet
-
+ 
 Install-Package Zaabee.Mongo
 
 ### Example
