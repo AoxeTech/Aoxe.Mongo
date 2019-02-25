@@ -79,6 +79,13 @@ namespace Zaabee.Mongo
             return node;
         }
 
+        protected override Expression VisitConstant(ConstantExpression node)
+        {
+            _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, node.Value));
+
+            return node;
+        }
+
         protected override Expression VisitNewArray(NewArrayExpression node)
         {
             SetList(node);
@@ -89,13 +96,6 @@ namespace Zaabee.Mongo
         protected override Expression VisitListInit(ListInitExpression node)
         {
             SetList(node);
-
-            return node;
-        }
-
-        protected override Expression VisitConstant(ConstantExpression node)
-        {
-            _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, node.Value));
 
             return node;
         }
