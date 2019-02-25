@@ -180,7 +180,7 @@ namespace Zaabee.Mongo
                 json = $"{{\"_id\":{value}}}";
             else if (propertyInfo.PropertyType == typeof(Guid))
             {
-                switch (MongoDatabase.Settings.GuidRepresentation)
+                switch (_collectionSettings.GuidRepresentation)
                 {
                     case GuidRepresentation.Unspecified:
                         json = "{\"_id\":" + $"UUID(\"{value}\")" + "}";
