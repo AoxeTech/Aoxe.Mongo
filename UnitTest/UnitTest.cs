@@ -17,8 +17,6 @@ namespace UnitTest
         {
             _client = new ZaabeeMongoClient(new MongoDbConfiger(new List<string> {"192.168.78.152:27017"},
                 "TestDB", "", "TestUser", "123"));
-//            _client = new ZaabeeMongoClient("mongodb://TestUser:123@192.168.78.152:27017/TestDB","TestDB");
-//            _client = new ZaabeeMongoClient("mongodb://CaiwuR:Bp1qZHMLY9@172.31.200.2:27017/?authSource=FlytOaData","FlytOaData");
         }
 
         [Fact]
