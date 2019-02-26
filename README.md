@@ -7,7 +7,7 @@ Mongo repository.
 ### NuGet
  
 Install-Package Zaabee.Mongo
-
+    
 ### Example
 
 Model
