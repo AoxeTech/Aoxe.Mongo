@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using MongoDB.Bson;
 using Xunit;
@@ -12,8 +13,7 @@ namespace TestProject
 
         public AddTest()
         {
-            _client = new ZaabeeMongoClient(
-                "mongodb://TestUser:123@192.168.78.152:27017/TestDB/?readPreference=primary", "TestDB");
+            _client = new ZaabeeMongoClient(Environment.GetEnvironmentVariable("MONGO_CONNECTION_STRING"), "TestDB");
         }
 
         [Fact]

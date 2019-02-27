@@ -15,7 +15,7 @@ namespace TestProject
         public UpdateTest()
         {
             _client = new ZaabeeMongoClient(
-                "mongodb://TestUser:123@192.168.78.152:27017/TestDB/?readPreference=primary", "TestDB");
+                Environment.GetEnvironmentVariable("MONGO_CONNECTION_STRING"), "TestDB");
         }
 
         [Fact]
