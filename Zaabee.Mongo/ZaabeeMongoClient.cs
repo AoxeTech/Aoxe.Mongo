@@ -256,29 +256,21 @@ namespace Zaabee.Mongo
         {
             return _idProperties.GetOrAdd(type, key =>
             {
-                var propertyInfo = type
-                    .GetProperties()
-                    .FirstOrDefault(property =>
-                        Attribute.GetCustomAttributes(property).OfType<BsonIdAttribute>().Any());
-                propertyInfo = propertyInfo ?? type.GetProperty("Id");
-                propertyInfo = propertyInfo ?? type.GetProperty("id");
-                propertyInfo = propertyInfo ?? type.GetProperty("_id");
-                if (propertyInfo == null)
-                    throw new NullReferenceException("The primary key can not be found.");
-
-                return propertyInfo;
+                var propertyInfo = type.GetProperties()
+                                       .FirstOrDefault(property =>
+                                           Attribute.GetCustomAttributes(property).OfType<BsonIdAttribute>().Any()) ??
+                                   type.GetProperty("Id") ??
+                                   type.GetProperty("id") ??
+                                   type.GetProperty("_id");
+                return propertyInfo ?? throw new NullReferenceException("The primary key can not be found.");
             });
         }
 
         private string GetTableName(Type type)
         {
-            return _tableNames.GetOrAdd(type, key =>
-            {
-                var attrs = Attribute.GetCustomAttributes(type);
-                var tableAttr = attrs.OfType<TableAttribute>().FirstOrDefault();
-                var tableName = tableAttr == null ? type.Name : tableAttr.Name;
-                return tableName;
-            });
+            return _tableNames.GetOrAdd(type,
+                key => Attribute.GetCustomAttributes(type).OfType<TableAttribute>().FirstOrDefault()?.Name ??
+                       type.Name);
         }
     }
 }
