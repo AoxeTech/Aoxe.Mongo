@@ -13,13 +13,13 @@ namespace TestProject
 
         public AddTest()
         {
-            _client = new ZaabeeMongoClient(Environment.GetEnvironmentVariable("MONGO_CONNECTION_STRING"), "TestDB");
+            _client = new ZaabeeMongoClient("mongodb://TestUser:123@192.168.78.152:27017/TestDB/?readPreference=primary", "TestDB");
         }
 
         [Fact]
         public void Add()
         {
-            var model = new GetModelService().GetModel();
+            var model = new TestModelFactory().GetModel();
             _client.Add(model);
             var result = _client.GetQueryable<TestModel>().FirstOrDefault(p => p.Id == model.Id);
             Assert.NotNull(result);
@@ -29,7 +29,7 @@ namespace TestProject
         [Fact]
         public async void AddAsync()
         {
-            var model = new GetModelService().GetModel();
+            var model = new TestModelFactory().GetModel();
             await _client.AddAsync(model);
             var result = _client.GetQueryable<TestModel>().FirstOrDefault(p => p.Id == model.Id);
             Assert.NotNull(result);
@@ -39,7 +39,7 @@ namespace TestProject
         [Fact]
         public void AddRange()
         {
-            var models = new GetModelService().GetModels(3).ToList();
+            var models = new TestModelFactory().GetModels(3).ToList();
             _client.AddRange(models);
             var ids = models.Select(g => g.Id).ToList();
             var results = _client.GetQueryable<TestModel>().Where(p => ids.Contains(p.Id))
@@ -50,7 +50,7 @@ namespace TestProject
         [Fact]
         public async void AddRangeAsync()
         {
-            var models = new GetModelService().GetModels(4).ToList();
+            var models = new TestModelFactory().GetModels(4).ToList();
             await _client.AddRangeAsync(models);
             var ids = models.Select(g => g.Id).ToList();
             var results = _client.GetQueryable<TestModel>().Where(p => ids.Contains(p.Id))

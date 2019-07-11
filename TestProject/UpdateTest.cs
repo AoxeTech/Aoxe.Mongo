@@ -14,14 +14,13 @@ namespace TestProject
 
         public UpdateTest()
         {
-            _client = new ZaabeeMongoClient(
-                Environment.GetEnvironmentVariable("MONGO_CONNECTION_STRING"), "TestDB");
+            _client = new ZaabeeMongoClient("mongodb://TestUser:123@192.168.78.152:27017/TestDB/?readPreference=primary", "TestDB");
         }
 
         [Fact]
         public void UpdateSuccess()
         {
-            var model = new GetModelService().GetModel();
+            var model = new TestModelFactory().GetModel();
             _client.Add(model);
             model.Int = 199;
             model.String = Guid.NewGuid().ToString();
@@ -40,7 +39,7 @@ namespace TestProject
         [Fact]
         public async void UpdateSuccessAsync()
         {
-            var model = new GetModelService().GetModel();
+            var model = new TestModelFactory().GetModel();
             await _client.AddAsync(model);
             model.Int = 199;
             model.String = Guid.NewGuid().ToString();
@@ -60,7 +59,7 @@ namespace TestProject
         [Fact]
         public void UpdateManySuccess()
         {
-            var models = new GetModelService().GetModels(5);
+            var models = new TestModelFactory().GetModels(5);
             _client.AddRange(models);
             var strings = models.Select(p => p.String);
             var ids = models.Select(p => p.Id);
@@ -108,7 +107,7 @@ namespace TestProject
         [Fact]
         public async void UpdateManySuccessAsync()
         {
-            var models = new GetModelService().GetModels(5);
+            var models = new TestModelFactory().GetModels(5);
             _client.AddRange(models);
             var strings = models.Select(p => p.String);
             var ids = models.Select(p => p.Id);

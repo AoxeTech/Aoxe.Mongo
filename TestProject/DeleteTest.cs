@@ -13,14 +13,13 @@ namespace TestProject
 
         public DeleteTest()
         {
-            _client = new ZaabeeMongoClient(
-                Environment.GetEnvironmentVariable("MONGO_CONNECTION_STRING"), "TestDB");
+            _client = new ZaabeeMongoClient("mongodb://TestUser:123@192.168.78.152:27017/TestDB/?readPreference=primary", "TestDB");
         }
 
         [Fact]
         public void DeleteSuccess()
         {
-            var model = new GetModelService().GetModel();
+            var model = new TestModelFactory().GetModel();
             _client.Add(model);
             Assert.Equal(1L, _client.Delete(model));
         }
@@ -34,7 +33,7 @@ namespace TestProject
         [Fact]
         public async void DeleteSuccessAsync()
         {
-            var model = new GetModelService().GetModel();
+            var model = new TestModelFactory().GetModel();
             await _client.AddAsync(model);
             Assert.Equal(1L, await _client.DeleteAsync(model));
         }
@@ -49,7 +48,7 @@ namespace TestProject
         [Fact]
         public void DeleteManySuccess()
         {
-            var models = new GetModelService().GetModels(5);
+            var models = new TestModelFactory().GetModels(5);
             _client.AddRange(models);
             var strings = models.Select(p => p.String);
             Assert.Equal(5L, _client.Delete<TestModel>(p => strings.Contains(p.String)));
@@ -65,7 +64,7 @@ namespace TestProject
         [Fact]
         public async void DeleteManySuccessAsync()
         {
-            var models = new GetModelService().GetModels(5);
+            var models = new TestModelFactory().GetModels(5);
             await _client.AddRangeAsync(models);
             var strings = models.Select(p => p.String);
             Assert.Equal(5L, await _client.DeleteAsync<TestModel>(p => strings.Contains(p.String)));

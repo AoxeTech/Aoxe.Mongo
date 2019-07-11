@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace TestProject
 {
-    public class GetModelService
+    public class TestModelFactory
     {
         internal List<TestModel> GetModels(int quantity)
         {

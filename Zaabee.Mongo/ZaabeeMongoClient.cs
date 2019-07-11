@@ -7,8 +7,10 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using Zaabee.Mongo.Abstractions;
 
@@ -29,11 +31,17 @@ namespace Zaabee.Mongo
             GuidRepresentation = GuidRepresentation.CSharpLegacy,
         };
 
-        public ZaabeeMongoClient(string connectionString, string dataBase)
+        public ZaabeeMongoClient(string connectionString, string dataBase, DateTimeKind? dateTimeKind = null)
         {
             BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
             ConventionRegistry.Register("IgnoreExtraElements",
                 new ConventionPack {new IgnoreExtraElementsConvention(true)}, type => true);
+            if (dateTimeKind != null)
+            {
+                var serializer = new DateTimeSerializer(DateTimeKind.Local, BsonType.DateTime);
+                BsonSerializer.RegisterSerializer(typeof(DateTime), serializer);
+            }
+
             MongoDatabase = new MongoClient(connectionString).GetDatabase(dataBase);
         }
 
