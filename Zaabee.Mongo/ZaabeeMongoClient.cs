@@ -215,7 +215,7 @@ namespace Zaabee.Mongo
             return new JsonFilterDefinition<T>(json);
         }
 
-        private bool IsNumericType(Type type)
+        private static bool IsNumericType(Type type)
         {
             switch (Type.GetTypeCode(type))
             {

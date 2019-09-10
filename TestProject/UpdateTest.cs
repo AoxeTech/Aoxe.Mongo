@@ -14,7 +14,7 @@ namespace TestProject
 
         public UpdateTest()
         {
-            _client = new ZaabeeMongoClient("mongodb://TestUser:123@192.168.78.152:27017/TestDB/?readPreference=primary", "TestDB");
+            _client = new ZaabeeMongoClient("mongodb://TestUser:123@192.168.78.143:27017/TestDB/?readPreference=primary", "TestDB");
         }
 
         [Fact]
