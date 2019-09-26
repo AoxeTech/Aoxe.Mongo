@@ -33,16 +33,30 @@ namespace Zaabee.Mongo
 
         public ZaabeeMongoClient(string connectionString, string dataBase, DateTimeKind? dateTimeKind = null)
         {
+            Init(dateTimeKind);
+            MongoDatabase = new MongoClient(connectionString).GetDatabase(dataBase);
+        }
+
+        public ZaabeeMongoClient(MongoClientSettings settings, string dataBase, DateTimeKind? dateTimeKind = null)
+        {
+            Init(dateTimeKind);
+            MongoDatabase = new MongoClient(settings).GetDatabase(dataBase);
+        }
+
+        public ZaabeeMongoClient(MongoUrl url, string dataBase, DateTimeKind? dateTimeKind = null)
+        {
+            Init(dateTimeKind);
+            MongoDatabase = new MongoClient(url).GetDatabase(dataBase);
+        }
+
+        private static void Init(DateTimeKind? dateTimeKind = null)
+        {
             BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
             ConventionRegistry.Register("IgnoreExtraElements",
                 new ConventionPack {new IgnoreExtraElementsConvention(true)}, type => true);
-            if (dateTimeKind != null)
-            {
-                var serializer = new DateTimeSerializer(DateTimeKind.Local, BsonType.DateTime);
-                BsonSerializer.RegisterSerializer(typeof(DateTime), serializer);
-            }
-
-            MongoDatabase = new MongoClient(connectionString).GetDatabase(dataBase);
+            if (dateTimeKind == null) return;
+            var serializer = new DateTimeSerializer(DateTimeKind.Local, BsonType.DateTime);
+            BsonSerializer.RegisterSerializer(typeof(DateTime), serializer);
         }
 
         public IQueryable<T> GetQueryable<T>() where T : class
