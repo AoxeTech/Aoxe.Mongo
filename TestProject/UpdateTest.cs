@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using Xunit;
 using Zaabee.Mongo;
@@ -14,7 +15,7 @@ namespace TestProject
 
         public UpdateTest()
         {
-            _client = new ZaabeeMongoClient("mongodb://TestUser:123@192.168.78.143:27017/TestDB/?readPreference=primary", "TestDB");
+            _client = new ZaabeeMongoClient("mongodb://TestUser:123@192.168.78.142:27017/admin/?readPreference=primary", "TestDB");
         }
 
         [Fact]
@@ -37,7 +38,7 @@ namespace TestProject
         }
 
         [Fact]
-        public async void UpdateSuccessAsync()
+        public async Task UpdateSuccessAsync()
         {
             var model = new TestModelFactory().GetModel();
             await _client.AddAsync(model);
@@ -50,7 +51,7 @@ namespace TestProject
         }
 
         [Fact]
-        public async void UpdateNullAsync()
+        public async Task UpdateNullAsync()
         {
             await Assert.ThrowsAsync<ArgumentNullException>("entity",
                 async () => await _client.UpdateAsync((TestModel) null));
@@ -105,7 +106,7 @@ namespace TestProject
         }
 
         [Fact]
-        public async void UpdateManySuccessAsync()
+        public async Task UpdateManySuccessAsync()
         {
             var models = new TestModelFactory().GetModels(5);
             _client.AddRange(models);
@@ -142,7 +143,7 @@ namespace TestProject
         }
 
         [Fact]
-        public async void UpdateManyNullAsync()
+        public async Task UpdateManyNullAsync()
         {
             await Assert.ThrowsAsync<ArgumentNullException>("update",
                 async () => await _client.UpdateAsync<TestModel>(null, p => p.DateTime == DateTime.Now));

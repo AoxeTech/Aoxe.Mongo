@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Xunit;
 using Zaabee.Mongo;
 using Zaabee.Mongo.Abstractions;
@@ -13,7 +14,7 @@ namespace TestProject
 
         public DeleteTest()
         {
-            _client = new ZaabeeMongoClient("mongodb://TestUser:123@192.168.78.143:27017/TestDB/?readPreference=primary", "TestDB");
+            _client = new ZaabeeMongoClient("mongodb://TestUser:123@192.168.78.142:27017/admin/?readPreference=primary", "TestDB");
         }
 
         [Fact]
@@ -31,7 +32,7 @@ namespace TestProject
         }
 
         [Fact]
-        public async void DeleteSuccessAsync()
+        public async Task DeleteSuccessAsync()
         {
             var model = new TestModelFactory().GetModel();
             await _client.AddAsync(model);
@@ -39,7 +40,7 @@ namespace TestProject
         }
 
         [Fact]
-        public async void DeleteNullAsync()
+        public async Task DeleteNullAsync()
         {
             await Assert.ThrowsAsync<ArgumentNullException>("entity",
                 async () => await _client.DeleteAsync((TestModel) null));
@@ -62,7 +63,7 @@ namespace TestProject
         }
 
         [Fact]
-        public async void DeleteManySuccessAsync()
+        public async Task DeleteManySuccessAsync()
         {
             var models = new TestModelFactory().GetModels(5);
             await _client.AddRangeAsync(models);
@@ -71,7 +72,7 @@ namespace TestProject
         }
 
         [Fact]
-        public async void DeleteManyNullAsync()
+        public async Task DeleteManyNullAsync()
         {
             await Assert.ThrowsAsync<ArgumentNullException>("where",
                 async () => await _client.DeleteAsync((Expression<Func<TestModel, bool>>) null));

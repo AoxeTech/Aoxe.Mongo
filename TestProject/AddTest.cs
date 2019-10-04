@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using Xunit;
 using Zaabee.Mongo;
@@ -12,7 +13,7 @@ namespace TestProject
 
         public AddTest()
         {
-            _client = new ZaabeeMongoClient("mongodb://TestUser:123@192.168.78.143:27017/TestDB/?readPreference=primary", "TestDB");
+            _client = new ZaabeeMongoClient("mongodb://TestUser:123@192.168.78.142:27017/admin/?readPreference=primary", "TestDB");
         }
 
         [Fact]
@@ -26,7 +27,7 @@ namespace TestProject
         }
 
         [Fact]
-        public async void AddAsync()
+        public async Task AddAsync()
         {
             var model = new TestModelFactory().GetModel();
             await _client.AddAsync(model);
@@ -47,7 +48,7 @@ namespace TestProject
         }
 
         [Fact]
-        public async void AddRangeAsync()
+        public async Task AddRangeAsync()
         {
             var models = new TestModelFactory().GetModels(4).ToList();
             await _client.AddRangeAsync(models);
