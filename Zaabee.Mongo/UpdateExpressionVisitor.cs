@@ -109,9 +109,6 @@ namespace Zaabee.Mongo
                 var lambda = Expression.Lambda<Func<object>>(Expression.Convert(node, typeof(object)));
                 var value = lambda.Compile().Invoke();
 
-                if (node.Type.IsEnum)
-                    value = (int) value;
-
                 _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, value));
             }
 
