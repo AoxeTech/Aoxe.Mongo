@@ -59,7 +59,7 @@ Query
 ```CSharp
 var query = mongoClient.GetQueryable<TestModel>();
 var result = query.First(p => p.Name == "pear");
-var result = query.Where(p => names.Contains(p.Name)).ToList()；
+var result = query.Where(p => names.Contains(p.Name)).ToList();
 ```
 
 >Notice1:The Zaabee.Mongo will priority select the property with BsonIdAttribute as the Primary Key.If not found,the property witch named "Id"/"id"/"_id" will be follow.
