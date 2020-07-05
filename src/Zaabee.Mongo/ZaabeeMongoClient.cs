@@ -18,7 +18,8 @@ namespace Zaabee.Mongo
 {
     public class ZaabeeMongoClient : IZaabeeMongoClient
     {
-        private IMongoDatabase MongoDatabase { get; }
+        public IMongoClient MongoClient { get; set; }
+        public IMongoDatabase MongoDatabase { get; set; }
 
         private readonly ConcurrentDictionary<Type, string> _tableNames = new ConcurrentDictionary<Type, string>();
 
@@ -31,31 +32,42 @@ namespace Zaabee.Mongo
             GuidRepresentation = GuidRepresentation.CSharpLegacy,
         };
 
-        public ZaabeeMongoClient(string connectionString, string dataBase, DateTimeKind? dateTimeKind = null)
+        public ZaabeeMongoClient(string connectionString, string dataBase,
+            DateTimeKind dateTimeKind = DateTimeKind.Local)
         {
             Init(dateTimeKind);
-            MongoDatabase = new MongoClient(connectionString).GetDatabase(dataBase);
+            MongoClient = new MongoClient(connectionString);
+            MongoDatabase = MongoClient.GetDatabase(dataBase);
         }
 
-        public ZaabeeMongoClient(MongoClientSettings settings, string dataBase, DateTimeKind? dateTimeKind = null)
+        public ZaabeeMongoClient(MongoClientSettings settings, string dataBase,
+            DateTimeKind dateTimeKind = DateTimeKind.Local)
         {
             Init(dateTimeKind);
-            MongoDatabase = new MongoClient(settings).GetDatabase(dataBase);
+            MongoClient = new MongoClient(settings);
+            MongoDatabase = MongoClient.GetDatabase(dataBase);
         }
 
-        public ZaabeeMongoClient(MongoUrl url, string dataBase, DateTimeKind? dateTimeKind = null)
+        public ZaabeeMongoClient(MongoUrl url, string dataBase, DateTimeKind dateTimeKind = DateTimeKind.Local)
         {
             Init(dateTimeKind);
-            MongoDatabase = new MongoClient(url).GetDatabase(dataBase);
+            MongoClient = new MongoClient(url);
+            MongoDatabase = MongoClient.GetDatabase(dataBase);
         }
 
-        private static void Init(DateTimeKind? dateTimeKind = null)
+        public ZaabeeMongoClient(IMongoClient mongoClient, string dataBase, DateTimeKind dateTimeKind = DateTimeKind.Local)
+        {
+            Init(dateTimeKind);
+            MongoClient = mongoClient;
+            MongoDatabase = MongoClient.GetDatabase(dataBase);
+        }
+
+        private static void Init(DateTimeKind dateTimeKind = DateTimeKind.Local)
         {
             BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
             ConventionRegistry.Register("IgnoreExtraElements",
                 new ConventionPack {new IgnoreExtraElementsConvention(true)}, type => true);
-            if (dateTimeKind == null) return;
-            var serializer = new DateTimeSerializer(DateTimeKind.Local, BsonType.DateTime);
+            var serializer = new DateTimeSerializer(dateTimeKind, BsonType.DateTime);
             BsonSerializer.RegisterSerializer(typeof(DateTime), serializer);
         }
 
