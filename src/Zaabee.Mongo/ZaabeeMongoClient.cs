@@ -18,8 +18,9 @@ namespace Zaabee.Mongo
 {
     public class ZaabeeMongoClient : IZaabeeMongoClient
     {
-        public IMongoClient MongoClient { get; set; }
-        public IMongoDatabase MongoDatabase { get; set; }
+        public IMongoClient MongoClient { get; }
+        
+        private IMongoDatabase MongoDatabase { get; }
 
         private readonly ConcurrentDictionary<Type, string> _tableNames = new ConcurrentDictionary<Type, string>();
 
@@ -55,7 +56,8 @@ namespace Zaabee.Mongo
             MongoDatabase = MongoClient.GetDatabase(dataBase);
         }
 
-        public ZaabeeMongoClient(IMongoClient mongoClient, string dataBase, DateTimeKind dateTimeKind = DateTimeKind.Local)
+        public ZaabeeMongoClient(IMongoClient mongoClient, string dataBase,
+            DateTimeKind dateTimeKind = DateTimeKind.Local)
         {
             Init(dateTimeKind);
             MongoClient = mongoClient;
