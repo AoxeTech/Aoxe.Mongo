@@ -13,13 +13,14 @@ using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using Zaabee.Mongo.Abstractions;
+using Zaabee.Mongo.Core;
 
 namespace Zaabee.Mongo
 {
     public class ZaabeeMongoClient : IZaabeeMongoClient
     {
         public IMongoClient MongoClient { get; }
-        
+
         private IMongoDatabase MongoDatabase { get; }
 
         private readonly ConcurrentDictionary<Type, string> _tableNames = new ConcurrentDictionary<Type, string>();
@@ -105,7 +106,7 @@ namespace Zaabee.Mongo
 
         public long Delete<T>(T entity) where T : class
         {
-            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            if (entity is null) throw new ArgumentNullException(nameof(entity));
 
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
@@ -119,7 +120,7 @@ namespace Zaabee.Mongo
 
         public async Task<long> DeleteAsync<T>(T entity) where T : class
         {
-            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            if (entity is null) throw new ArgumentNullException(nameof(entity));
 
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
@@ -133,7 +134,7 @@ namespace Zaabee.Mongo
 
         public long Delete<T>(Expression<Func<T, bool>> where) where T : class
         {
-            if (where == null) throw new ArgumentNullException(nameof(where));
+            if (where is null) throw new ArgumentNullException(nameof(where));
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
             return collection.DeleteMany(where).DeletedCount;
@@ -141,7 +142,7 @@ namespace Zaabee.Mongo
 
         public async Task<long> DeleteAsync<T>(Expression<Func<T, bool>> where) where T : class
         {
-            if (where == null) throw new ArgumentNullException(nameof(where));
+            if (where is null) throw new ArgumentNullException(nameof(where));
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
             var result = await collection.DeleteManyAsync(where);
@@ -150,7 +151,7 @@ namespace Zaabee.Mongo
 
         public long Update<T>(T entity) where T : class
         {
-            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            if (entity is null) throw new ArgumentNullException(nameof(entity));
 
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
@@ -165,7 +166,7 @@ namespace Zaabee.Mongo
 
         public async Task<long> UpdateAsync<T>(T entity) where T : class
         {
-            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            if (entity is null) throw new ArgumentNullException(nameof(entity));
 
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
@@ -180,28 +181,26 @@ namespace Zaabee.Mongo
 
         public long Update<T>(Expression<Func<T>> update, Expression<Func<T, bool>> where) where T : class
         {
-            if (update == null) throw new ArgumentNullException(nameof(update));
-            if (where == null) throw new ArgumentNullException(nameof(where));
+            if (update is null) throw new ArgumentNullException(nameof(update));
+            if (where is null) throw new ArgumentNullException(nameof(where));
 
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
-            var updateDefinitionList = new UpdateExpressionVisitor<T>().GetUpdateDefinition(update);
-            var updateDefinition = new UpdateDefinitionBuilder<T>().Combine(updateDefinitionList);
-            var result = collection.UpdateMany(where, updateDefinition);
+
+            var result = collection.UpdateMany(where, update);
             return result.ModifiedCount;
         }
 
         public async Task<long> UpdateAsync<T>(Expression<Func<T>> update, Expression<Func<T, bool>> where)
             where T : class
         {
-            if (update == null) throw new ArgumentNullException(nameof(update));
-            if (where == null) throw new ArgumentNullException(nameof(where));
+            if (update is null) throw new ArgumentNullException(nameof(update));
+            if (where is null) throw new ArgumentNullException(nameof(where));
 
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
-            var updateDefinitionList = new UpdateExpressionVisitor<T>().GetUpdateDefinition(update);
-            var updateDefinition = new UpdateDefinitionBuilder<T>().Combine(updateDefinitionList);
-            var result = await collection.UpdateManyAsync(where, updateDefinition);
+
+            var result = await collection.UpdateManyAsync(where, update);
             return result.ModifiedCount;
         }
 
@@ -216,26 +215,15 @@ namespace Zaabee.Mongo
                 json = $"{{\"_id\":{value}}}";
             else if (propertyInfo.PropertyType == typeof(Guid))
             {
-                switch (guidRepresentation)
+                json = guidRepresentation switch
                 {
-                    case GuidRepresentation.Unspecified:
-                        json = "{\"_id\":" + $"UUID(\"{value}\")" + "}";
-                        break;
-                    case GuidRepresentation.Standard:
-                        json = "{\"_id\":" + $"UUID(\"{value}\")" + "}";
-                        break;
-                    case GuidRepresentation.CSharpLegacy:
-                        json = "{\"_id\":" + $"CSUUID(\"{value}\")" + "}";
-                        break;
-                    case GuidRepresentation.JavaLegacy:
-                        json = "{\"_id\":" + $"UUID(\"{value}\")" + "}";
-                        break;
-                    case GuidRepresentation.PythonLegacy:
-                        json = "{\"_id\":" + $"UUID(\"{value}\")" + "}";
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                    GuidRepresentation.Unspecified => "{\"_id\":" + $"UUID(\"{value}\")" + "}",
+                    GuidRepresentation.Standard => "{\"_id\":" + $"UUID(\"{value}\")" + "}",
+                    GuidRepresentation.CSharpLegacy => "{\"_id\":" + $"CSUUID(\"{value}\")" + "}",
+                    GuidRepresentation.JavaLegacy => "{\"_id\":" + $"UUID(\"{value}\")" + "}",
+                    GuidRepresentation.PythonLegacy => "{\"_id\":" + $"UUID(\"{value}\")" + "}",
+                    _ => throw new ArgumentOutOfRangeException()
+                };
             }
             else
                 json = $"{{\"_id\":\"{value}\"}}";
@@ -243,50 +231,22 @@ namespace Zaabee.Mongo
             return new JsonFilterDefinition<T>(json);
         }
 
-        private static bool IsNumericType(Type type)
-        {
-            switch (Type.GetTypeCode(type))
+        private static bool IsNumericType(Type type) =>
+            Type.GetTypeCode(type) switch
             {
-                case TypeCode.Byte:
-                    return true;
-                case TypeCode.SByte:
-                    return true;
-                case TypeCode.UInt16:
-                    return true;
-                case TypeCode.UInt32:
-                    return true;
-                case TypeCode.UInt64:
-                    return true;
-                case TypeCode.Int16:
-                    return true;
-                case TypeCode.Int32:
-                    return true;
-                case TypeCode.Int64:
-                    return true;
-                case TypeCode.Decimal:
-                    return true;
-                case TypeCode.Double:
-                    return true;
-                case TypeCode.Single:
-                    return true;
-                case TypeCode.Boolean:
-                    return false;
-                case TypeCode.Char:
-                    return false;
-                case TypeCode.DateTime:
-                    return false;
-                case TypeCode.DBNull:
-                    return false;
-                case TypeCode.Empty:
-                    return false;
-                case TypeCode.Object:
-                    return false;
-                case TypeCode.String:
-                    return false;
-                default:
-                    return false;
-            }
-        }
+                TypeCode.Byte => true,
+                TypeCode.SByte => true,
+                TypeCode.UInt16 => true,
+                TypeCode.UInt32 => true,
+                TypeCode.UInt64 => true,
+                TypeCode.Int16 => true,
+                TypeCode.Int32 => true,
+                TypeCode.Int64 => true,
+                TypeCode.Decimal => true,
+                TypeCode.Double => true,
+                TypeCode.Single => true,
+                _ => false
+            };
 
         private PropertyInfo GetIdProperty(Type type)
         {
