@@ -30,7 +30,7 @@ namespace TestProject
         {
             var query = from a in _client.GetQueryable<TestModel>()
                 from b in _client.GetQueryable<TestModel>()
-                where a.Guids.Contains(b.Id)
+                where a.GuidList.Contains(b.Id)
                 select new {a, b};
             Assert.Throws<NotSupportedException>(() => query.ToList());
         }

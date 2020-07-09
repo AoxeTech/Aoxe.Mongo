@@ -77,7 +77,7 @@ namespace TestProject
                     DateTime = now,
                     DateTimeUtc = utcNow,
                     String = name,
-                    Kids = kids,
+                    KidList = kids,
                     EnumInt = EnumInt.Banana
                 },
                 p => strings.Contains(p.String));
@@ -86,7 +86,7 @@ namespace TestProject
                 model.DateTime = now;
                 model.DateTimeUtc = utcNow;
                 model.String = name;
-                model.Kids = kids;
+                model.KidList = kids;
                 model.EnumInt = EnumInt.Banana;
             });
 
@@ -125,7 +125,7 @@ namespace TestProject
                     DateTime = now,
                     DateTimeUtc = utcNow,
                     String = name,
-                    Kids = kids
+                    KidList = kids
                 },
                 p => strings.Contains(p.String));
             models.ForEach(model =>
@@ -133,7 +133,7 @@ namespace TestProject
                 model.DateTime = now;
                 model.DateTimeUtc = utcNow;
                 model.String = name;
-                model.Kids = kids;
+                model.KidList = kids;
             });
 
             var results = _client.GetQueryable<TestModel>().Where(p => ids.Contains(p.Id)).ToList();
