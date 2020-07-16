@@ -22,6 +22,9 @@ namespace Zaabee.Mongo
         public IMongoClient MongoClient { get; }
 
         private IMongoDatabase MongoDatabase { get; }
+        
+        private static bool HasInitialized { get; set; }
+        private static object LockObj { get; } = new object();
 
         private readonly ConcurrentDictionary<Type, string> _tableNames = new ConcurrentDictionary<Type, string>();
 
@@ -67,11 +70,17 @@ namespace Zaabee.Mongo
 
         private static void Init(DateTimeKind dateTimeKind = DateTimeKind.Local)
         {
-            BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
-            ConventionRegistry.Register("IgnoreExtraElements",
-                new ConventionPack {new IgnoreExtraElementsConvention(true)}, type => true);
-            var serializer = new DateTimeSerializer(dateTimeKind, BsonType.DateTime);
-            BsonSerializer.RegisterSerializer(typeof(DateTime), serializer);
+            if (HasInitialized) return;
+            lock (LockObj)
+            {
+                if (HasInitialized) return;
+                BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
+                ConventionRegistry.Register("IgnoreExtraElements",
+                    new ConventionPack {new IgnoreExtraElementsConvention(true)}, type => true);
+                var serializer = new DateTimeSerializer(dateTimeKind, BsonType.DateTime);
+                BsonSerializer.RegisterSerializer(typeof(DateTime), serializer);
+                HasInitialized = true;
+            }
         }
 
         public IQueryable<T> GetQueryable<T>() where T : class

@@ -3,8 +3,8 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>2020.3.2</PackageVersion>
-        <Version>2020.3.2</Version>
+        <PackageVersion>2020.3.3</PackageVersion>
+        <Version>2020.3.3</Version>
         <Authors>Mutuduxf</Authors>
         <Company>Mutuduxf</Company>
         <PackageTags>Zaabee Zaaby Mongo Repository</PackageTags>
