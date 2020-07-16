@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TestProject
+namespace Zaabee.Mongo.Core.UnitTest
 {
     public class TestModel
     {
@@ -9,6 +9,9 @@ namespace TestProject
         public Guid Guid { get; set; }
         public Guid[] GuidArray { get; set; }
         public IList<Guid> GuidList { get; set; }
+        public sbyte SByte { get; set; }
+        public sbyte[] SByteArray { get; set; }
+        public List<sbyte> SByteList { get; set; }
         public short Short { get; set; }
         public short[] ShortArray { get; set; }
         public List<short> ShortList { get; set; }
@@ -18,6 +21,9 @@ namespace TestProject
         public long Long { get; set; }
         public long[] LongArray { get; set; }
         public List<long> LongList { get; set; }
+        public byte Byte { get; set; }
+        public byte[] ByteArray { get; set; }
+        public List<byte> ByteList { get; set; }
         public ushort UShort { get; set; }
         public ushort[] UShortArray { get; set; }
         public List<ushort> UShortList { get; set; }
@@ -52,47 +58,39 @@ namespace TestProject
         public TestModel[] KidArray { get; set; }
         public List<TestModel> KidList { get; set; }
         public EnumByte EnumByte { get; set; }
-
         public EnumByte[] EnumByteArray { get; set; }
         public List<EnumByte> EnumByteList { get; set; }
         public EnumSByte EnumSByte { get; set; }
-
         public EnumSByte[] EnumSByteArray { get; set; }
         public List<EnumSByte> EnumSByteList { get; set; }
         public EnumShort EnumShort { get; set; }
-
         public EnumShort[] EnumShortArray { get; set; }
         public List<EnumShort> EnumShortList { get; set; }
         public EnumUShort EnumUShort { get; set; }
-
         public EnumUShort[] EnumUShortArray { get; set; }
         public List<EnumUShort> EnumUShortList { get; set; }
         public EnumInt EnumInt { get; set; }
-
         public EnumInt[] EnumIntArray { get; set; }
         public List<EnumInt> EnumIntList { get; set; }
         public EnumUInt EnumUInt { get; set; }
-
         public EnumUInt[] EnumUIntArray { get; set; }
         public List<EnumUInt> EnumUIntList { get; set; }
         public EnumLong EnumLong { get; set; }
-
         public EnumLong[] EnumLongArray { get; set; }
         public List<EnumLong> EnumLongList { get; set; }
         public EnumULong EnumULong { get; set; }
-
         public EnumULong[] EnumULongArray { get; set; }
         public List<EnumULong> EnumULongList { get; set; }
     }
 
-    public enum EnumByte : byte
+    public enum EnumSByte : sbyte
     {
         Apple,
         Banana,
         Pear
     }
 
-    public enum EnumSByte : sbyte
+    public enum EnumByte : byte
     {
         Apple,
         Banana,

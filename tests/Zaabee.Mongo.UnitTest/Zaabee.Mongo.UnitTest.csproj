@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Zaabee.Mongo\Zaabee.Mongo.csproj" />
+        <ProjectReference Include="..\..\src\Zaabee.Mongo\Zaabee.Mongo.csproj" />
     </ItemGroup>
 
 </Project>

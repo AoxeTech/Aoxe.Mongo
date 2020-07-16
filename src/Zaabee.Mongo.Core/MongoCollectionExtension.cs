@@ -16,8 +16,8 @@ namespace Zaabee.Mongo.Core
             if (update is null) throw new ArgumentNullException(nameof(update));
             if (where is null) throw new ArgumentNullException(nameof(where));
 
-            var updateBson = new UpdateBsonVisitor<T>().GetUpdateDefinition(update);
-            return mongoCollection.UpdateMany(where, updateBson, options, cancellationToken);
+            var updateDefinition = new UpdateExpressionVisitor<T>().GetUpdateDefinition(update);
+            return mongoCollection.UpdateMany(where, updateDefinition, options, cancellationToken);
         }
 
         public static async Task<UpdateResult> UpdateManyAsync<T>(this IMongoCollection<T> mongoCollection,
@@ -28,8 +28,8 @@ namespace Zaabee.Mongo.Core
             if (update is null) throw new ArgumentNullException(nameof(update));
             if (where is null) throw new ArgumentNullException(nameof(where));
 
-            var updateBson = new UpdateBsonVisitor<T>().GetUpdateDefinition(update);
-            return await mongoCollection.UpdateManyAsync(@where, updateBson, options, cancellationToken);
+            var updateDefinition = new UpdateExpressionVisitor<T>().GetUpdateDefinition(update);
+            return await mongoCollection.UpdateManyAsync(@where, updateDefinition, options, cancellationToken);
         }
     }
 }

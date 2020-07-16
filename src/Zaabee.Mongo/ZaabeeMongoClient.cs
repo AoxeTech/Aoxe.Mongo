@@ -159,7 +159,7 @@ namespace Zaabee.Mongo
             var filter = GetJsonFilterDefinition(entity, _collectionSettings.GuidRepresentation);
 
             var result = collection.UpdateOne(filter,
-                new BsonDocumentUpdateDefinition<T>(new BsonDocument {{"$set", entity.ToBsonDocument()}}));
+                new BsonDocumentUpdateDefinition<T>(new BsonDocument {{"$set",entity.ToBsonDocument()}}));
 
             return result.ModifiedCount;
         }
@@ -206,14 +206,14 @@ namespace Zaabee.Mongo
 
         private JsonFilterDefinition<T> GetJsonFilterDefinition<T>(T entity, GuidRepresentation guidRepresentation)
         {
-            var propertyInfo = GetIdProperty(typeof(T));
+            var idPropertyInfo = GetIdProperty(typeof(T));
 
-            var value = propertyInfo.GetValue(entity, null);
+            var value = idPropertyInfo.GetValue(entity, null);
 
             string json;
-            if (IsNumericType(propertyInfo.PropertyType))
+            if (IsNumericType(idPropertyInfo.PropertyType))
                 json = $"{{\"_id\":{value}}}";
-            else if (propertyInfo.PropertyType == typeof(Guid))
+            else if (idPropertyInfo.PropertyType == typeof(Guid))
             {
                 json = guidRepresentation switch
                 {

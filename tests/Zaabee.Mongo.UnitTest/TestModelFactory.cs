@@ -2,16 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TestProject
+namespace Zaabee.Mongo.UnitTest
 {
-    public class TestModelFactory
+    public static class TestModelFactory
     {
-        internal List<TestModel> GetModels(int quantity)
-        {
-            return Enumerable.Range(0, quantity).Select(GetModel).ToList();
-        }
+        internal static List<TestModel> GetModels(int quantity) =>
+            Enumerable.Range(0, quantity).Select(GetModel).ToList();
 
-        internal TestModel GetModel(int seed = 0)
+        internal static TestModel GetModel(int seed = 0)
         {
             return new TestModel
             {
@@ -19,6 +17,9 @@ namespace TestProject
                 Guid = Guid.NewGuid(),
                 GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
                 GuidList = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                SByte = 1,
+                SByteArray = new sbyte[]{-1, 0, 1},
+                SByteList = new List<sbyte> {-1, 0, 1},
                 Short = -1,
                 ShortArray = new short[] {-1, 0, 1},
                 ShortList = new List<short> {-1, 0, 1},
@@ -28,6 +29,9 @@ namespace TestProject
                 Long = -3,
                 LongArray = new long[] {-1, 0, 1},
                 LongList = new List<long> {-1, 0, 1},
+                Byte = 1,
+                ByteArray = new byte[]{0, 1, 2},
+                ByteList = new List<byte> {0, 1, 2},
                 UShort = 1,
                 UShortArray = new ushort[] {0, 1, 2},
                 UShortList = new List<ushort> {0, 1, 2},
@@ -75,6 +79,9 @@ namespace TestProject
                     Guid = Guid.NewGuid(),
                     GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
                     GuidList = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                    SByte = 1,
+                    SByteArray = new sbyte[]{-1, 0, 1},
+                    SByteList = new List<sbyte> {-1, 0, 1},
                     Short = -1,
                     ShortArray = new short[] {-1, 0, 1},
                     ShortList = new List<short> {-1, 0, 1},
@@ -84,6 +91,9 @@ namespace TestProject
                     Long = -3,
                     LongArray = new long[] {-1, 0, 1},
                     LongList = new List<long> {-1, 0, 1},
+                    Byte = 1,
+                    ByteArray = new byte[]{0, 1, 2},
+                    ByteList = new List<byte> {0, 1, 2},
                     UShort = 1,
                     UShortArray = new ushort[] {0, 1, 2},
                     UShortList = new List<ushort> {0, 1, 2},
@@ -133,6 +143,9 @@ namespace TestProject
                         Guid = Guid.NewGuid(),
                         GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
                         GuidList = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                        SByte = 1,
+                        SByteArray = new sbyte[]{-1, 0, 1},
+                        SByteList = new List<sbyte> {-1, 0, 1},
                         Short = -1,
                         ShortArray = new short[] {-1, 0, 1},
                         ShortList = new List<short> {-1, 0, 1},
@@ -142,6 +155,9 @@ namespace TestProject
                         Long = -3,
                         LongArray = new long[] {-1, 0, 1},
                         LongList = new List<long> {-1, 0, 1},
+                        Byte = 1,
+                        ByteArray = new byte[]{0, 1, 2},
+                        ByteList = new List<byte> {0, 1, 2},
                         UShort = 1,
                         UShortArray = new ushort[] {0, 1, 2},
                         UShortList = new List<ushort> {0, 1, 2},
@@ -189,6 +205,9 @@ namespace TestProject
                         Guid = Guid.NewGuid(),
                         GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
                         GuidList = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                        SByte = 1,
+                        SByteArray = new sbyte[]{-1, 0, 1},
+                        SByteList = new List<sbyte> {-1, 0, 1},
                         Short = -1,
                         ShortArray = new short[] {-1, 0, 1},
                         ShortList = new List<short> {-1, 0, 1},
@@ -198,6 +217,9 @@ namespace TestProject
                         Long = -3,
                         LongArray = new long[] {-1, 0, 1},
                         LongList = new List<long> {-1, 0, 1},
+                        Byte = 1,
+                        ByteArray = new byte[]{0, 1, 2},
+                        ByteList = new List<byte> {0, 1, 2},
                         UShort = 1,
                         UShortArray = new ushort[] {0, 1, 2},
                         UShortList = new List<ushort> {0, 1, 2},
@@ -245,6 +267,9 @@ namespace TestProject
                         Guid = Guid.NewGuid(),
                         GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
                         GuidList = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                        SByte = 1,
+                        SByteArray = new sbyte[]{-1, 0, 1},
+                        SByteList = new List<sbyte> {-1, 0, 1},
                         Short = -1,
                         ShortArray = new short[] {-1, 0, 1},
                         ShortList = new List<short> {-1, 0, 1},
@@ -254,6 +279,9 @@ namespace TestProject
                         Long = -3,
                         LongArray = new long[] {-1, 0, 1},
                         LongList = new List<long> {-1, 0, 1},
+                        Byte = 1,
+                        ByteArray = new byte[]{0, 1, 2},
+                        ByteList = new List<byte> {0, 1, 2},
                         UShort = 1,
                         UShortArray = new ushort[] {0, 1, 2},
                         UShortList = new List<ushort> {0, 1, 2},
@@ -304,6 +332,9 @@ namespace TestProject
                         Guid = Guid.NewGuid(),
                         GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
                         GuidList = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                        SByte = 1,
+                        SByteArray = new sbyte[]{-1, 0, 1},
+                        SByteList = new List<sbyte> {-1, 0, 1},
                         Short = -1,
                         ShortArray = new short[] {-1, 0, 1},
                         ShortList = new List<short> {-1, 0, 1},
@@ -313,6 +344,9 @@ namespace TestProject
                         Long = -3,
                         LongArray = new long[] {-1, 0, 1},
                         LongList = new List<long> {-1, 0, 1},
+                        Byte = 1,
+                        ByteArray = new byte[]{0, 1, 2},
+                        ByteList = new List<byte> {0, 1, 2},
                         UShort = 1,
                         UShortArray = new ushort[] {0, 1, 2},
                         UShortList = new List<ushort> {0, 1, 2},
@@ -360,6 +394,9 @@ namespace TestProject
                         Guid = Guid.NewGuid(),
                         GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
                         GuidList = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                        SByte = 1,
+                        SByteArray = new sbyte[]{-1, 0, 1},
+                        SByteList = new List<sbyte> {-1, 0, 1},
                         Short = -1,
                         ShortArray = new short[] {-1, 0, 1},
                         ShortList = new List<short> {-1, 0, 1},
@@ -369,6 +406,9 @@ namespace TestProject
                         Long = -3,
                         LongArray = new long[] {-1, 0, 1},
                         LongList = new List<long> {-1, 0, 1},
+                        Byte = 1,
+                        ByteArray = new byte[]{0, 1, 2},
+                        ByteList = new List<byte> {0, 1, 2},
                         UShort = 1,
                         UShortArray = new ushort[] {0, 1, 2},
                         UShortList = new List<ushort> {0, 1, 2},
@@ -416,6 +456,9 @@ namespace TestProject
                         Guid = Guid.NewGuid(),
                         GuidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
                         GuidList = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()},
+                        SByte = 1,
+                        SByteArray = new sbyte[]{-1, 0, 1},
+                        SByteList = new List<sbyte> {-1, 0, 1},
                         Short = -1,
                         ShortArray = new short[] {-1, 0, 1},
                         ShortList = new List<short> {-1, 0, 1},
@@ -425,6 +468,9 @@ namespace TestProject
                         Long = -3,
                         LongArray = new long[] {-1, 0, 1},
                         LongList = new List<long> {-1, 0, 1},
+                        Byte = 1,
+                        ByteArray = new byte[]{0, 1, 2},
+                        ByteList = new List<byte> {0, 1, 2},
                         UShort = 1,
                         UShortArray = new ushort[] {0, 1, 2},
                         UShortList = new List<ushort> {0, 1, 2},

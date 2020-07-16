@@ -1,23 +1,21 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Zaabee.Mongo.Core
 {
-    internal class UpdateBsonVisitor<T> : MongoDB.Bson.Serialization.ExpressionVisitor
+    internal class UpdateExpressionVisitor<T> : MongoDB.Bson.Serialization.ExpressionVisitor
     {
-        private readonly BsonDocument _updateItems = new BsonDocument();
-        private readonly BsonDocument _updateDocument = new BsonDocument();
-
+        private readonly List<UpdateDefinition<T>> _updateDefinitionList = new List<UpdateDefinition<T>>();
         private string _fieldName;
 
-        public BsonDocument GetUpdateDefinition(Expression<Func<T>> expression)
+        public UpdateDefinition<T> GetUpdateDefinition(Expression<Func<T>> expression)
         {
             Visit(expression);
-            _updateDocument.AddRange(new BsonDocument("$set", _updateItems));
-            return _updateDocument;
+            return new UpdateDefinitionBuilder<T>().Combine(_updateDefinitionList);
         }
 
         protected override Expression VisitMemberInit(MemberInitExpression node)
@@ -29,10 +27,11 @@ namespace Zaabee.Mongo.Core
 
                 if (memberAssignment.Expression.NodeType == ExpressionType.MemberInit)
                 {
-                    var lambda = Expression
-                        .Lambda<Func<object>>(Expression.Convert(memberAssignment.Expression, typeof(object)));
+                    var lambda =
+                        Expression.Lambda<Func<object>>(Expression.Convert(memberAssignment.Expression,
+                            typeof(object)));
                     var value = lambda.Compile().Invoke();
-                    _updateItems.AddRange(new BsonDocument(_fieldName, BsonValue.Create(value)));
+                    _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, value));
                 }
                 else
                     Visit(memberAssignment.Expression);
@@ -62,14 +61,16 @@ namespace Zaabee.Mongo.Core
                 };
             }
 
-            _updateItems.AddRange(new BsonDocument(_fieldName, BsonValue.Create(value)));
+            var updateDefinition = Builders<T>.Update.Inc(_fieldName, value);
+
+            _updateDefinitionList.Add(updateDefinition);
 
             return node;
         }
 
         protected override Expression VisitConstant(ConstantExpression node)
         {
-            _updateItems.AddRange(new BsonDocument(_fieldName, BsonValue.Create(node.Value)));
+            _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, node.Value));
 
             return node;
         }
@@ -90,13 +91,14 @@ namespace Zaabee.Mongo.Core
 
         protected override Expression VisitMember(MemberExpression node)
         {
-            if (node.Type.GetInterfaces().Any(a => a == typeof(IEnumerable)))
+            if (node.Type.GetInterfaces().Any(a => a == typeof(IList)))
                 SetList(node);
             else
             {
                 var lambda = Expression.Lambda<Func<object>>(Expression.Convert(node, typeof(object)));
                 var value = lambda.Compile().Invoke();
-                _updateItems.AddRange(new BsonDocument(_fieldName, value.ToBsonDocument()));
+
+                _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, value));
             }
 
             return node;
@@ -106,7 +108,7 @@ namespace Zaabee.Mongo.Core
         {
             var lambda = Expression.Lambda(node);
             var value = lambda.Compile().DynamicInvoke();
-            _updateItems.AddRange(new BsonDocument(_fieldName, value.ToBsonDocument()));
+            _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, value));
         }
     }
 }
