@@ -19,68 +19,81 @@ namespace Zaabee.Mongo
 {
     public class ZaabeeMongoClient : IZaabeeMongoClient
     {
-        public IMongoClient MongoClient { get; }
+        private static bool HasConfigured { get; set; }
+        private static readonly object LockObj = new object();
+        private MongoCollectionSettings _collectionSettings;
 
-        private IMongoDatabase MongoDatabase { get; }
-        
-        private static bool HasInitialized { get; set; }
-        private static object LockObj { get; } = new object();
-
-        private readonly ConcurrentDictionary<Type, string> _tableNames = new ConcurrentDictionary<Type, string>();
+        private readonly ConcurrentDictionary<Type, string> _tableNames =
+            new ConcurrentDictionary<Type, string>();
 
         private readonly ConcurrentDictionary<Type, PropertyInfo> _idProperties =
             new ConcurrentDictionary<Type, PropertyInfo>();
 
-        private readonly MongoCollectionSettings _collectionSettings = new MongoCollectionSettings
-        {
-            AssignIdOnInsert = true,
-            GuidRepresentation = GuidRepresentation.CSharpLegacy,
-        };
+        public IMongoClient MongoClient { get; }
+        public IMongoDatabase MongoDatabase { get; }
 
         public ZaabeeMongoClient(string connectionString, string dataBase,
-            DateTimeKind dateTimeKind = DateTimeKind.Local)
+            DateTimeKind dateTimeKind = DateTimeKind.Local,
+            GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
         {
-            Init(dateTimeKind);
+            Configure(dateTimeKind, guidRepresentation);
+            Initialize(guidRepresentation);
             MongoClient = new MongoClient(connectionString);
             MongoDatabase = MongoClient.GetDatabase(dataBase);
         }
 
         public ZaabeeMongoClient(MongoClientSettings settings, string dataBase,
-            DateTimeKind dateTimeKind = DateTimeKind.Local)
+            DateTimeKind dateTimeKind = DateTimeKind.Local,
+            GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
         {
-            Init(dateTimeKind);
+            Configure(dateTimeKind, guidRepresentation);
+            Initialize(guidRepresentation);
             MongoClient = new MongoClient(settings);
             MongoDatabase = MongoClient.GetDatabase(dataBase);
         }
 
-        public ZaabeeMongoClient(MongoUrl url, string dataBase, DateTimeKind dateTimeKind = DateTimeKind.Local)
+        public ZaabeeMongoClient(MongoUrl url, string dataBase, DateTimeKind dateTimeKind = DateTimeKind.Local,
+            GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
         {
-            Init(dateTimeKind);
+            Configure(dateTimeKind, guidRepresentation);
+            Initialize(guidRepresentation);
             MongoClient = new MongoClient(url);
             MongoDatabase = MongoClient.GetDatabase(dataBase);
         }
 
         public ZaabeeMongoClient(IMongoClient mongoClient, string dataBase,
-            DateTimeKind dateTimeKind = DateTimeKind.Local)
+            DateTimeKind dateTimeKind = DateTimeKind.Local,
+            GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
         {
-            Init(dateTimeKind);
+            Configure(dateTimeKind, guidRepresentation);
+            Initialize(guidRepresentation);
             MongoClient = mongoClient;
             MongoDatabase = MongoClient.GetDatabase(dataBase);
         }
 
-        private static void Init(DateTimeKind dateTimeKind = DateTimeKind.Local)
+        private static void Configure(DateTimeKind dateTimeKind = DateTimeKind.Local,
+            GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
         {
-            if (HasInitialized) return;
+            if (HasConfigured) return;
             lock (LockObj)
             {
-                if (HasInitialized) return;
-                BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
+                if (HasConfigured) return;
+                BsonDefaults.GuidRepresentation = guidRepresentation;
                 ConventionRegistry.Register("IgnoreExtraElements",
                     new ConventionPack {new IgnoreExtraElementsConvention(true)}, type => true);
                 var serializer = new DateTimeSerializer(dateTimeKind, BsonType.DateTime);
                 BsonSerializer.RegisterSerializer(typeof(DateTime), serializer);
-                HasInitialized = true;
+                HasConfigured = true;
             }
+        }
+
+        private void Initialize(GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
+        {
+            _collectionSettings = new MongoCollectionSettings
+            {
+                AssignIdOnInsert = true,
+                GuidRepresentation = guidRepresentation
+            };
         }
 
         public IQueryable<T> GetQueryable<T>() where T : class
@@ -168,7 +181,7 @@ namespace Zaabee.Mongo
             var filter = GetJsonFilterDefinition(entity, _collectionSettings.GuidRepresentation);
 
             var result = collection.UpdateOne(filter,
-                new BsonDocumentUpdateDefinition<T>(new BsonDocument {{"$set",entity.ToBsonDocument()}}));
+                new BsonDocumentUpdateDefinition<T>(new BsonDocument {{"$set", entity.ToBsonDocument()}}));
 
             return result.ModifiedCount;
         }
@@ -257,9 +270,8 @@ namespace Zaabee.Mongo
                 _ => false
             };
 
-        private PropertyInfo GetIdProperty(Type type)
-        {
-            return _idProperties.GetOrAdd(type, key =>
+        private PropertyInfo GetIdProperty(Type type) =>
+            _idProperties.GetOrAdd(type, key =>
             {
                 var propertyInfo = type.GetProperties()
                                        .FirstOrDefault(property =>
@@ -269,13 +281,10 @@ namespace Zaabee.Mongo
                                    type.GetProperty("_id");
                 return propertyInfo ?? throw new NullReferenceException("The primary key can not be found.");
             });
-        }
 
-        private string GetTableName(Type type)
-        {
-            return _tableNames.GetOrAdd(type,
+        private string GetTableName(Type type) =>
+            _tableNames.GetOrAdd(type,
                 key => Attribute.GetCustomAttributes(type).OfType<TableAttribute>().FirstOrDefault()?.Name ??
                        type.Name);
-        }
     }
 }
