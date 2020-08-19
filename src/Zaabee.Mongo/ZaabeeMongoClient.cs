@@ -19,9 +19,10 @@ namespace Zaabee.Mongo
 {
     public class ZaabeeMongoClient : IZaabeeMongoClient
     {
-        private static bool HasConfigured { get; set; }
         private static readonly object LockObj = new object();
+        private bool HasConfigured { get; set; }
         private MongoCollectionSettings _collectionSettings;
+        private GuidSerializer _guidSerializer;
 
         private readonly ConcurrentDictionary<Type, string> _tableNames =
             new ConcurrentDictionary<Type, string>();
@@ -37,7 +38,7 @@ namespace Zaabee.Mongo
             GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
         {
             Configure(dateTimeKind, guidRepresentation);
-            Initialize(guidRepresentation);
+            Initialize();
             MongoClient = new MongoClient(connectionString);
             MongoDatabase = MongoClient.GetDatabase(dataBase);
         }
@@ -47,7 +48,7 @@ namespace Zaabee.Mongo
             GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
         {
             Configure(dateTimeKind, guidRepresentation);
-            Initialize(guidRepresentation);
+            Initialize();
             MongoClient = new MongoClient(settings);
             MongoDatabase = MongoClient.GetDatabase(dataBase);
         }
@@ -56,7 +57,7 @@ namespace Zaabee.Mongo
             GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
         {
             Configure(dateTimeKind, guidRepresentation);
-            Initialize(guidRepresentation);
+            Initialize();
             MongoClient = new MongoClient(url);
             MongoDatabase = MongoClient.GetDatabase(dataBase);
         }
@@ -66,19 +67,21 @@ namespace Zaabee.Mongo
             GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
         {
             Configure(dateTimeKind, guidRepresentation);
-            Initialize(guidRepresentation);
+            Initialize();
             MongoClient = mongoClient;
             MongoDatabase = MongoClient.GetDatabase(dataBase);
         }
 
-        private static void Configure(DateTimeKind dateTimeKind = DateTimeKind.Local,
+        private void Configure(DateTimeKind dateTimeKind = DateTimeKind.Local,
             GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
         {
             if (HasConfigured) return;
             lock (LockObj)
             {
                 if (HasConfigured) return;
-                BsonDefaults.GuidRepresentation = guidRepresentation;
+                var guidSerializer = new GuidSerializer(guidRepresentation);
+                BsonSerializer.RegisterSerializer(guidSerializer);
+                _guidSerializer = guidSerializer;
                 ConventionRegistry.Register("IgnoreExtraElements",
                     new ConventionPack {new IgnoreExtraElementsConvention(true)}, type => true);
                 var serializer = new DateTimeSerializer(dateTimeKind, BsonType.DateTime);
@@ -87,12 +90,11 @@ namespace Zaabee.Mongo
             }
         }
 
-        private void Initialize(GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
+        private void Initialize()
         {
             _collectionSettings = new MongoCollectionSettings
             {
-                AssignIdOnInsert = true,
-                GuidRepresentation = guidRepresentation
+                AssignIdOnInsert = true
             };
         }
 
@@ -133,7 +135,7 @@ namespace Zaabee.Mongo
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
 
-            var filter = GetJsonFilterDefinition(entity, _collectionSettings.GuidRepresentation);
+            var filter = GetJsonFilterDefinition(entity, _guidSerializer);
 
             var result = collection.DeleteOne(filter);
 
@@ -147,7 +149,7 @@ namespace Zaabee.Mongo
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
 
-            var filter = GetJsonFilterDefinition(entity, _collectionSettings.GuidRepresentation);
+            var filter = GetJsonFilterDefinition(entity, _guidSerializer);
 
             var result = await collection.DeleteOneAsync(filter);
 
@@ -178,7 +180,7 @@ namespace Zaabee.Mongo
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
 
-            var filter = GetJsonFilterDefinition(entity, _collectionSettings.GuidRepresentation);
+            var filter = GetJsonFilterDefinition(entity, _guidSerializer);
 
             var result = collection.UpdateOne(filter,
                 new BsonDocumentUpdateDefinition<T>(new BsonDocument {{"$set", entity.ToBsonDocument()}}));
@@ -193,7 +195,7 @@ namespace Zaabee.Mongo
             var tableName = GetTableName(typeof(T));
             var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
 
-            var filter = GetJsonFilterDefinition(entity, _collectionSettings.GuidRepresentation);
+            var filter = GetJsonFilterDefinition(entity, _guidSerializer);
 
             var result = await collection.UpdateOneAsync(filter,
                 new BsonDocumentUpdateDefinition<T>(new BsonDocument {{"$set", entity.ToBsonDocument()}}));
@@ -226,7 +228,7 @@ namespace Zaabee.Mongo
             return result.ModifiedCount;
         }
 
-        private JsonFilterDefinition<T> GetJsonFilterDefinition<T>(T entity, GuidRepresentation guidRepresentation)
+        private JsonFilterDefinition<T> GetJsonFilterDefinition<T>(T entity, GuidSerializer guidSerializer)
         {
             var idPropertyInfo = GetIdProperty(typeof(T));
 
@@ -237,7 +239,7 @@ namespace Zaabee.Mongo
                 json = $"{{\"_id\":{value}}}";
             else if (idPropertyInfo.PropertyType == typeof(Guid))
             {
-                json = guidRepresentation switch
+                json = guidSerializer.GuidRepresentation switch
                 {
                     GuidRepresentation.Unspecified => "{\"_id\":" + $"UUID(\"{value}\")" + "}",
                     GuidRepresentation.Standard => "{\"_id\":" + $"UUID(\"{value}\")" + "}",
