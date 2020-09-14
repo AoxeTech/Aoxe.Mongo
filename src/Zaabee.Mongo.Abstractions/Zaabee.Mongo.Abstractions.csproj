@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>1.3.2</PackageVersion>
-    <Version>1.3.2</Version>
+    <PackageVersion>2020.1.0</PackageVersion>
+    <Version>2020.1.0</Version>
     <Authors>Mutuduxf</Authors>
     <Company>Mutuduxf</Company>
-    <PackageTags>Zaabee Zaaby Mongo Repository</PackageTags>
+    <PackageTags>Zaabee Mongo Repository</PackageTags>
     <Description>Abstract libraries for Zaabee.Mongo.</Description>
     <PackageProjectUrl>https://github.com/Mutuduxf/Zaabee.Mongo</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

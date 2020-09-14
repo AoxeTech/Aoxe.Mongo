@@ -44,7 +44,7 @@ namespace Zaabee.Mongo.Core
         {
             var value = ((ConstantExpression) node.Right).Value;
 
-            if (node.NodeType == ExpressionType.Decrement)
+            if (node.NodeType is ExpressionType.Decrement)
             {
                 var nodeTypeCode = Type.GetTypeCode(node.Type);
                 value = nodeTypeCode switch
@@ -91,7 +91,7 @@ namespace Zaabee.Mongo.Core
 
         protected override Expression VisitMember(MemberExpression node)
         {
-            if (node.Type.GetInterfaces().Any(a => a == typeof(IList)))
+            if (node.Type.GetInterfaces().Any(a => a == typeof(IEnumerable)))
                 SetList(node);
             else
             {
