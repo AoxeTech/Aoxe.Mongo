@@ -3,8 +3,8 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>2020.2.4</PackageVersion>
-        <Version>2020.2.4</Version>
+        <PackageVersion>2020.5.0</PackageVersion>
+        <Version>2020.5.0</Version>
         <Authors>Mutuduxf</Authors>
         <Company>Mutuduxf</Company>
         <PackageTags>Zaabee Mongo Repository</PackageTags>
@@ -15,7 +15,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MongoDB.Driver" Version="2.11.2" />
+        <PackageReference Include="MongoDB.Driver" Version="2.11.3" />
     </ItemGroup>
 
 </Project>
