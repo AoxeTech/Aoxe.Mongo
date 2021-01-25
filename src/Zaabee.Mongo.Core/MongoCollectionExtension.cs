@@ -9,8 +9,7 @@ namespace Zaabee.Mongo.Core
     public static class MongoCollectionExtension
     {
         public static UpdateResult UpdateMany<T>(this IMongoCollection<T> mongoCollection,
-            Expression<Func<T, bool>> where, Expression<Func<T>> update,
-            UpdateOptions options = null,
+            Expression<Func<T, bool>> where, Expression<Func<T>> update, UpdateOptions options = null,
             CancellationToken cancellationToken = default) where T : class
         {
             if (update is null) throw new ArgumentNullException(nameof(update));
@@ -21,8 +20,7 @@ namespace Zaabee.Mongo.Core
         }
 
         public static async Task<UpdateResult> UpdateManyAsync<T>(this IMongoCollection<T> mongoCollection,
-            Expression<Func<T, bool>> where, Expression<Func<T>> update,
-            UpdateOptions options = null,
+            Expression<Func<T, bool>> where, Expression<Func<T>> update, UpdateOptions options = null,
             CancellationToken cancellationToken = default) where T : class
         {
             if (update is null) throw new ArgumentNullException(nameof(update));

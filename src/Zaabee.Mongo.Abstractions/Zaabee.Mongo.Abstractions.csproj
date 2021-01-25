@@ -2,8 +2,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>2020.1.0</PackageVersion>
-    <Version>2020.1.0</Version>
+    <PackageVersion>2021.1.0</PackageVersion>
+    <Version>2021.1.0</Version>
     <Authors>Mutuduxf</Authors>
     <Company>Mutuduxf</Company>
     <PackageTags>Zaabee Mongo Repository</PackageTags>
