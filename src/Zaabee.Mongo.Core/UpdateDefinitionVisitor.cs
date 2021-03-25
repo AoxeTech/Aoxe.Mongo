@@ -9,7 +9,7 @@ namespace Zaabee.Mongo.Core
 {
     internal class UpdateExpressionVisitor<T> : MongoDB.Bson.Serialization.ExpressionVisitor
     {
-        private readonly List<UpdateDefinition<T>> _updateDefinitionList = new List<UpdateDefinition<T>>();
+        private readonly List<UpdateDefinition<T>> _updateDefinitionList = new();
         private string _fieldName;
 
         public UpdateDefinition<T> GetUpdateDefinition(Expression<Func<T>> expression)

@@ -27,7 +27,7 @@ namespace Zaabee.Mongo.Core
             if (where is null) throw new ArgumentNullException(nameof(where));
 
             var updateDefinition = new UpdateExpressionVisitor<T>().GetUpdateDefinition(update);
-            return await mongoCollection.UpdateManyAsync(@where, updateDefinition, options, cancellationToken);
+            return await mongoCollection.UpdateManyAsync(where, updateDefinition, options, cancellationToken);
         }
     }
 }

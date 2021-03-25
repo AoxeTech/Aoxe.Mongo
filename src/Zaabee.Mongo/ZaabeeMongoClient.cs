@@ -24,11 +24,9 @@ namespace Zaabee.Mongo
         private MongoCollectionSettings _collectionSettings;
         private GuidSerializer _guidSerializer;
 
-        private readonly ConcurrentDictionary<Type, string> _tableNames =
-            new ConcurrentDictionary<Type, string>();
+        private readonly ConcurrentDictionary<Type, string> _tableNames = new();
 
-        private readonly ConcurrentDictionary<Type, PropertyInfo> _idProperties =
-            new ConcurrentDictionary<Type, PropertyInfo>();
+        private readonly ConcurrentDictionary<Type, PropertyInfo> _idProperties = new();
 
         public IMongoClient MongoClient { get; }
         public IMongoDatabase MongoDatabase { get; }
