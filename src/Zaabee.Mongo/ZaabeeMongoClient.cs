@@ -13,7 +13,7 @@ using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using Zaabee.Mongo.Abstractions;
-using Zaabee.Mongo.Core;
+using Zaabee.Mongo.Extension;
 
 namespace Zaabee.Mongo
 {
@@ -81,7 +81,7 @@ namespace Zaabee.Mongo
                 BsonSerializer.RegisterSerializer(guidSerializer);
                 _guidSerializer = guidSerializer;
                 ConventionRegistry.Register("IgnoreExtraElements",
-                    new ConventionPack {new IgnoreExtraElementsConvention(true)}, type => true);
+                    new ConventionPack {new IgnoreExtraElementsConvention(true)}, _ => true);
                 var serializer = new DateTimeSerializer(dateTimeKind, BsonType.DateTime);
                 BsonSerializer.RegisterSerializer(typeof(DateTime), serializer);
                 HasConfigured = true;
@@ -271,7 +271,7 @@ namespace Zaabee.Mongo
             };
 
         private PropertyInfo GetIdProperty(Type type) =>
-            _idProperties.GetOrAdd(type, key =>
+            _idProperties.GetOrAdd(type, _ =>
             {
                 var propertyInfo = type.GetProperties()
                                        .FirstOrDefault(property =>
@@ -284,7 +284,7 @@ namespace Zaabee.Mongo
 
         private string GetTableName(Type type) =>
             _tableNames.GetOrAdd(type,
-                key => Attribute.GetCustomAttributes(type).OfType<TableAttribute>().FirstOrDefault()?.Name ??
+                _ => Attribute.GetCustomAttributes(type).OfType<TableAttribute>().FirstOrDefault()?.Name ??
                        type.Name);
     }
 }
