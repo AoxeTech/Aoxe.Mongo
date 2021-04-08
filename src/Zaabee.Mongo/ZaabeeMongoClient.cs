@@ -13,7 +13,7 @@ using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using Zaabee.Mongo.Abstractions;
-using Zaabee.Mongo.Extension;
+using Zaabee.Extensions.Mongo;
 
 namespace Zaabee.Mongo
 {

@@ -10,9 +10,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zaabee.Mongo.Abstractions",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zaabee.Mongo.UnitTest", "tests\Zaabee.Mongo.UnitTest\Zaabee.Mongo.UnitTest.csproj", "{2A9ECA2C-75F3-46A5-BA09-B149D4F3F76A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zaabee.Mongo.Extension", "src\Zaabee.Mongo.Extension\Zaabee.Mongo.Extension.csproj", "{EF9AE828-079C-481E-8A58-26D4726BAB3C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zaabee.Extensions.Mongo", "src\Zaabee.Extensions.Mongo\Zaabee.Extensions.Mongo.csproj", "{EF9AE828-079C-481E-8A58-26D4726BAB3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zaabee.Mongo.Extension.UnitTest", "tests\Zaabee.Mongo.Extension.UnitTest\Zaabee.Mongo.Extension.UnitTest.csproj", "{7867CEC9-E63A-4C74-8E20-3D3C0994B3B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zaabee.Extensions.Mongo.UnitTest", "tests\Zaabee.Extensions.Mongo.UnitTest\Zaabee.Extensions.Mongo.UnitTest.csproj", "{7867CEC9-E63A-4C74-8E20-3D3C0994B3B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
