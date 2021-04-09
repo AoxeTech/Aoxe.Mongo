@@ -1,5 +1,4 @@
 using MongoDB.Driver;
-using Zaabee.Mongo;
 using Zaabee.Mongo.Abstractions;
 
 namespace Zaabee.Mongo.UnitTest
