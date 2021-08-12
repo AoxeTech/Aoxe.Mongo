@@ -33,15 +33,13 @@ namespace Zaabee.Mongo
 
         public ZaabeeMongoClient(ZaabeeMongoOptions options)
         {
-            if (options is null) throw new ArgumentNullException(nameof(options));
-            Configure(options.DateTimeKind,options.GuidRepresentation);
+            if (options is null)
+                throw new ArgumentNullException(nameof(options));
+            if (options.MongoClientSettings is null)
+                throw new ArgumentNullException(nameof(options.MongoClientSettings));
+            Configure(options.DateTimeKind, options.GuidRepresentation);
             Initialize();
-            if (!string.IsNullOrWhiteSpace(options.ConnectionString))
-                MongoClient = new MongoClient(options.ConnectionString);
-            else if (options.MongoUrl is not null)
-                MongoClient = new MongoClient(options.MongoUrl);
-            else
-                MongoClient = new MongoClient(options.MongoSettings);
+            MongoClient = new MongoClient(options.MongoClientSettings);
             MongoDatabase = MongoClient.GetDatabase(options.Database);
         }
 
