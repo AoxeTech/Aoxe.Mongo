@@ -24,7 +24,11 @@ public class TestModel
 Initialize the client(It is recommended to store a MongoClient instance in a global place, either as a static variable or in an IoC container with a singleton lifetime.)
 
 ```CSharp
-var mongoClient = new ZaabeeMongoClient("mongodb://TestUser:123@192.168.78.152:27017/TestDB","TestDB");
+ZaabeeMongoClient = new ZaabeeMongoClient(new ZaabeeMongoOptions
+{
+    ConnectionString = "mongodb://admin:123@192.168.78.140:27017/admin?authSource=admin&replicaSet=rs",
+    Database = "TestDB"
+});
 ```
 
 Add

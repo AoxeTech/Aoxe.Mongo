@@ -31,43 +31,18 @@ namespace Zaabee.Mongo
         public IMongoClient MongoClient { get; }
         public IMongoDatabase MongoDatabase { get; }
 
-        public ZaabeeMongoClient(string connectionString, string database,
-            DateTimeKind dateTimeKind = DateTimeKind.Local,
-            GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
+        public ZaabeeMongoClient(ZaabeeMongoOptions options)
         {
-            Configure(dateTimeKind, guidRepresentation);
+            if (options is null) throw new ArgumentNullException(nameof(options));
+            Configure(options.DateTimeKind,options.GuidRepresentation);
             Initialize();
-            MongoClient = new MongoClient(connectionString);
-            MongoDatabase = MongoClient.GetDatabase(database);
-        }
-
-        public ZaabeeMongoClient(MongoClientSettings settings, string database,
-            DateTimeKind dateTimeKind = DateTimeKind.Local,
-            GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
-        {
-            Configure(dateTimeKind, guidRepresentation);
-            Initialize();
-            MongoClient = new MongoClient(settings);
-            MongoDatabase = MongoClient.GetDatabase(database);
-        }
-
-        public ZaabeeMongoClient(MongoUrl url, string database, DateTimeKind dateTimeKind = DateTimeKind.Local,
-            GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
-        {
-            Configure(dateTimeKind, guidRepresentation);
-            Initialize();
-            MongoClient = new MongoClient(url);
-            MongoDatabase = MongoClient.GetDatabase(database);
-        }
-
-        public ZaabeeMongoClient(IMongoClient mongoClient, string database,
-            DateTimeKind dateTimeKind = DateTimeKind.Local,
-            GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
-        {
-            Configure(dateTimeKind, guidRepresentation);
-            Initialize();
-            MongoClient = mongoClient;
-            MongoDatabase = MongoClient.GetDatabase(database);
+            if (!string.IsNullOrWhiteSpace(options.ConnectionString))
+                MongoClient = new MongoClient(options.ConnectionString);
+            else if (options.MongoUrl is not null)
+                MongoClient = new MongoClient(options.MongoUrl);
+            else
+                MongoClient = new MongoClient(options.MongoSettings);
+            MongoDatabase = MongoClient.GetDatabase(options.Database);
         }
 
         private void Configure(DateTimeKind dateTimeKind = DateTimeKind.Local,
