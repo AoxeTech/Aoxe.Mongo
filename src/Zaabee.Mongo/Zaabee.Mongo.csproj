@@ -7,7 +7,7 @@
         <Version>2021.5.0</Version>
         <Authors>Mutuduxf</Authors>
         <Company>Mutuduxf</Company>
-        <PackageTags>Zaabee Zaaby Mongo Repository</PackageTags>
+        <PackageTags>Zaabee;Mongo;Repository</PackageTags>
         <Description>Mongo repository.</Description>
         <PackageProjectUrl>https://github.com/Mutuduxf/Zaabee.Mongo</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

@@ -7,7 +7,7 @@
         <Version>2021.2.2</Version>
         <Authors>Mutuduxf</Authors>
         <Company>Mutuduxf</Company>
-        <PackageTags>Zaabee Mongo Repository</PackageTags>
+        <PackageTags>Zaabee;Mongo;Extensions</PackageTags>
         <Description>The extensions for Mongo driver.</Description>
         <PackageProjectUrl>https://github.com/Mutuduxf/Zaabee.Mongo</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

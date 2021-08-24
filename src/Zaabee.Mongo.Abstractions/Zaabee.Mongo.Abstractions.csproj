@@ -7,7 +7,7 @@
     <Version>2021.1.0</Version>
     <Authors>Mutuduxf</Authors>
     <Company>Mutuduxf</Company>
-    <PackageTags>Zaabee Mongo Repository</PackageTags>
+    <PackageTags>Zaabee;Mongo;Repository;Abstractions</PackageTags>
     <Description>Abstract libraries for Zaabee.Mongo.</Description>
     <PackageProjectUrl>https://github.com/Mutuduxf/Zaabee.Mongo</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
