@@ -1,9 +1,8 @@
 using System.Linq;
 
-namespace Zaabee.Mongo.Abstractions
+namespace Zaabee.Mongo.Abstractions;
+
+public interface IZaabeeMongoQueryClient
 {
-    public interface IZaabeeMongoQueryClient
-    {
-        IQueryable<T> GetQueryable<T>() where T : class;
-    }
+    IQueryable<T> GetQueryable<T>() where T : class;
 }
