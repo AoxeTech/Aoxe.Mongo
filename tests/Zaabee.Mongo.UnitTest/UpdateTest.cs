@@ -25,7 +25,7 @@ namespace Zaabee.Mongo.UnitTest
         [Fact]
         public void UpdateNull()
         {
-            Assert.Throws<ArgumentNullException>("entity", () => ZaabeeMongoClient.Update((TestModel) null));
+            Assert.Throws<ArgumentNullException>("entity", () => ZaabeeMongoClient.Update((TestModel)null));
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace Zaabee.Mongo.UnitTest
         public async Task UpdateNullAsync()
         {
             await Assert.ThrowsAsync<ArgumentNullException>("entity",
-                async () => await ZaabeeMongoClient.UpdateAsync((TestModel) null));
+                async () => await ZaabeeMongoClient.UpdateAsync((TestModel)null));
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace Zaabee.Mongo.UnitTest
             Assert.Throws<ArgumentNullException>("update",
                 () => ZaabeeMongoClient.Update<TestModel>(null, p => p.DateTime == DateTime.Now));
             Assert.Throws<ArgumentNullException>("where",
-                () => ZaabeeMongoClient.Update(() => new TestModel {DateTime = DateTime.Now}, null));
+                () => ZaabeeMongoClient.Update(() => new TestModel { DateTime = DateTime.Now }, null));
         }
 
         [Fact]
@@ -139,7 +139,7 @@ namespace Zaabee.Mongo.UnitTest
             await Assert.ThrowsAsync<ArgumentNullException>("update",
                 async () => await ZaabeeMongoClient.UpdateAsync<TestModel>(null, p => p.DateTime == DateTime.Now));
             await Assert.ThrowsAsync<ArgumentNullException>("where",
-                async () => await ZaabeeMongoClient.UpdateAsync(() => new TestModel {DateTime = DateTime.Now}, null));
+                async () => await ZaabeeMongoClient.UpdateAsync(() => new TestModel { DateTime = DateTime.Now }, null));
         }
     }
 }

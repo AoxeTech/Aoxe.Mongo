@@ -32,7 +32,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var dateTimeUtcArray = new[] {DateTime.UtcNow.AddDays(-1), DateTime.UtcNow, DateTime.UtcNow.AddDays(1)};
+            var dateTimeUtcArray = new[] { DateTime.UtcNow.AddDays(-1), DateTime.UtcNow, DateTime.UtcNow.AddDays(1) };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 DateTimeUtcArray = dateTimeUtcArray
@@ -84,7 +84,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var dateTimeUtcArray = new[] {DateTime.UtcNow.AddDays(-1), DateTime.UtcNow, DateTime.UtcNow.AddDays(1)};
+            var dateTimeUtcArray = new[] { DateTime.UtcNow.AddDays(-1), DateTime.UtcNow, DateTime.UtcNow.AddDays(1) };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 DateTimeUtcArray = dateTimeUtcArray

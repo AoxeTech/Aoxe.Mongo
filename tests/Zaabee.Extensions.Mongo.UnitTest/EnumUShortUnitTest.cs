@@ -33,7 +33,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var enumUShortArray = new[] {EnumUShort.Apple, EnumUShort.Banana, EnumUShort.Pear};
+            var enumUShortArray = new[] { EnumUShort.Apple, EnumUShort.Banana, EnumUShort.Pear };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 EnumUShortArray = enumUShortArray
@@ -50,7 +50,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var enumUShortList = new List<EnumUShort> {EnumUShort.Apple, EnumUShort.Banana, EnumUShort.Pear};
+            var enumUShortList = new List<EnumUShort> { EnumUShort.Apple, EnumUShort.Banana, EnumUShort.Pear };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 EnumUShortList = enumUShortList
@@ -86,7 +86,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var enumUShortArray = new[] {EnumUShort.Apple, EnumUShort.Banana, EnumUShort.Pear};
+            var enumUShortArray = new[] { EnumUShort.Apple, EnumUShort.Banana, EnumUShort.Pear };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 EnumUShortArray = enumUShortArray
@@ -103,7 +103,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var enumUShortList = new List<EnumUShort> {EnumUShort.Apple, EnumUShort.Banana, EnumUShort.Pear};
+            var enumUShortList = new List<EnumUShort> { EnumUShort.Apple, EnumUShort.Banana, EnumUShort.Pear };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 EnumUShortList = enumUShortList

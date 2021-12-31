@@ -35,7 +35,7 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
             BsonSerializer.RegisterSerializer(guidSerializer);
             _guidSerializer = guidSerializer;
             ConventionRegistry.Register("IgnoreExtraElements",
-                new ConventionPack {new IgnoreExtraElementsConvention(true)}, _ => true);
+                new ConventionPack { new IgnoreExtraElementsConvention(true) }, _ => true);
             var serializer = new DateTimeSerializer(dateTimeKind, BsonType.DateTime);
             BsonSerializer.RegisterSerializer(typeof(DateTime), serializer);
             HasConfigured = true;
@@ -135,7 +135,7 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
         var filter = GetJsonFilterDefinition(entity, _guidSerializer);
 
         var result = collection.UpdateOne(filter,
-            new BsonDocumentUpdateDefinition<T>(new BsonDocument {{"$set", entity.ToBsonDocument()}}));
+            new BsonDocumentUpdateDefinition<T>(new BsonDocument { { "$set", entity.ToBsonDocument() } }));
 
         return result.ModifiedCount;
     }
@@ -150,7 +150,7 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
         var filter = GetJsonFilterDefinition(entity, _guidSerializer);
 
         var result = await collection.UpdateOneAsync(filter,
-            new BsonDocumentUpdateDefinition<T>(new BsonDocument {{"$set", entity.ToBsonDocument()}}));
+            new BsonDocumentUpdateDefinition<T>(new BsonDocument { { "$set", entity.ToBsonDocument() } }));
 
         return result.ModifiedCount;
     }

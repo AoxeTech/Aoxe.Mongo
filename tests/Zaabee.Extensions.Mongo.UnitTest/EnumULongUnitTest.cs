@@ -33,7 +33,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var enumULongArray = new[] {EnumULong.Apple, EnumULong.Banana, EnumULong.Pear};
+            var enumULongArray = new[] { EnumULong.Apple, EnumULong.Banana, EnumULong.Pear };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 EnumULongArray = enumULongArray
@@ -50,7 +50,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var enumULongList = new List<EnumULong> {EnumULong.Apple, EnumULong.Banana, EnumULong.Pear};
+            var enumULongList = new List<EnumULong> { EnumULong.Apple, EnumULong.Banana, EnumULong.Pear };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 EnumULongList = enumULongList
@@ -86,7 +86,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var enumULongArray = new[] {EnumULong.Apple, EnumULong.Banana, EnumULong.Pear};
+            var enumULongArray = new[] { EnumULong.Apple, EnumULong.Banana, EnumULong.Pear };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 EnumULongArray = enumULongArray
@@ -103,7 +103,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var enumULongList = new List<EnumULong> {EnumULong.Apple, EnumULong.Banana, EnumULong.Pear};
+            var enumULongList = new List<EnumULong> { EnumULong.Apple, EnumULong.Banana, EnumULong.Pear };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 EnumULongList = enumULongList

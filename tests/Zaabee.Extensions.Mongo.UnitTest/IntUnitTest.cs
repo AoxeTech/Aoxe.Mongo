@@ -33,7 +33,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var intArray = new[] {int.MinValue, 0, int.MaxValue};
+            var intArray = new[] { int.MinValue, 0, int.MaxValue };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 IntArray = intArray
@@ -50,7 +50,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var intList = new List<int> {int.MinValue, 0, int.MaxValue};
+            var intList = new List<int> { int.MinValue, 0, int.MaxValue };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 IntList = intList
@@ -86,7 +86,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var intArray = new[] {int.MinValue, 0, int.MaxValue};
+            var intArray = new[] { int.MinValue, 0, int.MaxValue };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 IntArray = intArray
@@ -103,7 +103,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var intList = new List<int> {int.MinValue, 0, int.MaxValue};
+            var intList = new List<int> { int.MinValue, 0, int.MaxValue };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 IntList = intList

@@ -33,7 +33,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var byteArray = new byte[] {byte.MinValue, 0, byte.MaxValue};
+            var byteArray = new byte[] { byte.MinValue, 0, byte.MaxValue };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 ByteArray = byteArray
@@ -50,7 +50,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var byteList = new List<byte> {byte.MinValue, 0, byte.MaxValue};
+            var byteList = new List<byte> { byte.MinValue, 0, byte.MaxValue };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 ByteList = byteList
@@ -86,7 +86,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var byteArray = new byte[] {byte.MinValue, 0, byte.MaxValue};
+            var byteArray = new byte[] { byte.MinValue, 0, byte.MaxValue };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 ByteArray = byteArray
@@ -103,7 +103,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var byteList = new List<byte> {byte.MinValue, 0, byte.MaxValue};
+            var byteList = new List<byte> { byte.MinValue, 0, byte.MaxValue };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 ByteList = byteList

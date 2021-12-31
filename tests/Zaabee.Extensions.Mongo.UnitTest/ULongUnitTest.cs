@@ -34,7 +34,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var ulongArray = new[] {ulong.MinValue, 0UL, ulong.MaxValue / 2};
+            var ulongArray = new[] { ulong.MinValue, 0UL, ulong.MaxValue / 2 };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 ULongArray = ulongArray
@@ -51,7 +51,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var ulongList = new List<ulong> {ulong.MinValue, 0UL, ulong.MaxValue / 2};
+            var ulongList = new List<ulong> { ulong.MinValue, 0UL, ulong.MaxValue / 2 };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 ULongList = ulongList
@@ -87,7 +87,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var ulongArray = new[] {ulong.MinValue, 0UL, ulong.MaxValue / 2};
+            var ulongArray = new[] { ulong.MinValue, 0UL, ulong.MaxValue / 2 };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 ULongArray = ulongArray
@@ -104,7 +104,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var ulongList = new List<ulong> {ulong.MinValue, 0UL, ulong.MaxValue / 2};
+            var ulongList = new List<ulong> { ulong.MinValue, 0UL, ulong.MaxValue / 2 };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 ULongList = ulongList

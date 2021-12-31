@@ -32,7 +32,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var guidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()};
+            var guidArray = new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 GuidArray = guidArray
@@ -49,7 +49,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var guidList = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()};
+            var guidList = new List<Guid> { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 GuidList = guidList
@@ -83,7 +83,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var guidArray = new[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()};
+            var guidArray = new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 GuidArray = guidArray
@@ -100,7 +100,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var guidList = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()};
+            var guidList = new List<Guid> { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 GuidList = guidList

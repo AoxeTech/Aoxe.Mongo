@@ -33,7 +33,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var ushortArray = new[] {ushort.MinValue, ushort.MaxValue};
+            var ushortArray = new[] { ushort.MinValue, ushort.MaxValue };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 UShortArray = ushortArray
@@ -50,7 +50,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var ushortList = new List<ushort> {ushort.MinValue, ushort.MaxValue};
+            var ushortList = new List<ushort> { ushort.MinValue, ushort.MaxValue };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 UShortList = ushortList
@@ -86,7 +86,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var ushortArray = new[] {ushort.MinValue, ushort.MaxValue};
+            var ushortArray = new[] { ushort.MinValue, ushort.MaxValue };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 UShortArray = ushortArray
@@ -103,7 +103,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var ushortList = new List<ushort> {ushort.MinValue, ushort.MaxValue};
+            var ushortList = new List<ushort> { ushort.MinValue, ushort.MaxValue };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 UShortList = ushortList

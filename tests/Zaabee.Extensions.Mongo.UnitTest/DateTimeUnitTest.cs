@@ -32,7 +32,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var dateTimeArray = new[] {DateTime.Now.AddDays(-1), DateTime.Now, DateTime.Now.AddDays(1)};
+            var dateTimeArray = new[] { DateTime.Now.AddDays(-1), DateTime.Now, DateTime.Now.AddDays(1) };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 DateTimeArray = dateTimeArray
@@ -49,7 +49,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var dateTimeList = new List<DateTime> {DateTime.Now.AddDays(-1), DateTime.Now, DateTime.Now.AddDays(1)};
+            var dateTimeList = new List<DateTime> { DateTime.Now.AddDays(-1), DateTime.Now, DateTime.Now.AddDays(1) };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 DateTimeList = dateTimeList
@@ -84,7 +84,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var dateTimeArray = new[] {DateTime.Now.AddDays(-1), DateTime.Now, DateTime.Now.AddDays(1)};
+            var dateTimeArray = new[] { DateTime.Now.AddDays(-1), DateTime.Now, DateTime.Now.AddDays(1) };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 DateTimeArray = dateTimeArray
@@ -101,7 +101,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var dateTimeList = new List<DateTime> {DateTime.Now.AddDays(-1), DateTime.Now, DateTime.Now.AddDays(1)};
+            var dateTimeList = new List<DateTime> { DateTime.Now.AddDays(-1), DateTime.Now, DateTime.Now.AddDays(1) };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 DateTimeList = dateTimeList

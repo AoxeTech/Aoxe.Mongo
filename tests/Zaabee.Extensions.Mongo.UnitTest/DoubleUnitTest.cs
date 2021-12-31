@@ -33,7 +33,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var doubleArray = new[] {double.MinValue, 0, double.MaxValue};
+            var doubleArray = new[] { double.MinValue, 0, double.MaxValue };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 DoubleArray = doubleArray
@@ -50,7 +50,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var doubleList = new List<double> {double.MinValue, 0, double.MaxValue};
+            var doubleList = new List<double> { double.MinValue, 0, double.MaxValue };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 DoubleList = doubleList
@@ -86,7 +86,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var doubleArray = new[] {double.MinValue, 0, double.MaxValue};
+            var doubleArray = new[] { double.MinValue, 0, double.MaxValue };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 DoubleArray = doubleArray
@@ -103,7 +103,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var doubleList = new List<double> {double.MinValue, 0, double.MaxValue};
+            var doubleList = new List<double> { double.MinValue, 0, double.MaxValue };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 DoubleList = doubleList

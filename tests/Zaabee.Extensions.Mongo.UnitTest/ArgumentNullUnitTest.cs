@@ -19,7 +19,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
         {
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             Assert.Throws<ArgumentNullException>("where",
-                () => collection.UpdateMany(null, () => new TestModel {DateTime = DateTime.Now}));
+                () => collection.UpdateMany(null, () => new TestModel { DateTime = DateTime.Now }));
         }
 
         [Fact]
@@ -35,7 +35,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
         {
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             await Assert.ThrowsAsync<ArgumentNullException>("where",
-                async () => await collection.UpdateManyAsync(null, () => new TestModel {DateTime = DateTime.Now}));
+                async () => await collection.UpdateManyAsync(null, () => new TestModel { DateTime = DateTime.Now }));
         }
     }
 }

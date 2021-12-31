@@ -33,7 +33,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var sbyteArray = new[] {sbyte.MinValue, sbyte.MaxValue};
+            var sbyteArray = new[] { sbyte.MinValue, sbyte.MaxValue };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 SByteArray = sbyteArray
@@ -50,7 +50,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var sbyteList = new List<sbyte> {sbyte.MinValue, sbyte.MaxValue};
+            var sbyteList = new List<sbyte> { sbyte.MinValue, sbyte.MaxValue };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 SByteList = sbyteList
@@ -86,7 +86,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var sbyteArray = new[] {sbyte.MinValue, sbyte.MaxValue};
+            var sbyteArray = new[] { sbyte.MinValue, sbyte.MaxValue };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 SByteArray = sbyteArray
@@ -103,7 +103,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var sbyteList = new List<sbyte> {sbyte.MinValue, sbyte.MaxValue};
+            var sbyteList = new List<sbyte> { sbyte.MinValue, sbyte.MaxValue };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 SByteList = sbyteList

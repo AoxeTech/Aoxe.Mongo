@@ -38,7 +38,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var decimalArray = new[] {decimal.MinValue, 0, decimal.MaxValue};
+            var decimalArray = new[] { decimal.MinValue, 0, decimal.MaxValue };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 DecimalArray = decimalArray
@@ -55,7 +55,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var decimalList = new List<decimal> {decimal.MinValue, 0, decimal.MaxValue};
+            var decimalList = new List<decimal> { decimal.MinValue, 0, decimal.MaxValue };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 DecimalList = decimalList
@@ -89,7 +89,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var decimalArray = new[] {decimal.MinValue, 0, decimal.MaxValue};
+            var decimalArray = new[] { decimal.MinValue, 0, decimal.MaxValue };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 DecimalArray = decimalArray
@@ -106,7 +106,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var decimalList = new List<decimal> {decimal.MinValue, 0, decimal.MaxValue};
+            var decimalList = new List<decimal> { decimal.MinValue, 0, decimal.MaxValue };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 DecimalList = decimalList

@@ -33,7 +33,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var enumByteArray = new[] {EnumByte.Apple, EnumByte.Banana, EnumByte.Pear};
+            var enumByteArray = new[] { EnumByte.Apple, EnumByte.Banana, EnumByte.Pear };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 EnumByteArray = enumByteArray
@@ -50,7 +50,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var enumByteList = new List<EnumByte> {EnumByte.Apple, EnumByte.Banana, EnumByte.Pear};
+            var enumByteList = new List<EnumByte> { EnumByte.Apple, EnumByte.Banana, EnumByte.Pear };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 EnumByteList = enumByteList
@@ -86,7 +86,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var enumByteArray = new[] {EnumByte.Apple, EnumByte.Banana, EnumByte.Pear};
+            var enumByteArray = new[] { EnumByte.Apple, EnumByte.Banana, EnumByte.Pear };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 EnumByteArray = enumByteArray
@@ -103,7 +103,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var enumByteList = new List<EnumByte> {EnumByte.Apple, EnumByte.Banana, EnumByte.Pear};
+            var enumByteList = new List<EnumByte> { EnumByte.Apple, EnumByte.Banana, EnumByte.Pear };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 EnumByteList = enumByteList

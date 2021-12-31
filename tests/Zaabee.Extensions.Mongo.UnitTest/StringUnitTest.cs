@@ -32,7 +32,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var stringArray = new[] {Guid.NewGuid().ToString(), 0.ToString(), Guid.NewGuid().ToString()};
+            var stringArray = new[] { Guid.NewGuid().ToString(), 0.ToString(), Guid.NewGuid().ToString() };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 StringArray = stringArray
@@ -49,7 +49,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var stringList = new List<string> {Guid.NewGuid().ToString(), 0.ToString(), Guid.NewGuid().ToString()};
+            var stringList = new List<string> { Guid.NewGuid().ToString(), 0.ToString(), Guid.NewGuid().ToString() };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 StringList = stringList
@@ -83,7 +83,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var stringArray = new[] {Guid.NewGuid().ToString(), 0.ToString(), Guid.NewGuid().ToString()};
+            var stringArray = new[] { Guid.NewGuid().ToString(), 0.ToString(), Guid.NewGuid().ToString() };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 StringArray = stringArray
@@ -100,7 +100,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var stringList = new List<string> {Guid.NewGuid().ToString(), 0.ToString(), Guid.NewGuid().ToString()};
+            var stringList = new List<string> { Guid.NewGuid().ToString(), 0.ToString(), Guid.NewGuid().ToString() };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 StringList = stringList

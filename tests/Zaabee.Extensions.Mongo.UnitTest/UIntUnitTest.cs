@@ -34,7 +34,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var uintArray = new[] {uint.MinValue, uint.MaxValue / 2};
+            var uintArray = new[] { uint.MinValue, uint.MaxValue / 2 };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 UIntArray = uintArray
@@ -51,7 +51,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var uintList = new List<uint> {uint.MinValue, uint.MaxValue / 2};
+            var uintList = new List<uint> { uint.MinValue, uint.MaxValue / 2 };
             var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
             {
                 UIntList = uintList
@@ -87,7 +87,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var uintArray = new[] {uint.MinValue, uint.MaxValue / 2};
+            var uintArray = new[] { uint.MinValue, uint.MaxValue / 2 };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 UIntArray = uintArray
@@ -104,7 +104,7 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var uintList = new List<uint> {uint.MinValue, uint.MaxValue / 2};
+            var uintList = new List<uint> { uint.MinValue, uint.MaxValue / 2 };
             var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
             {
                 UIntList = uintList
