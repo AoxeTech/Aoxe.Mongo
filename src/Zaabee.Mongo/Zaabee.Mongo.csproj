@@ -3,21 +3,21 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>2022.1.0</PackageVersion>
-        <Version>2022.1.0</Version>
+        <PackageVersion>2022.2.0</PackageVersion>
+        <Version>2022.2.0</Version>
         <Authors>Mutuduxf</Authors>
         <Company>Mutuduxf</Company>
         <PackageTags>Zaabee;Mongo;Repository</PackageTags>
         <Description>Mongo repository.</Description>
-        <PackageProjectUrl>https://github.com/Mutuduxf/Zaabee.Mongo</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/PicoHex/Zaabee.Mongo</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
     
     <ItemGroup>
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-        <PackageReference Include="Zaabee.Extensions.Mongo" Version="2022.1.0" />
-        <PackageReference Include="Zaabee.Mongo.Abstractions" Version="2022.1.0" />
+        <PackageReference Include="Zaabee.Extensions.Mongo" Version="2022.2.0" />
+        <PackageReference Include="Zaabee.Mongo.Abstractions" Version="2022.2.0" />
     </ItemGroup>
   
 </Project>

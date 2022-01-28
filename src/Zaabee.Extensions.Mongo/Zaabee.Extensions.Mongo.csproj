@@ -3,13 +3,13 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>2022.1.0</PackageVersion>
-        <Version>2022.1.0</Version>
+        <PackageVersion>2022.2.0</PackageVersion>
+        <Version>2022.2.0</Version>
         <Authors>Mutuduxf</Authors>
         <Company>Mutuduxf</Company>
         <PackageTags>Zaabee;Mongo;Extensions</PackageTags>
         <Description>The extensions for Mongo driver.</Description>
-        <PackageProjectUrl>https://github.com/Mutuduxf/Zaabee.Mongo</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/PicoHex/Zaabee.Mongo</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
