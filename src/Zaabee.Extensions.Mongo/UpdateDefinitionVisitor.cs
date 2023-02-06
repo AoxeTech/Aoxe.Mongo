@@ -42,13 +42,13 @@ internal class UpdateExpressionVisitor<T> : MongoDB.Bson.Serialization.Expressio
             var nodeTypeCode = Type.GetTypeCode(node.Type);
             value = nodeTypeCode switch
             {
-                TypeCode.SByte => -(sbyte)value,
-                TypeCode.Int16 => -(short)value,
-                TypeCode.Int32 => -(int)value,
-                TypeCode.Int64 => -(long)value,
-                TypeCode.Single => -(float)value,
-                TypeCode.Double => -(double)value,
-                TypeCode.Decimal => -(decimal)value,
+                TypeCode.SByte => -(sbyte)value!,
+                TypeCode.Int16 => -(short)value!,
+                TypeCode.Int32 => -(int)value!,
+                TypeCode.Int64 => -(long)value!,
+                TypeCode.Single => -(float)value!,
+                TypeCode.Double => -(double)value!,
+                TypeCode.Decimal => -(decimal)value!,
                 _ => throw new NotSupportedException(
                     $"Not support type {node.Type} of field named \"{_fieldName}\"")
             };
