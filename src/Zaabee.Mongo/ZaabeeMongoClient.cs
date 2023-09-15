@@ -62,10 +62,10 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
         MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertOne(entity);
     }
 
-    public Task AddAsync<T>(T entity) where T : class
+    public async ValueTask AddAsync<T>(T entity) where T : class
     {
         var tableName = GetTableName(typeof(T));
-        return MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertOneAsync(entity);
+        await MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertOneAsync(entity);
     }
 
     public void AddRange<T>(IEnumerable<T> entities) where T : class
@@ -74,10 +74,10 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
         MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertMany(entities);
     }
 
-    public Task AddRangeAsync<T>(IEnumerable<T> entities) where T : class
+    public async ValueTask AddRangeAsync<T>(IEnumerable<T> entities) where T : class
     {
         var tableName = GetTableName(typeof(T));
-        return MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertManyAsync(entities);
+        await MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertManyAsync(entities);
     }
 
     public long Delete<T>(T entity) where T : class
@@ -94,7 +94,7 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
         return result.DeletedCount;
     }
 
-    public async Task<long> DeleteAsync<T>(T entity) where T : class
+    public async ValueTask<long> DeleteAsync<T>(T entity) where T : class
     {
         if (entity is null) throw new ArgumentNullException(nameof(entity));
 
@@ -116,7 +116,7 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
         return collection.DeleteMany(where).DeletedCount;
     }
 
-    public async Task<long> DeleteAsync<T>(Expression<Func<T, bool>> where) where T : class
+    public async ValueTask<long> DeleteAsync<T>(Expression<Func<T, bool>> where) where T : class
     {
         if (where is null) throw new ArgumentNullException(nameof(where));
         var tableName = GetTableName(typeof(T));
@@ -140,7 +140,7 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
         return result.ModifiedCount;
     }
 
-    public async Task<long> UpdateAsync<T>(T entity) where T : class
+    public async ValueTask<long> UpdateAsync<T>(T entity) where T : class
     {
         if (entity is null) throw new ArgumentNullException(nameof(entity));
 
@@ -167,7 +167,7 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
         return result.ModifiedCount;
     }
 
-    public async Task<long> UpdateAsync<T>(Expression<Func<T>> update, Expression<Func<T, bool>> where)
+    public async ValueTask<long> UpdateAsync<T>(Expression<Func<T>> update, Expression<Func<T, bool>> where)
         where T : class
     {
         if (update is null) throw new ArgumentNullException(nameof(update));

@@ -2,8 +2,8 @@
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;net6.0;net7.0;net8.0</TargetFrameworks>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<PackageVersion>2023.1.2</PackageVersion>
-		<Version>2023.1.2</Version>
+		<PackageVersion>2023.2.0</PackageVersion>
+		<Version>2023.2.0</Version>
 		<Authors>Mutuduxf</Authors>
 		<Company>Mutuduxf</Company>
 		<PackageTags>Zaabee;Mongo;Repository</PackageTags>
@@ -14,7 +14,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageReference Include="Zaabee.Extensions.Mongo" Version="2023.1.2" />
-		<PackageReference Include="Zaabee.Mongo.Abstractions" Version="2023.1.0" />
+		<PackageReference Include="Zaabee.Extensions.Mongo" Version="2023.2.0" />
+		<PackageReference Include="Zaabee.Mongo.Abstractions" Version="2023.2.0" />
 	</ItemGroup>
 </Project>

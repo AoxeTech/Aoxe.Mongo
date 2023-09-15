@@ -2,7 +2,7 @@ namespace Zaabee.Extensions.Mongo;
 
 public static class QueryableExtension
 {
-    public static async Task<bool> AnyAsync<T>(this IQueryable<T> queryable,
+    public static async ValueTask<bool> AnyAsync<T>(this IQueryable<T> queryable,
         CancellationToken cancellationToken = default)
     {
         if (queryable is IAsyncCursorSource<T> mongoQueryable)
@@ -10,7 +10,7 @@ public static class QueryableExtension
         throw new ArgumentException($"{nameof(queryable)} has not implemented IAsyncCursorSource.");
     }
 
-    public static async Task<T> FirstAsync<T>(this IQueryable<T> queryable,
+    public static async ValueTask<T> FirstAsync<T>(this IQueryable<T> queryable,
         CancellationToken cancellationToken = default)
     {
         if (queryable is IAsyncCursorSource<T> mongoQueryable)
@@ -18,7 +18,7 @@ public static class QueryableExtension
         throw new ArgumentException($"{nameof(queryable)} has not implemented IAsyncCursorSource.");
     }
 
-    public static async Task<T> FirstOrDefaultAsync<T>(this IQueryable<T> queryable,
+    public static async ValueTask<T> FirstOrDefaultAsync<T>(this IQueryable<T> queryable,
         CancellationToken cancellationToken = default)
     {
         if (queryable is IAsyncCursorSource<T> mongoQueryable)
@@ -26,7 +26,7 @@ public static class QueryableExtension
         throw new ArgumentException($"{nameof(queryable)} has not implemented IAsyncCursorSource.");
     }
 
-    public static async Task<T> SingleAsync<T>(this IQueryable<T> queryable,
+    public static async ValueTask<T> SingleAsync<T>(this IQueryable<T> queryable,
         CancellationToken cancellationToken = default)
     {
         if (queryable is IAsyncCursorSource<T> mongoQueryable)
@@ -34,7 +34,7 @@ public static class QueryableExtension
         throw new ArgumentException($"{nameof(queryable)} has not implemented IAsyncCursorSource.");
     }
 
-    public static async Task<T> SingleOrDefaultAsync<T>(this IQueryable<T> queryable,
+    public static async ValueTask<T> SingleOrDefaultAsync<T>(this IQueryable<T> queryable,
         CancellationToken cancellationToken = default)
     {
         if (queryable is IAsyncCursorSource<T> mongoQueryable)
@@ -42,7 +42,7 @@ public static class QueryableExtension
         throw new ArgumentException($"{nameof(queryable)} has not implemented IAsyncCursorSource.");
     }
 
-    public static async Task<List<T>> ToListAsync<T>(this IQueryable<T> queryable,
+    public static async ValueTask<List<T>> ToListAsync<T>(this IQueryable<T> queryable,
         CancellationToken cancellationToken = default)
     {
         if (queryable is IAsyncCursorSource<T> mongoQueryable)

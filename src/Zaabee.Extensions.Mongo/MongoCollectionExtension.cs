@@ -13,7 +13,7 @@ public static class MongoCollectionExtension
         return mongoCollection.UpdateMany(where, updateDefinition, options, cancellationToken);
     }
 
-    public static async Task<UpdateResult> UpdateManyAsync<T>(this IMongoCollection<T> mongoCollection,
+    public static async ValueTask<UpdateResult> UpdateManyAsync<T>(this IMongoCollection<T> mongoCollection,
         Expression<Func<T, bool>> where, Expression<Func<T>> update, UpdateOptions? options = null,
         CancellationToken cancellationToken = default) where T : class
     {
