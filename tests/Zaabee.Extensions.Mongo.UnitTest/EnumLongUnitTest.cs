@@ -17,11 +17,14 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
-            {
-                EnumLong = value
-            });
-            Assert.Equal(1L, testModel.EnumLong == value ? result.MatchedCount : result.ModifiedCount);
+            var result = collection.UpdateMany(
+                t => t.Id == testModel.Id,
+                () => new TestModel { EnumLong = value }
+            );
+            Assert.Equal(
+                1L,
+                testModel.EnumLong == value ? result.MatchedCount : result.ModifiedCount
+            );
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.Equal(value, modifyModel.EnumLong);
             Assert.Equal(1L, collection.DeleteOne(t => t.Id == testModel.Id).DeletedCount);
@@ -34,10 +37,10 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
             var enumLongArray = new[] { EnumLong.Apple, EnumLong.Banana, EnumLong.Pear };
-            var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
-            {
-                EnumLongArray = enumLongArray
-            });
+            var result = collection.UpdateMany(
+                t => t.Id == testModel.Id,
+                () => new TestModel { EnumLongArray = enumLongArray }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.True(Comparer.Compare(enumLongArray, modifyModel.EnumLongArray));
@@ -50,11 +53,16 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var enumLongList = new List<EnumLong> { EnumLong.Apple, EnumLong.Banana, EnumLong.Pear };
-            var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
+            var enumLongList = new List<EnumLong>
             {
-                EnumLongList = enumLongList
-            });
+                EnumLong.Apple,
+                EnumLong.Banana,
+                EnumLong.Pear
+            };
+            var result = collection.UpdateMany(
+                t => t.Id == testModel.Id,
+                () => new TestModel { EnumLongList = enumLongList }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.True(Comparer.Compare(enumLongList, modifyModel.EnumLongList));
@@ -70,14 +78,20 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
-            {
-                EnumLong = value
-            });
-            Assert.Equal(1L, testModel.EnumLong == value ? result.MatchedCount : result.ModifiedCount);
+            var result = await collection.UpdateManyAsync(
+                t => t.Id == testModel.Id,
+                () => new TestModel { EnumLong = value }
+            );
+            Assert.Equal(
+                1L,
+                testModel.EnumLong == value ? result.MatchedCount : result.ModifiedCount
+            );
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.Equal(value, modifyModel.EnumLong);
-            Assert.Equal(1L, (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount);
+            Assert.Equal(
+                1L,
+                (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount
+            );
         }
 
         [Fact]
@@ -87,14 +101,17 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
             var enumLongArray = new[] { EnumLong.Apple, EnumLong.Banana, EnumLong.Pear };
-            var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
-            {
-                EnumLongArray = enumLongArray
-            });
+            var result = await collection.UpdateManyAsync(
+                t => t.Id == testModel.Id,
+                () => new TestModel { EnumLongArray = enumLongArray }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.True(Comparer.Compare(enumLongArray, modifyModel.EnumLongArray));
-            Assert.Equal(1L, (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount);
+            Assert.Equal(
+                1L,
+                (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount
+            );
         }
 
         [Fact]
@@ -103,15 +120,23 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var enumLongList = new List<EnumLong> { EnumLong.Apple, EnumLong.Banana, EnumLong.Pear };
-            var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
+            var enumLongList = new List<EnumLong>
             {
-                EnumLongList = enumLongList
-            });
+                EnumLong.Apple,
+                EnumLong.Banana,
+                EnumLong.Pear
+            };
+            var result = await collection.UpdateManyAsync(
+                t => t.Id == testModel.Id,
+                () => new TestModel { EnumLongList = enumLongList }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.True(Comparer.Compare(enumLongList, modifyModel.EnumLongList));
-            Assert.Equal(1L, (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount);
+            Assert.Equal(
+                1L,
+                (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount
+            );
         }
     }
 }

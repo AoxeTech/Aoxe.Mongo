@@ -17,10 +17,10 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
-            {
-                SByte = value
-            });
+            var result = collection.UpdateMany(
+                t => t.Id == testModel.Id,
+                () => new TestModel { SByte = value }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.Equal(value, modifyModel.SByte);
@@ -34,10 +34,10 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
             var sbyteArray = new[] { sbyte.MinValue, sbyte.MaxValue };
-            var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
-            {
-                SByteArray = sbyteArray
-            });
+            var result = collection.UpdateMany(
+                t => t.Id == testModel.Id,
+                () => new TestModel { SByteArray = sbyteArray }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.True(Comparer.Compare(sbyteArray, modifyModel.SByteArray));
@@ -51,10 +51,10 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
             var sbyteList = new List<sbyte> { sbyte.MinValue, sbyte.MaxValue };
-            var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
-            {
-                SByteList = sbyteList
-            });
+            var result = collection.UpdateMany(
+                t => t.Id == testModel.Id,
+                () => new TestModel { SByteList = sbyteList }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.True(Comparer.Compare(sbyteList, modifyModel.SByteList));
@@ -70,14 +70,17 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
-            {
-                SByte = value
-            });
+            var result = await collection.UpdateManyAsync(
+                t => t.Id == testModel.Id,
+                () => new TestModel { SByte = value }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.Equal(value, modifyModel.SByte);
-            Assert.Equal(1L, (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount);
+            Assert.Equal(
+                1L,
+                (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount
+            );
         }
 
         [Fact]
@@ -87,14 +90,17 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
             var sbyteArray = new[] { sbyte.MinValue, sbyte.MaxValue };
-            var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
-            {
-                SByteArray = sbyteArray
-            });
+            var result = await collection.UpdateManyAsync(
+                t => t.Id == testModel.Id,
+                () => new TestModel { SByteArray = sbyteArray }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.True(Comparer.Compare(sbyteArray, modifyModel.SByteArray));
-            Assert.Equal(1L, (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount);
+            Assert.Equal(
+                1L,
+                (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount
+            );
         }
 
         [Fact]
@@ -104,14 +110,17 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
             var sbyteList = new List<sbyte> { sbyte.MinValue, sbyte.MaxValue };
-            var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
-            {
-                SByteList = sbyteList
-            });
+            var result = await collection.UpdateManyAsync(
+                t => t.Id == testModel.Id,
+                () => new TestModel { SByteList = sbyteList }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.True(Comparer.Compare(sbyteList, modifyModel.SByteList));
-            Assert.Equal(1L, (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount);
+            Assert.Equal(
+                1L,
+                (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount
+            );
         }
     }
 }

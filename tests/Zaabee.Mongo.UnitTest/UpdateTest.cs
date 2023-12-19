@@ -18,14 +18,19 @@ namespace Zaabee.Mongo.UnitTest
             model.String = Guid.NewGuid().ToString();
             model.DateTimeUtc = DateTime.UtcNow;
             ZaabeeMongoClient.Update(model);
-            var result = ZaabeeMongoClient.GetQueryable<TestModel>().FirstOrDefault(p => p.Id == model.Id);
+            var result = ZaabeeMongoClient
+                .GetQueryable<TestModel>()
+                .FirstOrDefault(p => p.Id == model.Id);
             Assert.Equal(model.ToJson(), result.ToJson());
         }
 
         [Fact]
         public void UpdateNull()
         {
-            Assert.Throws<ArgumentNullException>("entity", () => ZaabeeMongoClient.Update((TestModel)null));
+            Assert.Throws<ArgumentNullException>(
+                "entity",
+                () => ZaabeeMongoClient.Update((TestModel)null)
+            );
         }
 
         [Fact]
@@ -37,15 +42,19 @@ namespace Zaabee.Mongo.UnitTest
             model.String = Guid.NewGuid().ToString();
             model.DateTimeUtc = DateTime.UtcNow;
             await ZaabeeMongoClient.UpdateAsync(model);
-            var result = ZaabeeMongoClient.GetQueryable<TestModel>().FirstOrDefault(p => p.Id == model.Id);
+            var result = ZaabeeMongoClient
+                .GetQueryable<TestModel>()
+                .FirstOrDefault(p => p.Id == model.Id);
             Assert.Equal(model.ToJson(), result.ToJson());
         }
 
         [Fact]
         public async Task UpdateNullAsync()
         {
-            await Assert.ThrowsAsync<ArgumentNullException>("entity",
-                async () => await ZaabeeMongoClient.UpdateAsync((TestModel)null));
+            await Assert.ThrowsAsync<ArgumentNullException>(
+                "entity",
+                async () => await ZaabeeMongoClient.UpdateAsync((TestModel)null)
+            );
         }
 
         [Fact]
@@ -60,18 +69,25 @@ namespace Zaabee.Mongo.UnitTest
             var name = Guid.NewGuid().ToString();
             var kids = new List<TestModel>
             {
-                new TestModel {Id = Guid.NewGuid(), DateTime = DateTime.Now, DateTimeUtc = DateTime.UtcNow}
+                new TestModel
+                {
+                    Id = Guid.NewGuid(),
+                    DateTime = DateTime.Now,
+                    DateTimeUtc = DateTime.UtcNow
+                }
             };
             var modifyQuantity = ZaabeeMongoClient.Update(
-                () => new TestModel
-                {
-                    DateTime = now,
-                    DateTimeUtc = utcNow,
-                    String = name,
-                    KidList = kids,
-                    EnumInt = EnumInt.Banana
-                },
-                p => strings.Contains(p.String));
+                () =>
+                    new TestModel
+                    {
+                        DateTime = now,
+                        DateTimeUtc = utcNow,
+                        String = name,
+                        KidList = kids,
+                        EnumInt = EnumInt.Banana
+                    },
+                p => strings.Contains(p.String)
+            );
             models.ForEach(model =>
             {
                 model.DateTime = now;
@@ -81,19 +97,30 @@ namespace Zaabee.Mongo.UnitTest
                 model.EnumInt = EnumInt.Banana;
             });
 
-            var results = ZaabeeMongoClient.GetQueryable<TestModel>().Where(p => ids.Contains(p.Id)).ToList();
+            var results = ZaabeeMongoClient
+                .GetQueryable<TestModel>()
+                .Where(p => ids.Contains(p.Id))
+                .ToList();
 
             Assert.Equal(5L, modifyQuantity);
-            Assert.Equal(models.OrderBy(p => p.Id).ToList().ToJson(), results.OrderBy(p => p.Id).ToList().ToJson());
+            Assert.Equal(
+                models.OrderBy(p => p.Id).ToList().ToJson(),
+                results.OrderBy(p => p.Id).ToList().ToJson()
+            );
         }
 
         [Fact]
         public void UpdateManyNull()
         {
-            Assert.Throws<ArgumentNullException>("update",
-                () => ZaabeeMongoClient.Update<TestModel>(null, p => p.DateTime == DateTime.Now));
-            Assert.Throws<ArgumentNullException>("where",
-                () => ZaabeeMongoClient.Update(() => new TestModel { DateTime = DateTime.Now }, null));
+            Assert.Throws<ArgumentNullException>(
+                "update",
+                () => ZaabeeMongoClient.Update<TestModel>(null, p => p.DateTime == DateTime.Now)
+            );
+            Assert.Throws<ArgumentNullException>(
+                "where",
+                () =>
+                    ZaabeeMongoClient.Update(() => new TestModel { DateTime = DateTime.Now }, null)
+            );
         }
 
         [Fact]
@@ -108,17 +135,24 @@ namespace Zaabee.Mongo.UnitTest
             var name = Guid.NewGuid().ToString();
             var kids = new List<TestModel>
             {
-                new TestModel {Id = Guid.NewGuid(), DateTime = DateTime.Now, DateTimeUtc = DateTime.UtcNow}
+                new TestModel
+                {
+                    Id = Guid.NewGuid(),
+                    DateTime = DateTime.Now,
+                    DateTimeUtc = DateTime.UtcNow
+                }
             };
             var modifyQuantity = await ZaabeeMongoClient.UpdateAsync(
-                () => new TestModel
-                {
-                    DateTime = now,
-                    DateTimeUtc = utcNow,
-                    String = name,
-                    KidList = kids
-                },
-                p => strings.Contains(p.String));
+                () =>
+                    new TestModel
+                    {
+                        DateTime = now,
+                        DateTimeUtc = utcNow,
+                        String = name,
+                        KidList = kids
+                    },
+                p => strings.Contains(p.String)
+            );
             models.ForEach(model =>
             {
                 model.DateTime = now;
@@ -127,19 +161,37 @@ namespace Zaabee.Mongo.UnitTest
                 model.KidList = kids;
             });
 
-            var results = ZaabeeMongoClient.GetQueryable<TestModel>().Where(p => ids.Contains(p.Id)).ToList();
+            var results = ZaabeeMongoClient
+                .GetQueryable<TestModel>()
+                .Where(p => ids.Contains(p.Id))
+                .ToList();
 
             Assert.Equal(5L, modifyQuantity);
-            Assert.Equal(models.OrderBy(p => p.Id).ToList().ToJson(), results.OrderBy(p => p.Id).ToList().ToJson());
+            Assert.Equal(
+                models.OrderBy(p => p.Id).ToList().ToJson(),
+                results.OrderBy(p => p.Id).ToList().ToJson()
+            );
         }
 
         [Fact]
         public async Task UpdateManyNullAsync()
         {
-            await Assert.ThrowsAsync<ArgumentNullException>("update",
-                async () => await ZaabeeMongoClient.UpdateAsync<TestModel>(null, p => p.DateTime == DateTime.Now));
-            await Assert.ThrowsAsync<ArgumentNullException>("where",
-                async () => await ZaabeeMongoClient.UpdateAsync(() => new TestModel { DateTime = DateTime.Now }, null));
+            await Assert.ThrowsAsync<ArgumentNullException>(
+                "update",
+                async () =>
+                    await ZaabeeMongoClient.UpdateAsync<TestModel>(
+                        null,
+                        p => p.DateTime == DateTime.Now
+                    )
+            );
+            await Assert.ThrowsAsync<ArgumentNullException>(
+                "where",
+                async () =>
+                    await ZaabeeMongoClient.UpdateAsync(
+                        () => new TestModel { DateTime = DateTime.Now },
+                        null
+                    )
+            );
         }
     }
 }

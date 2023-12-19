@@ -17,10 +17,10 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
             var value = new TestModel();
-            var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
-            {
-                Kid = value
-            });
+            var result = collection.UpdateMany(
+                t => t.Id == testModel.Id,
+                () => new TestModel { Kid = value }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.Equal(value.ToJson(), modifyModel.Kid.ToJson());
@@ -34,10 +34,10 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
             var value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
-            {
-                Kid = new TestModel { String = value }
-            });
+            var result = collection.UpdateMany(
+                t => t.Id == testModel.Id,
+                () => new TestModel { Kid = new TestModel { String = value } }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.Equal(new TestModel { String = value }.ToJson(), modifyModel.Kid.ToJson());
@@ -52,17 +52,19 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             collection.InsertOne(testModel);
             var kidArray = new[]
             {
-                new TestModel {Id = Guid.NewGuid()},
-                new TestModel {Id = Guid.NewGuid()},
-                new TestModel {Id = Guid.NewGuid()}
+                new TestModel { Id = Guid.NewGuid() },
+                new TestModel { Id = Guid.NewGuid() },
+                new TestModel { Id = Guid.NewGuid() }
             };
-            var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
-            {
-                KidArray = kidArray
-            });
+            var result = collection.UpdateMany(
+                t => t.Id == testModel.Id,
+                () => new TestModel { KidArray = kidArray }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
-            Assert.True(Comparer.Compare(kidArray.Select(p => p.Id), modifyModel.KidArray.Select(p => p.Id)));
+            Assert.True(
+                Comparer.Compare(kidArray.Select(p => p.Id), modifyModel.KidArray.Select(p => p.Id))
+            );
             Assert.Equal(1L, collection.DeleteOne(t => t.Id == testModel.Id).DeletedCount);
         }
 
@@ -73,23 +75,30 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
             var timeString = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
-            {
-                KidArray = new[]
-                {
-                    new TestModel {String = timeString},
-                    new TestModel {String = timeString},
-                    new TestModel {String = timeString}
-                }
-            });
+            var result = collection.UpdateMany(
+                t => t.Id == testModel.Id,
+                () =>
+                    new TestModel
+                    {
+                        KidArray = new[]
+                        {
+                            new TestModel { String = timeString },
+                            new TestModel { String = timeString },
+                            new TestModel { String = timeString }
+                        }
+                    }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
-            Assert.Equal(new[]
-            {
-                new TestModel {String = timeString},
-                new TestModel {String = timeString},
-                new TestModel {String = timeString}
-            }.ToJson(), modifyModel.KidArray.ToJson());
+            Assert.Equal(
+                new[]
+                {
+                    new TestModel { String = timeString },
+                    new TestModel { String = timeString },
+                    new TestModel { String = timeString }
+                }.ToJson(),
+                modifyModel.KidArray.ToJson()
+            );
             Assert.Equal(1L, collection.DeleteOne(t => t.Id == testModel.Id).DeletedCount);
         }
 
@@ -101,17 +110,19 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             collection.InsertOne(testModel);
             var kidList = new List<TestModel>
             {
-                new TestModel {Id = Guid.NewGuid()},
-                new TestModel {Id = Guid.NewGuid()},
-                new TestModel {Id = Guid.NewGuid()}
+                new TestModel { Id = Guid.NewGuid() },
+                new TestModel { Id = Guid.NewGuid() },
+                new TestModel { Id = Guid.NewGuid() }
             };
-            var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
-            {
-                KidList = kidList
-            });
+            var result = collection.UpdateMany(
+                t => t.Id == testModel.Id,
+                () => new TestModel { KidList = kidList }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
-            Assert.True(Comparer.Compare(kidList.Select(p => p.Id), modifyModel.KidList.Select(p => p.Id)));
+            Assert.True(
+                Comparer.Compare(kidList.Select(p => p.Id), modifyModel.KidList.Select(p => p.Id))
+            );
             Assert.Equal(1L, collection.DeleteOne(t => t.Id == testModel.Id).DeletedCount);
         }
 
@@ -122,23 +133,30 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
             var timeString = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
-            {
-                KidList = new List<TestModel>
-                {
-                    new TestModel {String = timeString},
-                    new TestModel {String = timeString},
-                    new TestModel {String = timeString}
-                }
-            });
+            var result = collection.UpdateMany(
+                t => t.Id == testModel.Id,
+                () =>
+                    new TestModel
+                    {
+                        KidList = new List<TestModel>
+                        {
+                            new TestModel { String = timeString },
+                            new TestModel { String = timeString },
+                            new TestModel { String = timeString }
+                        }
+                    }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
-            Assert.Equal(new List<TestModel>
-            {
-                new TestModel {String = timeString},
-                new TestModel {String = timeString},
-                new TestModel {String = timeString}
-            }.ToJson(), modifyModel.KidList.ToJson());
+            Assert.Equal(
+                new List<TestModel>
+                {
+                    new TestModel { String = timeString },
+                    new TestModel { String = timeString },
+                    new TestModel { String = timeString }
+                }.ToJson(),
+                modifyModel.KidList.ToJson()
+            );
             Assert.Equal(1L, collection.DeleteOne(t => t.Id == testModel.Id).DeletedCount);
         }
 
@@ -149,14 +167,17 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
             var value = new TestModel();
-            var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
-            {
-                Kid = value
-            });
+            var result = await collection.UpdateManyAsync(
+                t => t.Id == testModel.Id,
+                () => new TestModel { Kid = value }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.Equal(value.ToJson(), modifyModel.Kid.ToJson());
-            Assert.Equal(1L, (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount);
+            Assert.Equal(
+                1L,
+                (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount
+            );
         }
 
         [Fact]
@@ -166,14 +187,17 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
             var value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
-            {
-                Kid = new TestModel { String = value }
-            });
+            var result = await collection.UpdateManyAsync(
+                t => t.Id == testModel.Id,
+                () => new TestModel { Kid = new TestModel { String = value } }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.Equal(new TestModel { String = value }.ToJson(), modifyModel.Kid.ToJson());
-            Assert.Equal(1L, (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount);
+            Assert.Equal(
+                1L,
+                (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount
+            );
         }
 
         [Fact]
@@ -184,18 +208,23 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             await collection.InsertOneAsync(testModel);
             var kidArray = new[]
             {
-                new TestModel {Id = Guid.NewGuid()},
-                new TestModel {Id = Guid.NewGuid()},
-                new TestModel {Id = Guid.NewGuid()}
+                new TestModel { Id = Guid.NewGuid() },
+                new TestModel { Id = Guid.NewGuid() },
+                new TestModel { Id = Guid.NewGuid() }
             };
-            var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
-            {
-                KidArray = kidArray
-            });
+            var result = await collection.UpdateManyAsync(
+                t => t.Id == testModel.Id,
+                () => new TestModel { KidArray = kidArray }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
-            Assert.True(Comparer.Compare(kidArray.Select(p => p.Id), modifyModel.KidArray.Select(p => p.Id)));
-            Assert.Equal(1L, (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount);
+            Assert.True(
+                Comparer.Compare(kidArray.Select(p => p.Id), modifyModel.KidArray.Select(p => p.Id))
+            );
+            Assert.Equal(
+                1L,
+                (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount
+            );
         }
 
         [Fact]
@@ -205,24 +234,34 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
             var timeString = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
-            {
-                KidArray = new[]
-                {
-                    new TestModel {String = timeString},
-                    new TestModel {String = timeString},
-                    new TestModel {String = timeString}
-                }
-            });
+            var result = await collection.UpdateManyAsync(
+                t => t.Id == testModel.Id,
+                () =>
+                    new TestModel
+                    {
+                        KidArray = new[]
+                        {
+                            new TestModel { String = timeString },
+                            new TestModel { String = timeString },
+                            new TestModel { String = timeString }
+                        }
+                    }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
-            Assert.Equal(new[]
-            {
-                new TestModel {String = timeString},
-                new TestModel {String = timeString},
-                new TestModel {String = timeString}
-            }.ToJson(), modifyModel.KidArray.ToJson());
-            Assert.Equal(1L, (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount);
+            Assert.Equal(
+                new[]
+                {
+                    new TestModel { String = timeString },
+                    new TestModel { String = timeString },
+                    new TestModel { String = timeString }
+                }.ToJson(),
+                modifyModel.KidArray.ToJson()
+            );
+            Assert.Equal(
+                1L,
+                (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount
+            );
         }
 
         [Fact]
@@ -233,18 +272,23 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             await collection.InsertOneAsync(testModel);
             var kidList = new List<TestModel>
             {
-                new TestModel {Id = Guid.NewGuid()},
-                new TestModel {Id = Guid.NewGuid()},
-                new TestModel {Id = Guid.NewGuid()}
+                new TestModel { Id = Guid.NewGuid() },
+                new TestModel { Id = Guid.NewGuid() },
+                new TestModel { Id = Guid.NewGuid() }
             };
-            var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
-            {
-                KidList = kidList
-            });
+            var result = await collection.UpdateManyAsync(
+                t => t.Id == testModel.Id,
+                () => new TestModel { KidList = kidList }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
-            Assert.True(Comparer.Compare(kidList.Select(p => p.Id), modifyModel.KidList.Select(p => p.Id)));
-            Assert.Equal(1L, (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount);
+            Assert.True(
+                Comparer.Compare(kidList.Select(p => p.Id), modifyModel.KidList.Select(p => p.Id))
+            );
+            Assert.Equal(
+                1L,
+                (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount
+            );
         }
 
         [Fact]
@@ -254,24 +298,34 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
             var timeString = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
-            {
-                KidList = new List<TestModel>
-                {
-                    new TestModel {String = timeString},
-                    new TestModel {String = timeString},
-                    new TestModel {String = timeString}
-                }
-            });
+            var result = await collection.UpdateManyAsync(
+                t => t.Id == testModel.Id,
+                () =>
+                    new TestModel
+                    {
+                        KidList = new List<TestModel>
+                        {
+                            new TestModel { String = timeString },
+                            new TestModel { String = timeString },
+                            new TestModel { String = timeString }
+                        }
+                    }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
-            Assert.Equal(new List<TestModel>
-            {
-                new TestModel {String = timeString},
-                new TestModel {String = timeString},
-                new TestModel {String = timeString}
-            }.ToJson(), modifyModel.KidList.ToJson());
-            Assert.Equal(1L, (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount);
+            Assert.Equal(
+                new List<TestModel>
+                {
+                    new TestModel { String = timeString },
+                    new TestModel { String = timeString },
+                    new TestModel { String = timeString }
+                }.ToJson(),
+                modifyModel.KidList.ToJson()
+            );
+            Assert.Equal(
+                1L,
+                (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount
+            );
         }
     }
 }

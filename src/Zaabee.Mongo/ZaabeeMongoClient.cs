@@ -24,18 +24,25 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
         MongoDatabase = new MongoClient(options.MongoClientSettings).GetDatabase(options.Database);
     }
 
-    private void Configure(DateTimeKind dateTimeKind = DateTimeKind.Local,
-        GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy)
+    private void Configure(
+        DateTimeKind dateTimeKind = DateTimeKind.Local,
+        GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy
+    )
     {
-        if (HasConfigured) return;
+        if (HasConfigured)
+            return;
         lock (LockObj)
         {
-            if (HasConfigured) return;
+            if (HasConfigured)
+                return;
             var guidSerializer = new GuidSerializer(guidRepresentation);
             BsonSerializer.RegisterSerializer(guidSerializer);
             _guidSerializer = guidSerializer;
-            ConventionRegistry.Register("IgnoreExtraElements",
-                new ConventionPack { new IgnoreExtraElementsConvention(true) }, _ => true);
+            ConventionRegistry.Register(
+                "IgnoreExtraElements",
+                new ConventionPack { new IgnoreExtraElementsConvention(true) },
+                _ => true
+            );
             var serializer = new DateTimeSerializer(dateTimeKind, BsonType.DateTime);
             BsonSerializer.RegisterSerializer(typeof(DateTime), serializer);
             HasConfigured = true;
@@ -44,45 +51,51 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
 
     private void Initialize()
     {
-        _collectionSettings = new MongoCollectionSettings
-        {
-            AssignIdOnInsert = true
-        };
+        _collectionSettings = new MongoCollectionSettings { AssignIdOnInsert = true };
     }
 
-    public IQueryable<T> GetQueryable<T>() where T : class
+    public IQueryable<T> GetQueryable<T>()
+        where T : class
     {
         var tableName = GetTableName(typeof(T));
         return MongoDatabase.GetCollection<T>(tableName, _collectionSettings).AsQueryable();
     }
 
-    public void Add<T>(T entity) where T : class
+    public void Add<T>(T entity)
+        where T : class
     {
         var tableName = GetTableName(typeof(T));
         MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertOne(entity);
     }
 
-    public async ValueTask AddAsync<T>(T entity) where T : class
+    public async ValueTask AddAsync<T>(T entity)
+        where T : class
     {
         var tableName = GetTableName(typeof(T));
         await MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertOneAsync(entity);
     }
 
-    public void AddRange<T>(IEnumerable<T> entities) where T : class
+    public void AddRange<T>(IEnumerable<T> entities)
+        where T : class
     {
         var tableName = GetTableName(typeof(T));
         MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertMany(entities);
     }
 
-    public async ValueTask AddRangeAsync<T>(IEnumerable<T> entities) where T : class
+    public async ValueTask AddRangeAsync<T>(IEnumerable<T> entities)
+        where T : class
     {
         var tableName = GetTableName(typeof(T));
-        await MongoDatabase.GetCollection<T>(tableName, _collectionSettings).InsertManyAsync(entities);
+        await MongoDatabase
+            .GetCollection<T>(tableName, _collectionSettings)
+            .InsertManyAsync(entities);
     }
 
-    public long Delete<T>(T entity) where T : class
+    public long Delete<T>(T entity)
+        where T : class
     {
-        if (entity is null) throw new ArgumentNullException(nameof(entity));
+        if (entity is null)
+            throw new ArgumentNullException(nameof(entity));
 
         var tableName = GetTableName(typeof(T));
         var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
@@ -94,9 +107,11 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
         return result.DeletedCount;
     }
 
-    public async ValueTask<long> DeleteAsync<T>(T entity) where T : class
+    public async ValueTask<long> DeleteAsync<T>(T entity)
+        where T : class
     {
-        if (entity is null) throw new ArgumentNullException(nameof(entity));
+        if (entity is null)
+            throw new ArgumentNullException(nameof(entity));
 
         var tableName = GetTableName(typeof(T));
         var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
@@ -108,57 +123,76 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
         return result.DeletedCount;
     }
 
-    public long Delete<T>(Expression<Func<T, bool>> where) where T : class
+    public long Delete<T>(Expression<Func<T, bool>> where)
+        where T : class
     {
-        if (where is null) throw new ArgumentNullException(nameof(where));
+        if (where is null)
+            throw new ArgumentNullException(nameof(where));
         var tableName = GetTableName(typeof(T));
         var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
         return collection.DeleteMany(where).DeletedCount;
     }
 
-    public async ValueTask<long> DeleteAsync<T>(Expression<Func<T, bool>> where) where T : class
+    public async ValueTask<long> DeleteAsync<T>(Expression<Func<T, bool>> where)
+        where T : class
     {
-        if (where is null) throw new ArgumentNullException(nameof(where));
+        if (where is null)
+            throw new ArgumentNullException(nameof(where));
         var tableName = GetTableName(typeof(T));
         var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
         var result = await collection.DeleteManyAsync(where);
         return result.DeletedCount;
     }
 
-    public long Update<T>(T entity) where T : class
+    public long Update<T>(T entity)
+        where T : class
     {
-        if (entity is null) throw new ArgumentNullException(nameof(entity));
+        if (entity is null)
+            throw new ArgumentNullException(nameof(entity));
 
         var tableName = GetTableName(typeof(T));
         var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
 
         var filter = GetJsonFilterDefinition(entity, _guidSerializer);
 
-        var result = collection.UpdateOne(filter,
-            new BsonDocumentUpdateDefinition<T>(new BsonDocument { { "$set", entity.ToBsonDocument() } }));
+        var result = collection.UpdateOne(
+            filter,
+            new BsonDocumentUpdateDefinition<T>(
+                new BsonDocument { { "$set", entity.ToBsonDocument() } }
+            )
+        );
 
         return result.ModifiedCount;
     }
 
-    public async ValueTask<long> UpdateAsync<T>(T entity) where T : class
+    public async ValueTask<long> UpdateAsync<T>(T entity)
+        where T : class
     {
-        if (entity is null) throw new ArgumentNullException(nameof(entity));
+        if (entity is null)
+            throw new ArgumentNullException(nameof(entity));
 
         var tableName = GetTableName(typeof(T));
         var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
 
         var filter = GetJsonFilterDefinition(entity, _guidSerializer);
 
-        var result = await collection.UpdateOneAsync(filter,
-            new BsonDocumentUpdateDefinition<T>(new BsonDocument { { "$set", entity.ToBsonDocument() } }));
+        var result = await collection.UpdateOneAsync(
+            filter,
+            new BsonDocumentUpdateDefinition<T>(
+                new BsonDocument { { "$set", entity.ToBsonDocument() } }
+            )
+        );
 
         return result.ModifiedCount;
     }
 
-    public long Update<T>(Expression<Func<T>> update, Expression<Func<T, bool>> where) where T : class
+    public long Update<T>(Expression<Func<T>> update, Expression<Func<T, bool>> where)
+        where T : class
     {
-        if (update is null) throw new ArgumentNullException(nameof(update));
-        if (where is null) throw new ArgumentNullException(nameof(where));
+        if (update is null)
+            throw new ArgumentNullException(nameof(update));
+        if (where is null)
+            throw new ArgumentNullException(nameof(where));
 
         var tableName = GetTableName(typeof(T));
         var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
@@ -167,11 +201,16 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
         return result.ModifiedCount;
     }
 
-    public async ValueTask<long> UpdateAsync<T>(Expression<Func<T>> update, Expression<Func<T, bool>> where)
+    public async ValueTask<long> UpdateAsync<T>(
+        Expression<Func<T>> update,
+        Expression<Func<T, bool>> where
+    )
         where T : class
     {
-        if (update is null) throw new ArgumentNullException(nameof(update));
-        if (where is null) throw new ArgumentNullException(nameof(where));
+        if (update is null)
+            throw new ArgumentNullException(nameof(update));
+        if (where is null)
+            throw new ArgumentNullException(nameof(where));
 
         var tableName = GetTableName(typeof(T));
         var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
@@ -180,7 +219,10 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
         return result.ModifiedCount;
     }
 
-    private JsonFilterDefinition<T> GetJsonFilterDefinition<T>(T entity, GuidSerializer guidSerializer)
+    private JsonFilterDefinition<T> GetJsonFilterDefinition<T>(
+        T entity,
+        GuidSerializer guidSerializer
+    )
     {
         var idPropertyInfo = GetIdProperty(typeof(T));
 
@@ -225,19 +267,32 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
         };
 
     private PropertyInfo GetIdProperty(Type type) =>
-        _idProperties.GetOrAdd(type, _ =>
-        {
-            var propertyInfo = type.GetProperties()
-                                   .FirstOrDefault(property =>
-                                       Attribute.GetCustomAttributes(property).OfType<BsonIdAttribute>().Any()) ??
-                               type.GetProperty("Id") ??
-                               type.GetProperty("id") ??
-                               type.GetProperty("_id");
-            return propertyInfo ?? throw new NullReferenceException("The primary key can not be found.");
-        });
+        _idProperties.GetOrAdd(
+            type,
+            _ =>
+            {
+                var propertyInfo =
+                    type.GetProperties()
+                        .FirstOrDefault(
+                            property =>
+                                Attribute
+                                    .GetCustomAttributes(property)
+                                    .OfType<BsonIdAttribute>()
+                                    .Any()
+                        )
+                    ?? type.GetProperty("Id")
+                    ?? type.GetProperty("id")
+                    ?? type.GetProperty("_id");
+                return propertyInfo
+                    ?? throw new NullReferenceException("The primary key can not be found.");
+            }
+        );
 
     private string GetTableName(Type type) =>
-        _tableNames.GetOrAdd(type,
-            _ => Attribute.GetCustomAttributes(type).OfType<TableAttribute>().FirstOrDefault()?.Name ??
-                 type.Name);
+        _tableNames.GetOrAdd(
+            type,
+            _ =>
+                Attribute.GetCustomAttributes(type).OfType<TableAttribute>().FirstOrDefault()?.Name
+                ?? type.Name
+        );
 }

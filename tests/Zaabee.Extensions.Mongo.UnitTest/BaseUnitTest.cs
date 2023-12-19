@@ -8,9 +8,9 @@ namespace Zaabee.Extensions.Mongo.UnitTest
 
         static BaseUnitTest()
         {
-            var client =
-                new MongoClient(
-                    "mongodb://admin:123@192.168.78.140:27017,192.168.78.141:27017,192.168.78.142/admin?authSource=admin&replicaSet=rs");
+            var client = new MongoClient(
+                "mongodb://admin:123@192.168.78.140:27017,192.168.78.141:27017,192.168.78.142/admin?authSource=admin&replicaSet=rs"
+            );
             MongoDatabase = client.GetDatabase("TestDB");
         }
     }

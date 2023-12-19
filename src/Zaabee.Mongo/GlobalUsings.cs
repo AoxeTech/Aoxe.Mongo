@@ -12,5 +12,5 @@ global using MongoDB.Bson.Serialization.Attributes;
 global using MongoDB.Bson.Serialization.Conventions;
 global using MongoDB.Bson.Serialization.Serializers;
 global using MongoDB.Driver;
-global using Zaabee.Mongo.Abstractions;
 global using Zaabee.Extensions.Mongo;
+global using Zaabee.Mongo.Abstractions;

@@ -19,7 +19,10 @@ namespace Zaabee.Mongo.UnitTest
         [Fact]
         public void DeleteNull()
         {
-            Assert.Throws<ArgumentNullException>("entity", () => ZaabeeMongoClient.Delete((TestModel)null));
+            Assert.Throws<ArgumentNullException>(
+                "entity",
+                () => ZaabeeMongoClient.Delete((TestModel)null)
+            );
         }
 
         [Fact]
@@ -33,8 +36,10 @@ namespace Zaabee.Mongo.UnitTest
         [Fact]
         public async Task DeleteNullAsync()
         {
-            await Assert.ThrowsAsync<ArgumentNullException>("entity",
-                async () => await ZaabeeMongoClient.DeleteAsync((TestModel)null));
+            await Assert.ThrowsAsync<ArgumentNullException>(
+                "entity",
+                async () => await ZaabeeMongoClient.DeleteAsync((TestModel)null)
+            );
         }
 
         [Fact]
@@ -49,8 +54,10 @@ namespace Zaabee.Mongo.UnitTest
         [Fact]
         public void DeleteManyNull()
         {
-            Assert.Throws<ArgumentNullException>("where",
-                () => ZaabeeMongoClient.Delete((Expression<Func<TestModel, bool>>)null));
+            Assert.Throws<ArgumentNullException>(
+                "where",
+                () => ZaabeeMongoClient.Delete((Expression<Func<TestModel, bool>>)null)
+            );
         }
 
         [Fact]
@@ -59,14 +66,20 @@ namespace Zaabee.Mongo.UnitTest
             var models = TestModelFactory.GetModels(5);
             await ZaabeeMongoClient.AddRangeAsync(models);
             var strings = models.Select(p => p.String);
-            Assert.Equal(5L, await ZaabeeMongoClient.DeleteAsync<TestModel>(p => strings.Contains(p.String)));
+            Assert.Equal(
+                5L,
+                await ZaabeeMongoClient.DeleteAsync<TestModel>(p => strings.Contains(p.String))
+            );
         }
 
         [Fact]
         public async Task DeleteManyNullAsync()
         {
-            await Assert.ThrowsAsync<ArgumentNullException>("where",
-                async () => await ZaabeeMongoClient.DeleteAsync((Expression<Func<TestModel, bool>>)null));
+            await Assert.ThrowsAsync<ArgumentNullException>(
+                "where",
+                async () =>
+                    await ZaabeeMongoClient.DeleteAsync((Expression<Func<TestModel, bool>>)null)
+            );
         }
     }
 }

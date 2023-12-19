@@ -24,14 +24,20 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = testModels.First();
             var id = testModel.Id;
 
-            var query = from a in modelCollection.AsQueryable()
-                        join b in kidModelCollection.AsQueryable() on a.Id equals b.ParentId into joinedReadings
-                        where a.Id == id
-                        select new { A = a.Id, Kids = joinedReadings };
+            var query =
+                from a in modelCollection.AsQueryable()
+                join b in kidModelCollection.AsQueryable()
+                    on a.Id equals b.ParentId
+                    into joinedReadings
+                where a.Id == id
+                select new { A = a.Id, Kids = joinedReadings };
 
             var result = query.First();
             Assert.Equal(testModel.Id, result.A);
-            Assert.Equal(testKidModels.Where(p => p.ParentId == testModel.Id).ToList().ToJson(), result.Kids.ToJson());
+            Assert.Equal(
+                testKidModels.Where(p => p.ParentId == testModel.Id).ToList().ToJson(),
+                result.Kids.ToJson()
+            );
         }
     }
 }

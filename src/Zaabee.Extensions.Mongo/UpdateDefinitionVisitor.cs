@@ -20,9 +20,9 @@ internal class UpdateExpressionVisitor<T> : MongoDB.Bson.Serialization.Expressio
 
             if (memberAssignment.Expression.NodeType == ExpressionType.MemberInit)
             {
-                var lambda =
-                    Expression.Lambda<Func<object>>(Expression.Convert(memberAssignment.Expression,
-                        typeof(object)));
+                var lambda = Expression.Lambda<Func<object>>(
+                    Expression.Convert(memberAssignment.Expression, typeof(object))
+                );
                 var value = lambda.Compile().Invoke();
                 _updateDefinitionList.Add(Builders<T>.Update.Set(_fieldName, value));
             }
@@ -49,8 +49,10 @@ internal class UpdateExpressionVisitor<T> : MongoDB.Bson.Serialization.Expressio
                 TypeCode.Single => -(float)value!,
                 TypeCode.Double => -(double)value!,
                 TypeCode.Decimal => -(decimal)value!,
-                _ => throw new NotSupportedException(
-                    $"Not support type {node.Type} of field named \"{_fieldName}\"")
+                _
+                    => throw new NotSupportedException(
+                        $"Not support type {node.Type} of field named \"{_fieldName}\""
+                    )
             };
         }
 

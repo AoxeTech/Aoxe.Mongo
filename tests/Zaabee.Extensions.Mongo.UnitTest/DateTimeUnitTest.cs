@@ -16,10 +16,10 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
             var value = DateTime.Now.AddDays(1);
-            var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
-            {
-                DateTime = value
-            });
+            var result = collection.UpdateMany(
+                t => t.Id == testModel.Id,
+                () => new TestModel { DateTime = value }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.True(Comparer.Compare(value, modifyModel.DateTime));
@@ -32,11 +32,16 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var dateTimeArray = new[] { DateTime.Now.AddDays(-1), DateTime.Now, DateTime.Now.AddDays(1) };
-            var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
+            var dateTimeArray = new[]
             {
-                DateTimeArray = dateTimeArray
-            });
+                DateTime.Now.AddDays(-1),
+                DateTime.Now,
+                DateTime.Now.AddDays(1)
+            };
+            var result = collection.UpdateMany(
+                t => t.Id == testModel.Id,
+                () => new TestModel { DateTimeArray = dateTimeArray }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.True(Comparer.Compare(dateTimeArray, modifyModel.DateTimeArray));
@@ -49,17 +54,21 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             collection.InsertOne(testModel);
-            var dateTimeList = new List<DateTime> { DateTime.Now.AddDays(-1), DateTime.Now, DateTime.Now.AddDays(1) };
-            var result = collection.UpdateMany(t => t.Id == testModel.Id, () => new TestModel
+            var dateTimeList = new List<DateTime>
             {
-                DateTimeList = dateTimeList
-            });
+                DateTime.Now.AddDays(-1),
+                DateTime.Now,
+                DateTime.Now.AddDays(1)
+            };
+            var result = collection.UpdateMany(
+                t => t.Id == testModel.Id,
+                () => new TestModel { DateTimeList = dateTimeList }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.True(Comparer.Compare(dateTimeList, modifyModel.DateTimeList));
             Assert.Equal(1L, collection.DeleteOne(t => t.Id == testModel.Id).DeletedCount);
         }
-
 
         [Fact]
         public async Task DateTimeTestAsync()
@@ -68,14 +77,17 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
             var value = DateTime.Now.AddDays(1);
-            var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
-            {
-                DateTime = value
-            });
+            var result = await collection.UpdateManyAsync(
+                t => t.Id == testModel.Id,
+                () => new TestModel { DateTime = value }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.True(Comparer.Compare(value, modifyModel.DateTime));
-            Assert.Equal(1L, (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount);
+            Assert.Equal(
+                1L,
+                (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount
+            );
         }
 
         [Fact]
@@ -84,15 +96,23 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var dateTimeArray = new[] { DateTime.Now.AddDays(-1), DateTime.Now, DateTime.Now.AddDays(1) };
-            var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
+            var dateTimeArray = new[]
             {
-                DateTimeArray = dateTimeArray
-            });
+                DateTime.Now.AddDays(-1),
+                DateTime.Now,
+                DateTime.Now.AddDays(1)
+            };
+            var result = await collection.UpdateManyAsync(
+                t => t.Id == testModel.Id,
+                () => new TestModel { DateTimeArray = dateTimeArray }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.True(Comparer.Compare(dateTimeArray, modifyModel.DateTimeArray));
-            Assert.Equal(1L, (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount);
+            Assert.Equal(
+                1L,
+                (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount
+            );
         }
 
         [Fact]
@@ -101,15 +121,23 @@ namespace Zaabee.Extensions.Mongo.UnitTest
             var collection = MongoDatabase.GetCollection<TestModel>("TestModel");
             var testModel = TestModelFactory.GetModel();
             await collection.InsertOneAsync(testModel);
-            var dateTimeList = new List<DateTime> { DateTime.Now.AddDays(-1), DateTime.Now, DateTime.Now.AddDays(1) };
-            var result = await collection.UpdateManyAsync(t => t.Id == testModel.Id, () => new TestModel
+            var dateTimeList = new List<DateTime>
             {
-                DateTimeList = dateTimeList
-            });
+                DateTime.Now.AddDays(-1),
+                DateTime.Now,
+                DateTime.Now.AddDays(1)
+            };
+            var result = await collection.UpdateManyAsync(
+                t => t.Id == testModel.Id,
+                () => new TestModel { DateTimeList = dateTimeList }
+            );
             Assert.Equal(1L, result.ModifiedCount);
             var modifyModel = collection.AsQueryable().First(p => p.Id == testModel.Id);
             Assert.True(Comparer.Compare(dateTimeList, modifyModel.DateTimeList));
-            Assert.Equal(1L, (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount);
+            Assert.Equal(
+                1L,
+                (await collection.DeleteOneAsync(t => t.Id == testModel.Id)).DeletedCount
+            );
         }
     }
 }
