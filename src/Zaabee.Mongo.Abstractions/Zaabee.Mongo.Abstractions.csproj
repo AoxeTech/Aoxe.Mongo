@@ -3,8 +3,8 @@
     <TargetFrameworks>netstandard2.0;net6.0;net7.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <LangVersion>latest</LangVersion>
-    <PackageVersion>2023.2.0</PackageVersion>
-    <Version>2023.2.0</Version>
+    <PackageVersion>2024.1.0</PackageVersion>
+    <Version>2024.1.0</Version>
     <Authors>Mutuduxf</Authors>
     <Company>Mutuduxf</Company>
     <PackageTags>Zaabee;Mongo;Repository;Abstractions</PackageTags>
