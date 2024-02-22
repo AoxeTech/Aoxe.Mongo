@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net6.0;net7.0;net8.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<PackageVersion>2024.1.0</PackageVersion>
-		<Version>2024.1.0</Version>
+		<PackageVersion>2024.1.1</PackageVersion>
+		<Version>2024.1.1</Version>
 		<Authors>Mutuduxf</Authors>
 		<Company>Mutuduxf</Company>
 		<PackageTags>Zaabee;Mongo;Repository</PackageTags>
@@ -14,7 +14,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageReference Include="Zaabee.Extensions.Mongo" Version="2024.1.0" />
-		<PackageReference Include="Zaabee.Mongo.Abstractions" Version="2024.1.0" />
+		<PackageReference Include="Zaabee.Extensions.Mongo" Version="2024.1.1" />
+		<PackageReference Include="Zaabee.Mongo.Abstractions" Version="2024.1.1" />
 	</ItemGroup>
 </Project>
