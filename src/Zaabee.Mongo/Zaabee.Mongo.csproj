@@ -1,20 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net6.0;net8.0;net9.0</TargetFrameworks>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<PackageVersion>2024.1.1</PackageVersion>
-		<Version>2024.1.1</Version>
+		<PackageVersion>2024.1.2</PackageVersion>
+		<Version>2024.1.2</Version>
 		<Authors>Mutuduxf</Authors>
 		<Company>Mutuduxf</Company>
 		<PackageTags>Zaabee;Mongo;Repository</PackageTags>
 		<Description>Mongo repository.</Description>
-		<PackageProjectUrl>https://github.com/PicoHex/Zaabee.Mongo</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/PicoHex</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/PicoHex/Zaabee.Mongo</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<LangVersion>latest</LangVersion>
+		<Authors>Roman Du</Authors>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageReference Include="Zaabee.Extensions.Mongo" Version="2024.1.1" />
-		<PackageReference Include="Zaabee.Mongo.Abstractions" Version="2024.1.1" />
+		<PackageReference Include="Zaabee.Extensions.Mongo" Version="2024.1.2" />
+		<PackageReference Include="Zaabee.Mongo.Abstractions" Version="2024.1.2" />
 	</ItemGroup>
 </Project>
