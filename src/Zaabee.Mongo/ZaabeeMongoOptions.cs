@@ -2,7 +2,7 @@ namespace Zaabee.Mongo;
 
 public class ZaabeeMongoOptions
 {
-    private string _connectionString;
+    private string _connectionString = string.Empty;
 
     public string ConnectionString
     {
@@ -30,7 +30,7 @@ public class ZaabeeMongoOptions
 
     public MongoClientSettings MongoClientSettings { get; set; }
 
-    public string Database { get; set; }
+    public string Database { get; set; } = string.Empty;
     public DateTimeKind DateTimeKind { get; set; } = DateTimeKind.Local;
     public GuidRepresentation GuidRepresentation { get; set; } = GuidRepresentation.CSharpLegacy;
 }

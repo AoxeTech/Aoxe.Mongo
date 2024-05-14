@@ -2,13 +2,9 @@
 
 public class ZaabeeMongoClient : IZaabeeMongoClient
 {
-    private static readonly object LockObj = new();
-    private bool HasConfigured { get; set; }
-    private MongoCollectionSettings _collectionSettings;
-    private GuidSerializer _guidSerializer;
-
+    private readonly MongoCollectionSettings _collectionSettings;
+    private readonly GuidSerializer _guidSerializer;
     private readonly ConcurrentDictionary<Type, string> _tableNames = new();
-
     private readonly ConcurrentDictionary<Type, PropertyInfo> _idProperties = new();
 
     public IMongoDatabase MongoDatabase { get; }
@@ -19,39 +15,18 @@ public class ZaabeeMongoClient : IZaabeeMongoClient
             throw new ArgumentNullException(nameof(options));
         if (options.MongoClientSettings is null)
             throw new ArgumentNullException(nameof(options.MongoClientSettings));
-        Configure(options.DateTimeKind, options.GuidRepresentation);
-        Initialize();
-        MongoDatabase = new MongoClient(options.MongoClientSettings).GetDatabase(options.Database);
-    }
-
-    private void Configure(
-        DateTimeKind dateTimeKind = DateTimeKind.Local,
-        GuidRepresentation guidRepresentation = GuidRepresentation.CSharpLegacy
-    )
-    {
-        if (HasConfigured)
-            return;
-        lock (LockObj)
-        {
-            if (HasConfigured)
-                return;
-            var guidSerializer = new GuidSerializer(guidRepresentation);
-            BsonSerializer.RegisterSerializer(guidSerializer);
-            _guidSerializer = guidSerializer;
-            ConventionRegistry.Register(
-                "IgnoreExtraElements",
-                new ConventionPack { new IgnoreExtraElementsConvention(true) },
-                _ => true
-            );
-            var serializer = new DateTimeSerializer(dateTimeKind, BsonType.DateTime);
-            BsonSerializer.RegisterSerializer(typeof(DateTime), serializer);
-            HasConfigured = true;
-        }
-    }
-
-    private void Initialize()
-    {
+        var guidSerializer = new GuidSerializer(options.GuidRepresentation);
+        BsonSerializer.RegisterSerializer(guidSerializer);
+        _guidSerializer = guidSerializer;
+        ConventionRegistry.Register(
+            "IgnoreExtraElements",
+            new ConventionPack { new IgnoreExtraElementsConvention(true) },
+            _ => true
+        );
+        var serializer = new DateTimeSerializer(options.DateTimeKind, BsonType.DateTime);
+        BsonSerializer.RegisterSerializer(typeof(DateTime), serializer);
         _collectionSettings = new MongoCollectionSettings { AssignIdOnInsert = true };
+        MongoDatabase = new MongoClient(options.MongoClientSettings).GetDatabase(options.Database);
     }
 
     public IQueryable<T> GetQueryable<T>()
