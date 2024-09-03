@@ -1,9 +1,3 @@
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Xunit;
-
 namespace Aoxe.Mongo.UnitTest
 {
     public class DeleteTest : BaseUnitTest

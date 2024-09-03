@@ -23,13 +23,16 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="Aoxe.Extensions.Mongo" Version="2024.1.2" />
-		<PackageReference Include="Aoxe.Mongo.Abstractions" Version="2024.1.0" />
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="MongoDB.Driver" Version="2.28.0" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\Aoxe.Mongo.Abstractions\Aoxe.Mongo.Abstractions.csproj" />
 	</ItemGroup>
 	
 </Project>

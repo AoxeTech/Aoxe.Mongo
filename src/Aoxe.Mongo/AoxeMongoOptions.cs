@@ -2,35 +2,36 @@ namespace Aoxe.Mongo;
 
 public class AoxeMongoOptions
 {
-    private string _connectionString = string.Empty;
-
-    public string ConnectionString
+    public AoxeMongoOptions(string connectionString, string database)
     {
-        get => _connectionString;
-        set
-        {
-            _connectionString = value;
-            _mongoUrl = new MongoUrl(value);
-            MongoClientSettings = MongoClientSettings.FromConnectionString(value);
-        }
+        ConnectionString = connectionString;
+        MongoUrl = new MongoUrl(connectionString);
+        MongoClientSettings = MongoClientSettings.FromConnectionString(connectionString);
+        Database = database;
     }
 
-    private MongoUrl _mongoUrl;
-
-    public MongoUrl MongoUrl
+    public AoxeMongoOptions(MongoUrl mongoUrl, string database)
     {
-        get => _mongoUrl;
-        set
-        {
-            _mongoUrl = value;
-            _connectionString = _mongoUrl.ToString();
-            MongoClientSettings = MongoClientSettings.FromUrl(value);
-        }
+        MongoUrl = mongoUrl;
+        ConnectionString = MongoUrl.ToString();
+        MongoClientSettings = MongoClientSettings.FromConnectionString(ConnectionString);
+        Database = database;
     }
 
-    public MongoClientSettings MongoClientSettings { get; set; }
+    public AoxeMongoOptions(MongoClientSettings mongoClientSettings, string database)
+    {
+        MongoClientSettings = mongoClientSettings;
+        ConnectionString = MongoClientSettings.ToString();
+        MongoUrl = new MongoUrl(ConnectionString);
+        Database = database;
+    }
 
-    public string Database { get; set; } = string.Empty;
+    public string ConnectionString { get; protected set; }
+    public MongoUrl MongoUrl { get; protected set; }
+    public MongoClientSettings MongoClientSettings { get; protected set; }
+    public string Database { get; set; }
+    public MongoCollectionSettings MongoCollectionSettings { get; set; } =
+        new() { AssignIdOnInsert = true };
     public DateTimeKind DateTimeKind { get; set; } = DateTimeKind.Local;
     public GuidRepresentation GuidRepresentation { get; set; } = GuidRepresentation.CSharpLegacy;
 }

@@ -1,8 +1,3 @@
-using System.Linq;
-using System.Threading.Tasks;
-using MongoDB.Bson;
-using Xunit;
-
 namespace Aoxe.Mongo.UnitTest
 {
     public class AddTest : BaseUnitTest

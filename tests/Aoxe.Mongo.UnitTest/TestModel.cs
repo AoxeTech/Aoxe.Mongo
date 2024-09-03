@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Aoxe.Mongo.UnitTest
+﻿namespace Aoxe.Mongo.UnitTest
 {
     public class TestModel
     {

@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MongoDB.Bson;
-using Xunit;
-
 namespace Aoxe.Mongo.UnitTest
 {
     public class UpdateTest : BaseUnitTest
@@ -25,15 +18,6 @@ namespace Aoxe.Mongo.UnitTest
         }
 
         [Fact]
-        public void UpdateNull()
-        {
-            Assert.Throws<ArgumentNullException>(
-                "entity",
-                () => AoxeMongoClient.Update((TestModel)null)
-            );
-        }
-
-        [Fact]
         public async Task UpdateSuccessAsync()
         {
             var model = TestModelFactory.GetModel();
@@ -46,15 +30,6 @@ namespace Aoxe.Mongo.UnitTest
                 .GetQueryable<TestModel>()
                 .FirstOrDefault(p => p.Id == model.Id);
             Assert.Equal(model.ToJson(), result.ToJson());
-        }
-
-        [Fact]
-        public async Task UpdateNullAsync()
-        {
-            await Assert.ThrowsAsync<ArgumentNullException>(
-                "entity",
-                async () => await AoxeMongoClient.UpdateAsync((TestModel)null)
-            );
         }
 
         [Fact]
@@ -77,6 +52,7 @@ namespace Aoxe.Mongo.UnitTest
                 }
             };
             var modifyQuantity = AoxeMongoClient.Update(
+                p => strings.Contains(p.String),
                 () =>
                     new TestModel
                     {
@@ -85,8 +61,7 @@ namespace Aoxe.Mongo.UnitTest
                         String = name,
                         KidList = kids,
                         EnumInt = EnumInt.Banana
-                    },
-                p => strings.Contains(p.String)
+                    }
             );
             models.ForEach(model =>
             {
@@ -110,19 +85,6 @@ namespace Aoxe.Mongo.UnitTest
         }
 
         [Fact]
-        public void UpdateManyNull()
-        {
-            Assert.Throws<ArgumentNullException>(
-                "update",
-                () => AoxeMongoClient.Update<TestModel>(null, p => p.DateTime == DateTime.Now)
-            );
-            Assert.Throws<ArgumentNullException>(
-                "where",
-                () => AoxeMongoClient.Update(() => new TestModel { DateTime = DateTime.Now }, null)
-            );
-        }
-
-        [Fact]
         public async Task UpdateManySuccessAsync()
         {
             var models = TestModelFactory.GetModels(5);
@@ -142,6 +104,7 @@ namespace Aoxe.Mongo.UnitTest
                 }
             };
             var modifyQuantity = await AoxeMongoClient.UpdateAsync(
+                p => strings.Contains(p.String),
                 () =>
                     new TestModel
                     {
@@ -149,8 +112,7 @@ namespace Aoxe.Mongo.UnitTest
                         DateTimeUtc = utcNow,
                         String = name,
                         KidList = kids
-                    },
-                p => strings.Contains(p.String)
+                    }
             );
             models.ForEach(model =>
             {
@@ -169,27 +131,6 @@ namespace Aoxe.Mongo.UnitTest
             Assert.Equal(
                 models.OrderBy(p => p.Id).ToList().ToJson(),
                 results.OrderBy(p => p.Id).ToList().ToJson()
-            );
-        }
-
-        [Fact]
-        public async Task UpdateManyNullAsync()
-        {
-            await Assert.ThrowsAsync<ArgumentNullException>(
-                "update",
-                async () =>
-                    await AoxeMongoClient.UpdateAsync<TestModel>(
-                        null,
-                        p => p.DateTime == DateTime.Now
-                    )
-            );
-            await Assert.ThrowsAsync<ArgumentNullException>(
-                "where",
-                async () =>
-                    await AoxeMongoClient.UpdateAsync(
-                        () => new TestModel { DateTime = DateTime.Now },
-                        null
-                    )
             );
         }
     }

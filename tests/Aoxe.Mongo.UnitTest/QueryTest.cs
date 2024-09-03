@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using Xunit;
-
 namespace Aoxe.Mongo.UnitTest
 {
     public class QueryTest : BaseUnitTest

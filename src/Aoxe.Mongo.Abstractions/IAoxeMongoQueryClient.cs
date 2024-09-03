@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Aoxe.Mongo.Abstractions;
 
 public interface IAoxeMongoQueryClient
