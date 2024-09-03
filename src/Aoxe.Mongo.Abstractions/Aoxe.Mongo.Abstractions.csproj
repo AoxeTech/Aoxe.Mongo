@@ -2,8 +2,8 @@
   
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <PackageVersion>2024.2.0</PackageVersion>
-        <Version>2024.2.0</Version>
+        <PackageVersion>2024.4.0</PackageVersion>
+        <Version>2024.4.0</Version>
         <Description>Abstract libraries for Aoxe.Mongo.</Description>
         <PackageTags>Aoxe;Mongo;Repository;Abstractions</PackageTags>
         <PackageProjectUrl>https://github.com/AoxeTech</PackageProjectUrl>
@@ -27,7 +27,6 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="MongoDB.Driver.Core" Version="2.28.0" />
         <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
     </ItemGroup>
   

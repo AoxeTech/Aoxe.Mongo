@@ -6,9 +6,9 @@ public partial interface IAoxeMongoClient
         where T : class;
     ValueTask<long> UpdateAsync<T>(T entity, CancellationToken cancellationToken = default)
         where T : class;
-    long Update<T>(Expression<Func<T, bool>> where, Expression<Func<T>> update)
+    long UpdateMany<T>(Expression<Func<T, bool>> where, Expression<Func<T>> update)
         where T : class;
-    ValueTask<long> UpdateAsync<T>(
+    ValueTask<long> UpdateManyAsync<T>(
         Expression<Func<T, bool>> where,
         Expression<Func<T>> update,
         CancellationToken cancellationToken = default
