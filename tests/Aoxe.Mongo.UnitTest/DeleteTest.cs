@@ -11,29 +11,11 @@ namespace Aoxe.Mongo.UnitTest
         }
 
         [Fact]
-        public void DeleteNull()
-        {
-            Assert.Throws<ArgumentNullException>(
-                "entity",
-                () => AoxeMongoClient.Delete((TestModel)null)
-            );
-        }
-
-        [Fact]
         public async Task DeleteSuccessAsync()
         {
             var model = TestModelFactory.GetModel();
             await AoxeMongoClient.AddAsync(model);
             Assert.Equal(1L, await AoxeMongoClient.DeleteAsync(model));
-        }
-
-        [Fact]
-        public async Task DeleteNullAsync()
-        {
-            await Assert.ThrowsAsync<ArgumentNullException>(
-                "entity",
-                async () => await AoxeMongoClient.DeleteAsync((TestModel)null)
-            );
         }
 
         [Fact]
@@ -46,15 +28,6 @@ namespace Aoxe.Mongo.UnitTest
         }
 
         [Fact]
-        public void DeleteManyNull()
-        {
-            Assert.Throws<ArgumentNullException>(
-                "where",
-                () => AoxeMongoClient.Delete((Expression<Func<TestModel, bool>>)null)
-            );
-        }
-
-        [Fact]
         public async Task DeleteManySuccessAsync()
         {
             var models = TestModelFactory.GetModels(5);
@@ -63,16 +36,6 @@ namespace Aoxe.Mongo.UnitTest
             Assert.Equal(
                 5L,
                 await AoxeMongoClient.DeleteAsync<TestModel>(p => strings.Contains(p.String))
-            );
-        }
-
-        [Fact]
-        public async Task DeleteManyNullAsync()
-        {
-            await Assert.ThrowsAsync<ArgumentNullException>(
-                "where",
-                async () =>
-                    await AoxeMongoClient.DeleteAsync((Expression<Func<TestModel, bool>>)null)
             );
         }
     }

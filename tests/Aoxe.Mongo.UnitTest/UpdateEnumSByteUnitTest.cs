@@ -14,7 +14,7 @@ namespace Aoxe.Mongo.UnitTest
                 t => t.Id == testModel.Id,
                 () => new TestModel { EnumSByte = value }
             );
-            Assert.Equal(1L, result);
+            Assert.Equal(testModel.EnumSByte == value ? 0L : 1L, result);
             var modifyModel = AoxeMongoClient
                 .GetQueryable<TestModel>()
                 .First(p => p.Id == testModel.Id);
@@ -75,7 +75,7 @@ namespace Aoxe.Mongo.UnitTest
                 t => t.Id == testModel.Id,
                 () => new TestModel { EnumSByte = value }
             );
-            Assert.Equal(1L, result);
+            Assert.Equal(testModel.EnumSByte == value ? 0L : 1L, result);
             var modifyModel = AoxeMongoClient
                 .GetQueryable<TestModel>()
                 .First(p => p.Id == testModel.Id);

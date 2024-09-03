@@ -14,7 +14,7 @@ namespace Aoxe.Mongo.UnitTest
                 t => t.Id == testModel.Id,
                 () => new TestModel { EnumInt = value }
             );
-            Assert.Equal(1L, result);
+            Assert.Equal(testModel.EnumInt == value ? 0L : 1L, result);
             var modifyModel = AoxeMongoClient
                 .GetQueryable<TestModel>()
                 .First(p => p.Id == testModel.Id);
@@ -29,13 +29,13 @@ namespace Aoxe.Mongo.UnitTest
             AoxeMongoClient.Add(testModel);
             var result = AoxeMongoClient.Update(
                 t => t.Id == testModel.Id,
-                () => new TestModel { EnumInt = EnumInt.Apple }
+                () => new TestModel { EnumInt = EnumInt.Pear }
             );
             Assert.Equal(1L, result);
             var modifyModel = AoxeMongoClient
                 .GetQueryable<TestModel>()
                 .First(p => p.Id == testModel.Id);
-            Assert.Equal(EnumInt.Apple, modifyModel.EnumInt);
+            Assert.Equal(EnumInt.Pear, modifyModel.EnumInt);
             Assert.Equal(1L, AoxeMongoClient.Delete<TestModel>(t => t.Id == testModel.Id));
         }
 
@@ -87,7 +87,7 @@ namespace Aoxe.Mongo.UnitTest
                 t => t.Id == testModel.Id,
                 () => new TestModel { EnumInt = value }
             );
-            Assert.Equal(1L, result);
+            Assert.Equal(testModel.EnumInt == value ? 0L : 1L, result);
             var modifyModel = AoxeMongoClient
                 .GetQueryable<TestModel>()
                 .First(p => p.Id == testModel.Id);
@@ -105,13 +105,13 @@ namespace Aoxe.Mongo.UnitTest
             await AoxeMongoClient.AddAsync(testModel);
             var result = await AoxeMongoClient.UpdateAsync(
                 t => t.Id == testModel.Id,
-                () => new TestModel { EnumInt = EnumInt.Apple }
+                () => new TestModel { EnumInt = EnumInt.Pear }
             );
             Assert.Equal(1L, result);
             var modifyModel = AoxeMongoClient
                 .GetQueryable<TestModel>()
                 .First(p => p.Id == testModel.Id);
-            Assert.Equal(EnumInt.Apple, modifyModel.EnumInt);
+            Assert.Equal(EnumInt.Pear, modifyModel.EnumInt);
             Assert.Equal(
                 1L,
                 (await AoxeMongoClient.DeleteAsync<TestModel>(t => t.Id == testModel.Id))

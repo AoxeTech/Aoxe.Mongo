@@ -14,7 +14,7 @@ namespace Aoxe.Mongo.UnitTest
                 t => t.Id == testModel.Id,
                 () => new TestModel { EnumShort = value }
             );
-            Assert.Equal(1L, result);
+            Assert.Equal(testModel.EnumShort == value ? 0L : 1L, result);
             var modifyModel = AoxeMongoClient
                 .GetQueryable<TestModel>()
                 .First(p => p.Id == testModel.Id);
@@ -75,7 +75,7 @@ namespace Aoxe.Mongo.UnitTest
                 t => t.Id == testModel.Id,
                 () => new TestModel { EnumShort = value }
             );
-            Assert.Equal(1L, result);
+            Assert.Equal(testModel.EnumShort == value ? 0L : 1L, result);
             var modifyModel = AoxeMongoClient
                 .GetQueryable<TestModel>()
                 .First(p => p.Id == testModel.Id);
