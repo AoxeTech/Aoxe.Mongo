@@ -1,6 +1,4 @@
-﻿using Aoxe.Mongo.Client;
-
-namespace Aoxe.Mongo.UnitTest;
+﻿namespace Aoxe.Mongo.UnitTest;
 
 public class DependencyInjectionTest
 {

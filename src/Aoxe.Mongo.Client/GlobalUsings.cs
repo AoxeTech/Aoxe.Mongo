@@ -6,6 +6,7 @@ global using System.ComponentModel.DataAnnotations.Schema;
 global using System.Linq;
 global using System.Linq.Expressions;
 global using System.Reflection;
+global using System.Text;
 global using System.Threading.Tasks;
 global using Aoxe.Mongo.Abstractions;
 global using MongoDB.Bson;

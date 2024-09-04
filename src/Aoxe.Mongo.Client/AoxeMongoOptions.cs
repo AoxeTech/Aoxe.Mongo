@@ -6,22 +6,22 @@ public class AoxeMongoOptions
     {
         ConnectionString = connectionString;
         MongoUrl = new MongoUrl(connectionString);
-        MongoClientSettings = MongoClientSettings.FromConnectionString(connectionString);
+        MongoClientSettings = MongoClientSettings.FromConnectionString(ConnectionString);
         Database = database;
     }
 
     public AoxeMongoOptions(MongoUrl mongoUrl, string database)
     {
         MongoUrl = mongoUrl;
-        ConnectionString = MongoUrl.ToString();
-        MongoClientSettings = MongoClientSettings.FromConnectionString(ConnectionString);
+        ConnectionString = MongoUrl.ToConnectionString();
+        MongoClientSettings = MongoClientSettings.FromUrl(MongoUrl);
         Database = database;
     }
 
     public AoxeMongoOptions(MongoClientSettings mongoClientSettings, string database)
     {
         MongoClientSettings = mongoClientSettings;
-        ConnectionString = MongoClientSettings.ToString();
+        ConnectionString = MongoClientSettings.ToConnectionString();
         MongoUrl = new MongoUrl(ConnectionString);
         Database = database;
     }
