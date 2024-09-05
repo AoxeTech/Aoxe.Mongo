@@ -1,6 +1,6 @@
 namespace Aoxe.Mongo.Client;
 
-public static class MongoCollectionExtension
+public static class MongoCollectionExtensions
 {
     public static UpdateResult UpdateMany<T>(
         this IMongoCollection<T> mongoCollection,
@@ -9,11 +9,13 @@ public static class MongoCollectionExtension
         UpdateOptions? options = null,
         CancellationToken cancellationToken = default
     )
-        where T : class
-    {
-        var updateDefinition = new UpdateExpressionVisitor<T>().GetUpdateDefinition(update);
-        return mongoCollection.UpdateMany(where, updateDefinition, options, cancellationToken);
-    }
+        where T : class =>
+        mongoCollection.UpdateMany(
+            where,
+            new UpdateExpressionVisitor<T>().GetUpdateDefinition(update),
+            options,
+            cancellationToken
+        );
 
     public static async ValueTask<UpdateResult> UpdateManyAsync<T>(
         this IMongoCollection<T> mongoCollection,
@@ -21,15 +23,11 @@ public static class MongoCollectionExtension
         Expression<Func<T>> update,
         UpdateOptions? options = null,
         CancellationToken cancellationToken = default
-    )
-        where T : class
-    {
-        var updateDefinition = new UpdateExpressionVisitor<T>().GetUpdateDefinition(update);
-        return await mongoCollection.UpdateManyAsync(
+    ) =>
+        await mongoCollection.UpdateManyAsync(
             where,
-            updateDefinition,
+            new UpdateExpressionVisitor<T>().GetUpdateDefinition(update),
             options,
             cancellationToken
         );
-    }
 }

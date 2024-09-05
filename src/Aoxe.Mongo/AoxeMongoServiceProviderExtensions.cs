@@ -6,26 +6,22 @@ public static class AoxeMongoServiceProviderExtensions
         this IServiceCollection services,
         string connectionString,
         string databaseName
-    ) =>
-        services.AddSingleton<IAoxeMongoClient>(
-            new AoxeMongoClient(new AoxeMongoOptions(connectionString, databaseName))
-        );
+    ) => services.AddAoxeMongo(new AoxeMongoOptions(connectionString, databaseName));
 
     public static IServiceCollection AddAoxeMongo(
         this IServiceCollection services,
         MongoUrl mongoUrl,
         string databaseName
-    ) =>
-        services.AddSingleton<IAoxeMongoClient>(
-            new AoxeMongoClient(new AoxeMongoOptions(mongoUrl, databaseName))
-        );
+    ) => services.AddAoxeMongo(new AoxeMongoOptions(mongoUrl, databaseName));
 
     public static IServiceCollection AddAoxeMongo(
         this IServiceCollection services,
         MongoClientSettings mongoClientSettings,
         string databaseName
-    ) =>
-        services.AddSingleton<IAoxeMongoClient>(
-            new AoxeMongoClient(new AoxeMongoOptions(mongoClientSettings, databaseName))
-        );
+    ) => services.AddAoxeMongo(new AoxeMongoOptions(mongoClientSettings, databaseName));
+
+    public static IServiceCollection AddAoxeMongo(
+        this IServiceCollection services,
+        AoxeMongoOptions options
+    ) => services.AddSingleton<IAoxeMongoClient>(new AoxeMongoClient(options));
 }

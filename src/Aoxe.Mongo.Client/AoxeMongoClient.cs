@@ -3,7 +3,7 @@
 public partial class AoxeMongoClient : IAoxeMongoClient
 {
     private readonly MongoCollectionSettings _collectionSettings;
-    private readonly GuidSerializer _guidSerializer;
+    private readonly GuidRepresentation _guidRepresentation = GuidRepresentation.CSharpLegacy;
     private readonly ConcurrentDictionary<Type, string> _tableNames = new();
     private readonly ConcurrentDictionary<Type, PropertyInfo> _idProperties = new();
 
@@ -11,23 +11,32 @@ public partial class AoxeMongoClient : IAoxeMongoClient
 
     public AoxeMongoClient(AoxeMongoOptions options)
     {
-        var guidSerializer = new GuidSerializer(options.GuidRepresentation);
-        BsonSerializer.RegisterSerializer(guidSerializer);
-        _guidSerializer = guidSerializer;
+        if (options.MongoGuidRepresentation is not null)
+        {
+            var guidSerializer = new GuidSerializer(options.MongoGuidRepresentation.Value);
+            BsonSerializer.RegisterSerializer(guidSerializer);
+            _guidRepresentation = options.MongoGuidRepresentation.Value;
+        }
+        if (options.MongoDateTimeKind is not null)
+        {
+            var serializer = new DateTimeSerializer(
+                options.MongoDateTimeKind.Value,
+                BsonType.DateTime
+            );
+            BsonSerializer.RegisterSerializer(typeof(DateTime), serializer);
+        }
         ConventionRegistry.Register(
             "IgnoreExtraElements",
             new ConventionPack { new IgnoreExtraElementsConvention(true) },
             _ => true
         );
-        var serializer = new DateTimeSerializer(options.DateTimeKind, BsonType.DateTime);
-        BsonSerializer.RegisterSerializer(typeof(DateTime), serializer);
         _collectionSettings = options.MongoCollectionSettings;
         MongoDatabase = new MongoClient(options.MongoClientSettings).GetDatabase(options.Database);
     }
 
     private JsonFilterDefinition<T> GetJsonFilterDefinition<T>(
         T entity,
-        GuidSerializer guidSerializer
+        GuidRepresentation guidRepresentation
     )
     {
         var idPropertyInfo = GetIdProperty(typeof(T));
@@ -39,7 +48,7 @@ public partial class AoxeMongoClient : IAoxeMongoClient
             json = $"{{\"_id\":{value}}}";
         else if (idPropertyInfo.PropertyType == typeof(Guid))
         {
-            json = guidSerializer.GuidRepresentation switch
+            json = guidRepresentation switch
             {
                 GuidRepresentation.Unspecified => "{\"_id\":" + $"UUID(\"{value}\")" + "}",
                 GuidRepresentation.Standard => "{\"_id\":" + $"UUID(\"{value}\")" + "}",
@@ -79,12 +88,8 @@ public partial class AoxeMongoClient : IAoxeMongoClient
             {
                 var propertyInfo =
                     type.GetProperties()
-                        .FirstOrDefault(
-                            property =>
-                                Attribute
-                                    .GetCustomAttributes(property)
-                                    .OfType<BsonIdAttribute>()
-                                    .Any()
+                        .FirstOrDefault(property =>
+                            Attribute.GetCustomAttributes(property).OfType<BsonIdAttribute>().Any()
                         )
                     ?? type.GetProperty("Id")
                     ?? type.GetProperty("id")

@@ -32,6 +32,7 @@ public class AoxeMongoOptions
     public string Database { get; protected set; }
     public MongoCollectionSettings MongoCollectionSettings { get; set; } =
         new() { AssignIdOnInsert = true };
-    public DateTimeKind DateTimeKind { get; set; } = DateTimeKind.Local;
-    public GuidRepresentation GuidRepresentation { get; set; } = GuidRepresentation.CSharpLegacy;
+    public DateTimeKind? MongoDateTimeKind { get; set; } = DateTimeKind.Local;
+    public GuidRepresentation? MongoGuidRepresentation { get; set; } =
+        GuidRepresentation.CSharpLegacy;
 }
