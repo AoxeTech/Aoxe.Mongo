@@ -7,7 +7,7 @@ public partial class AoxeMongoClient
     {
         var tableName = GetTableName(typeof(T));
         var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
-        var filter = GetJsonFilterDefinition(entity, _guidRepresentation);
+        var filter = GetIdFilterDefinition(entity, _guidRepresentation);
         var result = collection.UpdateOne(
             filter,
             new BsonDocumentUpdateDefinition<T>(
@@ -25,7 +25,7 @@ public partial class AoxeMongoClient
     {
         var tableName = GetTableName(typeof(T));
         var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
-        var filter = GetJsonFilterDefinition(entity, _guidRepresentation);
+        var filter = GetIdFilterDefinition(entity, _guidRepresentation);
         var result = await collection.UpdateOneAsync(
             filter,
             new BsonDocumentUpdateDefinition<T>(

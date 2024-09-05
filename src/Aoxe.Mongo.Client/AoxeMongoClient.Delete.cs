@@ -7,7 +7,7 @@ public partial class AoxeMongoClient
     {
         var tableName = GetTableName(typeof(T));
         var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
-        var filter = GetJsonFilterDefinition(entity, _guidRepresentation);
+        var filter = GetIdFilterDefinition(entity, _guidRepresentation);
         var result = collection.DeleteOne(filter);
         return result.DeletedCount;
     }
@@ -20,7 +20,7 @@ public partial class AoxeMongoClient
     {
         var tableName = GetTableName(typeof(T));
         var collection = MongoDatabase.GetCollection<T>(tableName, _collectionSettings);
-        var filter = GetJsonFilterDefinition(entity, _guidRepresentation);
+        var filter = GetIdFilterDefinition(entity, _guidRepresentation);
         var result = await collection.DeleteOneAsync(filter, cancellationToken);
         return result.DeletedCount;
     }

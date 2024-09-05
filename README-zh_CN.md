@@ -1,32 +1,32 @@
 # Aoxe.Mongo
 
-English | [简体中文](README-zh_CN.md)
+[English](README.md) | 简体中文
 
-Provide an easy way to use Mongo as repository and with UpdateMany / DeleteMany in lambda style.
+提供一种简单的方法，将 Mongo 用作存储库，并以 lambda 风格使用 UpdateMany / DeleteMany。
 
-This project has implemented three packages:
+该项目实现了三个软件包：
 
-- Aoxe.Mongo.Abstractions - The abstractions of aoxe mongo.
-- Aoxe.Mongo.Client - The implements of Aoxe.Mongo.Abstractions.
-- Aoxe.Mongo - The service providere extensions for Aoxe.Mongo.Client to simplify the IOC register.
+- Aoxe.Mongo.Abstractions - aoxe mongo 的抽象。
+- Aoxe.Mongo.Client - Aoxe.Mongo.Abstractions 的实现。
+- Aoxe.Mongo - 为 Aoxe.Mongo.Client 提供服务扩展，以简化 IOC 注册。
 
 ---
 
 ## QuickStart
 
-Install the package from NuGet
+从 NuGet 安装软件包
 
 ```bash
 PM> Install-Package Aoxe.Mongo
 ```
 
-Register the AoxeMongoClient into IOC
+将 AoxeMongoClient 注册到 IOC 容器里
 
 ```csharp
 serviceCollection.AddAoxeMongo("mongodb://localhost:27017", "test");
 ```
 
-Inject the IAoxeMongoClient by reference Aoxe.Email.Abstractions.
+通过引用 Aoxe.Email.Abstractions 注入 IAoxeMongoClient。
 
 ```bash
 PM> Install-Package Aoxe.Mongo.Abstractions
@@ -44,7 +44,7 @@ public class TestRepository
 }
 ```
 
-If you don't use IOC, you can instantiate AoxeMongoClient directly.
+不使用 IOC 的话可以直接实例化 AoxeMongoClient 对象
 
 ```bash
 PM> Install-Package Aoxe.Mongo.Client
@@ -54,7 +54,7 @@ PM> Install-Package Aoxe.Mongo.Client
 var mongoClient = new AoxeMongoClient("mongodb://localhost:27017", "test");
 ```
 
-Now we have a Model class like this:
+现在假设我们有一个这样的 Model class:
 
 ```csharp
 public class TestModel
@@ -65,9 +65,9 @@ public class TestModel
 }
 ```
 
-And then we can use the mongo like a repository:
+然后我们就可以像使用存储库一样使用 mongo:
 
-Add
+新增
 
 ```csharp
 mongoClient.Add(model);
@@ -77,23 +77,23 @@ await mongoClient.AddAsync(model);
 await mongoClient.AddRangeAsync(models);
 ```
 
-Delete
+删除
 
 ```csharp
 mongoClient.Delete(model);
-mongoClient.DeleteMany<TestModel>(m => m.Id == model.Id);
+mongoClient.DeleteMany<TestModel>(m => m.Name == "apple");
 
 await mongoClient.DeleteAsync(model);
-await mongoClient.DeleteManyAsync<TestModel>(m => m.Id == model.Id);
+await mongoClient.DeleteManyAsync<TestModel>(m => m.Name == "apple");
 ```
 
-Update
+修改
 
 ```csharp
 model.Name = "banana";
 mongoClient.Update(model);
 mongoClient.UpdateMany(() =>
-    m => m.Id == model.Id,
+    m => m.Name == "apple",
     new TestModel
     {
         Age = 22,
@@ -102,7 +102,7 @@ mongoClient.UpdateMany(() =>
 
 await mongoClient.UpdateAsync(model);
 await mongoClient.UpdateManyAsync(() =>
-    m => m.Id == model.Id,
+    m => m.Name == "apple",
     new TestModel
     {
         Age = 22,
@@ -110,7 +110,7 @@ await mongoClient.UpdateManyAsync(() =>
     })
 ```
 
-Query
+查询
 
 ```csharp
 var query = mongoClient.GetQueryable<TestModel>();

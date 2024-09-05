@@ -6,18 +6,32 @@ public partial class AoxeMongoClient : IAoxeMongoClient
     private readonly GuidRepresentation _guidRepresentation = GuidRepresentation.CSharpLegacy;
     private readonly ConcurrentDictionary<Type, string> _tableNames = new();
     private readonly ConcurrentDictionary<Type, PropertyInfo> _idProperties = new();
-
     private IMongoDatabase MongoDatabase { get; }
+
+    public AoxeMongoClient(string connectionString, string database)
+        : this(new AoxeMongoOptions(connectionString, database)) { }
+
+    public AoxeMongoClient(MongoUrl mongoUrl, string database)
+        : this(new AoxeMongoOptions(mongoUrl, database)) { }
+
+    public AoxeMongoClient(MongoClientSettings mongoClientSettings, string database)
+        : this(new AoxeMongoOptions(mongoClientSettings, database)) { }
 
     public AoxeMongoClient(AoxeMongoOptions options)
     {
-        if (options.MongoGuidRepresentation is not null)
+        if (
+            options.MongoGuidRepresentation is not null
+            && BsonSerializer.LookupSerializer<GuidSerializer>() is null
+        )
         {
             var guidSerializer = new GuidSerializer(options.MongoGuidRepresentation.Value);
             BsonSerializer.RegisterSerializer(guidSerializer);
             _guidRepresentation = options.MongoGuidRepresentation.Value;
         }
-        if (options.MongoDateTimeKind is not null)
+        if (
+            options.MongoDateTimeKind is not null
+            && BsonSerializer.LookupSerializer<DateTimeSerializer>() is null
+        )
         {
             var serializer = new DateTimeSerializer(
                 options.MongoDateTimeKind.Value,
@@ -34,12 +48,29 @@ public partial class AoxeMongoClient : IAoxeMongoClient
         MongoDatabase = new MongoClient(options.MongoClientSettings).GetDatabase(options.Database);
     }
 
-    private JsonFilterDefinition<T> GetJsonFilterDefinition<T>(
+    private JsonFilterDefinition<T> GetIdFilterDefinition<T>(
         T entity,
         GuidRepresentation guidRepresentation
     )
     {
-        var idPropertyInfo = GetIdProperty(typeof(T));
+        var type = typeof(T);
+        var idPropertyInfo = _idProperties.GetOrAdd(
+            type,
+            _ =>
+                type.GetProperties()
+                    .FirstOrDefault(property =>
+                        Attribute.GetCustomAttributes(property).OfType<KeyAttribute>().Any()
+                    )
+                ?? type.GetProperties()
+                    .FirstOrDefault(property =>
+                        Attribute.GetCustomAttributes(property).OfType<BsonIdAttribute>().Any()
+                    )
+                ?? type.GetProperty($"{type.Name}Id")
+                ?? type.GetProperty("Id")
+                ?? type.GetProperty("id")
+                ?? type.GetProperty("_id")
+                ?? throw new NullReferenceException("The primary key can not be found.")
+        );
 
         var value = idPropertyInfo.GetValue(entity, null);
 
@@ -80,24 +111,6 @@ public partial class AoxeMongoClient : IAoxeMongoClient
             TypeCode.Single => true,
             _ => false
         };
-
-    private PropertyInfo GetIdProperty(Type type) =>
-        _idProperties.GetOrAdd(
-            type,
-            _ =>
-            {
-                var propertyInfo =
-                    type.GetProperties()
-                        .FirstOrDefault(property =>
-                            Attribute.GetCustomAttributes(property).OfType<BsonIdAttribute>().Any()
-                        )
-                    ?? type.GetProperty("Id")
-                    ?? type.GetProperty("id")
-                    ?? type.GetProperty("_id");
-                return propertyInfo
-                    ?? throw new NullReferenceException("The primary key can not be found.");
-            }
-        );
 
     private string GetTableName(Type type) =>
         _tableNames.GetOrAdd(
