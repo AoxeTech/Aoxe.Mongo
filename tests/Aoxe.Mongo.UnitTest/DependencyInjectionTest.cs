@@ -3,15 +3,13 @@
 public class DependencyInjectionTest
 {
     // Arrange
-    private readonly AoxeMongoOptions _option = new AoxeMongoOptions(
-        "mongodb://localhost:27017",
-        "test"
-    )
-    {
-        // set to null just for test because MongoClient can only register serializers with the same type once
-        MongoGuidRepresentation = null,
-        MongoDateTimeKind = null
-    };
+    private readonly AoxeMongoOptions _option =
+        new("mongodb://localhost:27017", "test")
+        {
+            // set to null just for test because MongoClient can only register serializers with the same type once
+            MongoGuidRepresentation = null,
+            MongoDateTimeKind = null
+        };
 
     [Fact]
     public void AddAoxeMongo_ShouldRegisterAoxeMongoClientByOptions()
