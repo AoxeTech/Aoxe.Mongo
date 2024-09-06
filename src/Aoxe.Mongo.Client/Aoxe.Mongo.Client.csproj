@@ -2,12 +2,13 @@
 	
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-		<PackageVersion>2024.5.6</PackageVersion>
-		<Version>2024.5.6</Version>
+		<PackageVersion>2024.5.7</PackageVersion>
+		<Version>2024.5.7</Version>
 		<Description>Mongo repository.</Description>
 		<PackageTags>Aoxe;Mongo;Repository</PackageTags>
 		<PackageProjectUrl>https://github.com/AoxeTech</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/AoxeTech/Aoxe.Mongo</RepositoryUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
@@ -23,13 +24,17 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="Aoxe.Mongo.Abstractions" Version="2024.4.0" />
+		<PackageReference Include="Aoxe.Mongo.Abstractions" Version="2024.4.1" />
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="MongoDB.Driver" Version="2.28.0" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="../../README.md" Pack="true" PackagePath="\"/>
 	</ItemGroup>
 	
 </Project>

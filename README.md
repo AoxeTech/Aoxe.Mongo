@@ -8,7 +8,7 @@ This project has implemented three packages:
 
 - Aoxe.Mongo.Abstractions - The abstractions of aoxe mongo.
 - Aoxe.Mongo.Client - The implements of Aoxe.Mongo.Abstractions.
-- Aoxe.Mongo - The service providere extensions for Aoxe.Mongo.Client to simplify the IOC register.
+- Aoxe.Mongo - The service provider extensions for Aoxe.Mongo.Client to simplify the IOC register.
 
 ---
 
