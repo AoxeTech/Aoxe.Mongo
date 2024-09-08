@@ -17,6 +17,9 @@ public partial class AoxeMongoClient : IAoxeMongoClient
     public AoxeMongoClient(MongoClientSettings mongoClientSettings, string database)
         : this(new AoxeMongoOptions(mongoClientSettings, database)) { }
 
+    public AoxeMongoClient(Func<AoxeMongoOptions> optionsFaction)
+        : this(optionsFaction()) { }
+
     public AoxeMongoClient(AoxeMongoOptions options)
     {
         if (
@@ -58,12 +61,14 @@ public partial class AoxeMongoClient : IAoxeMongoClient
             type,
             _ =>
                 type.GetProperties()
-                    .FirstOrDefault(property =>
-                        Attribute.GetCustomAttributes(property).OfType<KeyAttribute>().Any()
+                    .FirstOrDefault(
+                        property =>
+                            Attribute.GetCustomAttributes(property).OfType<KeyAttribute>().Any()
                     )
                 ?? type.GetProperties()
-                    .FirstOrDefault(property =>
-                        Attribute.GetCustomAttributes(property).OfType<BsonIdAttribute>().Any()
+                    .FirstOrDefault(
+                        property =>
+                            Attribute.GetCustomAttributes(property).OfType<BsonIdAttribute>().Any()
                     )
                 ?? type.GetProperty($"{type.Name}Id")
                 ?? type.GetProperty("Id")

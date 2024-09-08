@@ -2,8 +2,8 @@
 	
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-		<PackageVersion>2024.2.8</PackageVersion>
-		<Version>2024.2.8</Version>
+		<PackageVersion>2024.2.9</PackageVersion>
+		<Version>2024.2.9</Version>
 		<Description>The dependency injection extensions for Aoxe.Mongo.Client.</Description>
 		<PackageTags>Aoxe;Mongo;Dependency Injection</PackageTags>
 		<PackageProjectUrl>https://github.com/AoxeTech</PackageProjectUrl>
@@ -24,7 +24,7 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="Aoxe.Mongo.Client" Version="2024.5.7" />
+		<PackageReference Include="Aoxe.Mongo.Client" Version="2024.5.9" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
 			<PrivateAssets>all</PrivateAssets>

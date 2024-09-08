@@ -28,6 +28,11 @@ public static class AoxeMongoServiceProviderExtensions
 
     public static IServiceCollection AddAoxeMongo(
         this IServiceCollection services,
+        Func<AoxeMongoOptions> optionsFactory
+    ) => services.AddSingleton<IAoxeMongoClient>(new AoxeMongoClient(optionsFactory));
+
+    public static IServiceCollection AddAoxeMongo(
+        this IServiceCollection services,
         AoxeMongoOptions options
     ) => services.AddSingleton<IAoxeMongoClient>(new AoxeMongoClient(options));
 }
