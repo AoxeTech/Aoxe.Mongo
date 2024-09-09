@@ -13,9 +13,25 @@ public static class AoxeMongoServiceProviderExtensions
 
     public static IServiceCollection AddAoxeMongo(
         this IServiceCollection services,
+        Func<MongoUrl> mongoUrlFactory,
+        string databaseName
+    ) =>
+        services.AddSingleton<IAoxeMongoClient>(new AoxeMongoClient(mongoUrlFactory, databaseName));
+
+    public static IServiceCollection AddAoxeMongo(
+        this IServiceCollection services,
         MongoUrl mongoUrl,
         string databaseName
     ) => services.AddSingleton<IAoxeMongoClient>(new AoxeMongoClient(mongoUrl, databaseName));
+
+    public static IServiceCollection AddAoxeMongo(
+        this IServiceCollection services,
+        Func<MongoClientSettings> mongoClientSettingsFactory,
+        string databaseName
+    ) =>
+        services.AddSingleton<IAoxeMongoClient>(
+            new AoxeMongoClient(mongoClientSettingsFactory, databaseName)
+        );
 
     public static IServiceCollection AddAoxeMongo(
         this IServiceCollection services,

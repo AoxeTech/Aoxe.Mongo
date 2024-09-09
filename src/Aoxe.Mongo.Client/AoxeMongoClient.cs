@@ -11,8 +11,14 @@ public partial class AoxeMongoClient : IAoxeMongoClient
     public AoxeMongoClient(string connectionString, string database)
         : this(new AoxeMongoOptions(connectionString, database)) { }
 
+    public AoxeMongoClient(Func<MongoUrl> mongoUrlFactory, string database)
+        : this(new AoxeMongoOptions(mongoUrlFactory(), database)) { }
+
     public AoxeMongoClient(MongoUrl mongoUrl, string database)
         : this(new AoxeMongoOptions(mongoUrl, database)) { }
+
+    public AoxeMongoClient(Func<MongoClientSettings> mongoClientSettingsFactory, string database)
+        : this(new AoxeMongoOptions(mongoClientSettingsFactory(), database)) { }
 
     public AoxeMongoClient(MongoClientSettings mongoClientSettings, string database)
         : this(new AoxeMongoOptions(mongoClientSettings, database)) { }
@@ -61,14 +67,12 @@ public partial class AoxeMongoClient : IAoxeMongoClient
             type,
             _ =>
                 type.GetProperties()
-                    .FirstOrDefault(
-                        property =>
-                            Attribute.GetCustomAttributes(property).OfType<KeyAttribute>().Any()
+                    .FirstOrDefault(property =>
+                        Attribute.GetCustomAttributes(property).OfType<KeyAttribute>().Any()
                     )
                 ?? type.GetProperties()
-                    .FirstOrDefault(
-                        property =>
-                            Attribute.GetCustomAttributes(property).OfType<BsonIdAttribute>().Any()
+                    .FirstOrDefault(property =>
+                        Attribute.GetCustomAttributes(property).OfType<BsonIdAttribute>().Any()
                     )
                 ?? type.GetProperty($"{type.Name}Id")
                 ?? type.GetProperty("Id")
