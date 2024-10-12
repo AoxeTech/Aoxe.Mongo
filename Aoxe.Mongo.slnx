@@ -1,0 +1,11 @@
+﻿<Solution>
+  <Folder Name="/src/">
+    <Project Path="src\Aoxe.Mongo.Abstractions\Aoxe.Mongo.Abstractions.csproj" Type="Classic C#" />
+    <Project Path="src\Aoxe.Mongo.Client\Aoxe.Mongo.Client.csproj" Type="Classic C#" />
+    <Project Path="src\Aoxe.Mongo\Aoxe.Mongo.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests\Aoxe.Mongo.Client.UnitTest\Aoxe.Mongo.Client.UnitTest.csproj" Type="Classic C#" />
+    <Project Path="tests\Aoxe.Mongo.UnitTest\Aoxe.Mongo.UnitTest.csproj" Type="Classic C#" />
+  </Folder>
+</Solution>
