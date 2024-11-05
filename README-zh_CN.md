@@ -44,6 +44,32 @@ public class TestRepository
 }
 ```
 
+另外您也可以注入 Lazy<IAoxeMongoClient>。
+
+```csharp
+public class TestRepository
+{
+    private readonly Lazy<IAoxeMongoClient> _mongoClient;
+
+    public TestRepository(Lazy<IAoxeMongoClient> mongoClient)
+    {
+        _mongoClient = mongoClient;
+    }
+}
+```
+
+```csharp
+public class TestRepository
+{
+    private readonly IAoxeMongoClient _mongoClient;
+
+    public TestRepository(IAoxeMongoClient mongoClient)
+    {
+        _mongoClient = mongoClient;
+    }
+}
+```
+
 不使用 IOC 的话可以直接实例化 AoxeMongoClient 对象
 
 ```bash

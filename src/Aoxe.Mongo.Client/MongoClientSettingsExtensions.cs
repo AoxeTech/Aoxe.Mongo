@@ -15,7 +15,7 @@ public static class MongoClientSettingsExtensions
             builder
                 .Append(Uri.EscapeDataString(settings.Credential.Username))
                 .Append(":")
-                .Append(Uri.EscapeDataString(passwordEvidence.SecurePassword.ToString()))
+                .Append(Uri.EscapeDataString(passwordEvidence.SecurePassword.ToString()!))
                 .Append("@");
 
         // Add hosts

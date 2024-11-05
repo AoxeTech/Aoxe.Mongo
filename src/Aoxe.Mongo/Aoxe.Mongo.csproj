@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net6.0;net8.0;net9.0</TargetFrameworks>
-		<PackageVersion>2024.2.12</PackageVersion>
-		<Version>2024.2.12</Version>
+		<TargetFrameworks>netstandard2.1;net8.0;net9.0</TargetFrameworks>
+		<PackageVersion>2024.3.0</PackageVersion>
+		<Version>2024.3.0</Version>
 		<Description>The dependency injection extensions for Aoxe.Mongo.Client.</Description>
 		<PackageTags>Aoxe;Mongo;Dependency Injection</PackageTags>
 		<PackageProjectUrl>https://github.com/AoxeTech</PackageProjectUrl>
@@ -24,7 +24,8 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="Aoxe.Mongo.Client" Version="2024.5.11" />
+		<PackageReference Include="Aoxe.DependencyInjection.Extensions" Version="2024.1.2" />
+		<PackageReference Include="Aoxe.Mongo.Client" Version="2024.6.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
 			<PrivateAssets>all</PrivateAssets>

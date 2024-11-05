@@ -7,7 +7,7 @@ public static class AoxeMongoServiceProviderExtensions
         string connectionString,
         string databaseName
     ) =>
-        services.AddSingleton<IAoxeMongoClient>(
+        services.AddSingletonWithLazy<IAoxeMongoClient>(
             new AoxeMongoClient(connectionString, databaseName)
         );
 
@@ -16,20 +16,25 @@ public static class AoxeMongoServiceProviderExtensions
         Func<MongoUrl> mongoUrlFactory,
         string databaseName
     ) =>
-        services.AddSingleton<IAoxeMongoClient>(new AoxeMongoClient(mongoUrlFactory, databaseName));
+        services.AddSingletonWithLazy<IAoxeMongoClient>(
+            new AoxeMongoClient(mongoUrlFactory, databaseName)
+        );
 
     public static IServiceCollection AddAoxeMongo(
         this IServiceCollection services,
         MongoUrl mongoUrl,
         string databaseName
-    ) => services.AddSingleton<IAoxeMongoClient>(new AoxeMongoClient(mongoUrl, databaseName));
+    ) =>
+        services.AddSingletonWithLazy<IAoxeMongoClient>(
+            new AoxeMongoClient(mongoUrl, databaseName)
+        );
 
     public static IServiceCollection AddAoxeMongo(
         this IServiceCollection services,
         Func<MongoClientSettings> mongoClientSettingsFactory,
         string databaseName
     ) =>
-        services.AddSingleton<IAoxeMongoClient>(
+        services.AddSingletonWithLazy<IAoxeMongoClient>(
             new AoxeMongoClient(mongoClientSettingsFactory, databaseName)
         );
 
@@ -38,17 +43,17 @@ public static class AoxeMongoServiceProviderExtensions
         MongoClientSettings mongoClientSettings,
         string databaseName
     ) =>
-        services.AddSingleton<IAoxeMongoClient>(
+        services.AddSingletonWithLazy<IAoxeMongoClient>(
             new AoxeMongoClient(mongoClientSettings, databaseName)
         );
 
     public static IServiceCollection AddAoxeMongo(
         this IServiceCollection services,
         Func<AoxeMongoOptions> optionsFactory
-    ) => services.AddSingleton<IAoxeMongoClient>(new AoxeMongoClient(optionsFactory));
+    ) => services.AddSingletonWithLazy<IAoxeMongoClient>(new AoxeMongoClient(optionsFactory));
 
     public static IServiceCollection AddAoxeMongo(
         this IServiceCollection services,
         AoxeMongoOptions options
-    ) => services.AddSingleton<IAoxeMongoClient>(new AoxeMongoClient(options));
+    ) => services.AddSingletonWithLazy<IAoxeMongoClient>(new AoxeMongoClient(options));
 }

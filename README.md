@@ -44,6 +44,22 @@ public class TestRepository
 }
 ```
 
+Also you can inject the Lazy<IAoxeMongoClient>.
+
+```csharp
+public class TestRepository
+{
+    private readonly Lazy<IAoxeMongoClient> _mongoClient;
+
+    public TestRepository(Lazy<IAoxeMongoClient> mongoClient)
+    {
+        _mongoClient = mongoClient;
+    }
+}
+```
+
+```csharp
+
 If you don't use IOC, you can instantiate AoxeMongoClient directly.
 
 ```bash
